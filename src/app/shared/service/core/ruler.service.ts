@@ -1,0 +1,240 @@
+import { Injectable } from '@angular/core';
+import { CanvasOffsets } from '../../model/canvas-offsets.model';
+import { LibService } from '../util/lib.service';
+import { MemoryService } from './memory.service';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class RulerService {
+  private rulerThickness = 25; // Thickness of the window ruler
+  private parentScale = 100; // Parent scale of the window ruler
+  private childScale = 10; // Child scale of the window ruler
+  private middleLength = 0.5; // Length of the middleScale
+  private childLength = 0.25; // Length of the childScale
+  private scaleColor = '#606060'; // Color of the scale of the window ruler
+  private numColor = '#9e9e9e'; // Color of the number printed in the window ruler
+  private borderColor = '#606060'; // Border color of the window ruler
+  private fontType = 'bold sans-serif'; // Font of the window ruler
+
+  constructor(private lib: LibService, private memory: MemoryService) {}
+
+  render(): void {
+    const canvasOffsets: CanvasOffsets = this.memory.history.canvasOffsets;
+    if (this.parentScale * canvasOffsets.zoomRatio * 2 < 100) {
+      this.parentScale *= 2;
+    }
+    if ((this.parentScale * canvasOffsets.zoomRatio) / 2 > 50) {
+      const half = this.parentScale / 2;
+      if (Number.isInteger(half)) this.parentScale = half;
+    }
+
+    const { renderer } = this.memory;
+
+    this._createLine();
+    const l: HTMLCanvasElement = renderer.ctx.l.canvas;
+    l.width = renderer.rulerWrapper.clientWidth;
+    l.height = this.rulerThickness;
+    renderer.ctx.l.drawImage(renderer.lBuffer, 0, 0);
+
+    this._createColumn();
+    const c: HTMLCanvasElement = renderer.ctx.c.canvas;
+    c.width = this.rulerThickness;
+    c.height = renderer.rulerWrapper.clientHeight;
+    renderer.ctx.c.drawImage(renderer.cBuffer, 0, 0);
+  }
+
+  _createLine(): void {
+    const ctxLbuffer: CanvasRenderingContext2D = this.memory.renderer.ctx.lBuffer;
+    const l: HTMLCanvasElement = ctxLbuffer.canvas;
+    l.width = this.memory.renderer.rulerWrapper.clientWidth;
+    l.height = this.rulerThickness;
+
+    const canvasOffsets: CanvasOffsets = this.memory.history.canvasOffsets;
+
+    const offsetX: number = l.height + canvasOffsets.newOffsetX;
+    const remain: number = Math.floor(offsetX / (this.parentScale * canvasOffsets.zoomRatio));
+    const cutoff: number = offsetX - remain * this.parentScale * canvasOffsets.zoomRatio;
+
+    ctxLbuffer.translate(0.5, 0.5);
+
+    // Frame
+    ctxLbuffer.strokeStyle = this.borderColor;
+    ctxLbuffer.lineWidth = 1;
+    ctxLbuffer.strokeRect(0, 0, l.width, l.height);
+
+    ctxLbuffer.strokeStyle = this.scaleColor;
+    ctxLbuffer.font = this.fontType;
+    ctxLbuffer.fillStyle = this.numColor;
+
+    //////////////////////////////////////////////////////////////////// Children
+    const childStep: number = (this.parentScale / this.childScale) * canvasOffsets.zoomRatio;
+    const childOffsetY: number = this.rulerThickness * (1 - this.childLength);
+
+    ctxLbuffer.beginPath();
+    // Children - positive
+    for (let i = cutoff; i < l.width; i += childStep) {
+      ctxLbuffer.moveTo(i, childOffsetY);
+      ctxLbuffer.lineTo(i, l.height);
+    }
+    // Children - negative
+    for (let i = cutoff; i > 0; i -= childStep) {
+      ctxLbuffer.moveTo(i, childOffsetY);
+      ctxLbuffer.lineTo(i, l.height);
+    }
+    ctxLbuffer.stroke();
+
+    //////////////////////////////////////////////////////////////////// Middle
+    const middleStep = (this.parentScale / 2) * canvasOffsets.zoomRatio;
+    const middleOffsetY: number = this.rulerThickness * (1 - this.middleLength);
+
+    ctxLbuffer.beginPath();
+    // Middle - positive
+    for (let i = cutoff; i < l.width; i += middleStep) {
+      ctxLbuffer.clearRect(i - 1, childOffsetY, 2, l.height);
+      ctxLbuffer.moveTo(i, middleOffsetY);
+      ctxLbuffer.lineTo(i, l.height);
+    }
+    // Middle - negative
+    for (let i = cutoff; i > 0; i -= middleStep) {
+      ctxLbuffer.clearRect(i - 1, childOffsetY, 2, l.height);
+      ctxLbuffer.moveTo(i, middleOffsetY);
+      ctxLbuffer.lineTo(i, l.height);
+    }
+    ctxLbuffer.stroke();
+
+    //////////////////////////////////////////////////////////////////// Parents
+    let scaleCount = 0;
+    const parentStep: number = this.parentScale * canvasOffsets.zoomRatio;
+
+    ctxLbuffer.beginPath();
+    // Parents - positive
+    for (let i = cutoff; i < l.width; i += parentStep) {
+      ctxLbuffer.clearRect(i - 1, 1, 2, l.height);
+      ctxLbuffer.moveTo(i, 0);
+      ctxLbuffer.lineTo(i, l.height);
+      ctxLbuffer.fillText(`${Math.abs((remain - scaleCount) * this.parentScale)}`, i + 5, 10);
+      scaleCount++;
+    }
+    // Parents - nagative
+    scaleCount = 0;
+    for (let i = cutoff; i > parentStep; i -= parentStep) {
+      ctxLbuffer.clearRect(i - 1, 1, 2, l.height);
+      ctxLbuffer.moveTo(i, 0);
+      ctxLbuffer.lineTo(i, l.height);
+      ctxLbuffer.fillText(`${Math.abs((remain - scaleCount) * this.parentScale)}`, i + 5, 10);
+      scaleCount++;
+    }
+    ctxLbuffer.stroke();
+
+    // Empty box
+    ctxLbuffer.beginPath();
+    ctxLbuffer.setLineDash([]);
+    ctxLbuffer.clearRect(0, 0, this.rulerThickness, this.rulerThickness);
+    ctxLbuffer.strokeStyle = this.borderColor;
+    ctxLbuffer.strokeRect(0, 0, this.rulerThickness, this.rulerThickness);
+    ctxLbuffer.stroke();
+  }
+
+  _createColumn(): void {
+    const ctxCbuffer: CanvasRenderingContext2D = this.memory.renderer.ctx.cBuffer;
+    const c: HTMLCanvasElement = ctxCbuffer.canvas;
+    c.width = this.rulerThickness;
+    c.height = this.memory.renderer.rulerWrapper.clientHeight;
+
+    const canvasOffsets: CanvasOffsets = this.memory.history.canvasOffsets;
+
+    const offsetY: number = c.width + canvasOffsets.newOffsetY;
+    const remain: number = Math.floor(offsetY / (this.parentScale * canvasOffsets.zoomRatio));
+    const cutoff: number = offsetY - remain * this.parentScale * canvasOffsets.zoomRatio;
+
+    ctxCbuffer.translate(0.5, 0.5);
+    ctxCbuffer.clearRect(0, 0, c.width, c.height);
+
+    // Frame
+    ctxCbuffer.strokeStyle = this.borderColor;
+    ctxCbuffer.lineWidth = 1;
+    ctxCbuffer.strokeRect(0, 0, c.width, c.height);
+
+    ctxCbuffer.strokeStyle = this.scaleColor;
+    ctxCbuffer.font = this.fontType;
+    ctxCbuffer.fillStyle = this.numColor;
+
+    //////////////////////////////////////////////////////////////////// Children
+    const childStep: number = (this.parentScale / this.childScale) * canvasOffsets.zoomRatio;
+    const childOffsetX: number = this.rulerThickness * (1 - this.childLength);
+
+    ctxCbuffer.beginPath();
+    // Children - positive
+    for (let i = cutoff; i < c.height; i += childStep) {
+      ctxCbuffer.moveTo(childOffsetX, i);
+      ctxCbuffer.lineTo(c.width, i);
+    }
+    // Children - nagative
+    for (let i = cutoff; i > 0; i -= childStep) {
+      ctxCbuffer.moveTo(childOffsetX, i);
+      ctxCbuffer.lineTo(c.width, i);
+    }
+    ctxCbuffer.stroke();
+
+    //////////////////////////////////////////////////////////////////// Middle
+    const middleStep: number = (this.parentScale / 2) * canvasOffsets.zoomRatio;
+    const middleOffsetX: number = this.rulerThickness * (1 - this.middleLength);
+
+    ctxCbuffer.beginPath();
+    // Middle - positive
+    for (let i = cutoff; i < c.height; i += middleStep) {
+      ctxCbuffer.clearRect(childOffsetX, i - 1, c.width, 2);
+      ctxCbuffer.moveTo(middleOffsetX, i);
+      ctxCbuffer.lineTo(c.width, i);
+    }
+    // Middle - nagative
+    for (let i = cutoff; i > 0; i -= middleStep) {
+      ctxCbuffer.clearRect(childOffsetX, i - 1, c.width, 2);
+      ctxCbuffer.moveTo(middleOffsetX, i);
+      ctxCbuffer.lineTo(c.width, i);
+    }
+    ctxCbuffer.stroke();
+
+    //////////////////////////////////////////////////////////////////// Parents
+    let scaleCount = 0;
+    const parentStep: number = this.parentScale * canvasOffsets.zoomRatio;
+
+    ctxCbuffer.beginPath();
+    // Parents - positive
+    for (let i = cutoff; i < c.height; i += parentStep) {
+      ctxCbuffer.clearRect(1, i - 1, c.width, 2);
+      ctxCbuffer.moveTo(0, i);
+      ctxCbuffer.lineTo(c.width, i);
+      this._fillTextLine(ctxCbuffer, `${Math.abs((remain - scaleCount) * this.parentScale)}`, 4, i + 10);
+      scaleCount++;
+    }
+    // Parents - negative
+    scaleCount = 0;
+    for (let i = cutoff; i > parentStep; i -= parentStep) {
+      ctxCbuffer.clearRect(1, i - 1, c.width, 2);
+      ctxCbuffer.moveTo(0, i);
+      ctxCbuffer.lineTo(c.width, i);
+      this._fillTextLine(ctxCbuffer, `${Math.abs((remain - scaleCount) * this.parentScale)}`, 4, i + 10);
+      scaleCount++;
+    }
+    ctxCbuffer.stroke();
+
+    // Empty box
+    ctxCbuffer.beginPath();
+    ctxCbuffer.setLineDash([]);
+    ctxCbuffer.clearRect(0, 0, this.rulerThickness, this.rulerThickness);
+    ctxCbuffer.strokeStyle = this.borderColor;
+    ctxCbuffer.strokeRect(0, 0, this.rulerThickness, this.rulerThickness);
+    ctxCbuffer.stroke();
+  }
+
+  _fillTextLine(ctx: CanvasRenderingContext2D, text: string, x: number, y: number): void {
+    const textList: string[] = text.toString().split('');
+    const lineHeight: number = ctx.measureText('あ').width;
+    textList.forEach(($txt, $i) => {
+      const resY: number = y + lineHeight * $i - lineHeight * textList.length - 5;
+      ctx.fillText($txt, x, this.lib.f2i(resY));
+    });
+  }
+}
