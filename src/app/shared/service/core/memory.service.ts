@@ -12,6 +12,7 @@ export class MemoryService {
 
   public historyList: History[] = [
     {
+      trailLists: [],
       canvasOffsets: {
         zoomRatio: 1,
         prevOffsetX: 0,
@@ -77,7 +78,8 @@ export class MemoryService {
   init(
     $wrapperElem: ElementRef<HTMLDivElement>,
     $rulerWrapperElem: ElementRef,
-    $canvasElem: ElementRef<HTMLCanvasElement>,
+    $mainElem: ElementRef<HTMLCanvasElement>,
+    $uiElem: ElementRef<HTMLCanvasElement>,
     $lElem: ElementRef<HTMLCanvasElement>,
     $cElem: ElementRef<HTMLCanvasElement>
   ): void {
@@ -86,19 +88,25 @@ export class MemoryService {
     this.renderer.rulerWrapper = $rulerWrapperElem.nativeElement;
 
     // Renderer
-    this.renderer.mainCanvas = $canvasElem.nativeElement;
+    this.renderer.mainCanvas = $mainElem.nativeElement;
+    this.renderer.uiCanvas = $uiElem.nativeElement;
     this.renderer.lCanvas = $lElem.nativeElement;
     this.renderer.cCanvas = $cElem.nativeElement;
 
     // Buffer
+    this.renderer.uiBuffer = document.createElement('canvas');
     this.renderer.gridBuffer = document.createElement('canvas');
     this.renderer.lBuffer = document.createElement('canvas');
     this.renderer.cBuffer = document.createElement('canvas');
 
-    // Ctx
+    // ctx - Renderer
     this.renderer.ctx.main = this.renderer.mainCanvas.getContext('2d');
+    this.renderer.ctx.ui = this.renderer.uiCanvas.getContext('2d');
     this.renderer.ctx.l = this.renderer.lCanvas.getContext('2d');
     this.renderer.ctx.c = this.renderer.cCanvas.getContext('2d');
+
+    // ctx - Buffer
+    this.renderer.ctx.uiBuffer = this.renderer.uiBuffer.getContext('2d');
     this.renderer.ctx.gridBuffer = this.renderer.gridBuffer.getContext('2d');
     this.renderer.ctx.lBuffer = this.renderer.lBuffer.getContext('2d');
     this.renderer.ctx.cBuffer = this.renderer.cBuffer.getContext('2d');
@@ -128,6 +136,7 @@ export class MemoryService {
     const h: History[] = _.take(this.historyList, this.i + 1);
     this.historyList = h;
     this.historyList.push({
+      trailLists: [],
       canvasOffsets: _.cloneDeep($history.canvasOffsets),
       isChangedStates: true // To tell its states changing
     });
@@ -141,6 +150,8 @@ export interface Renderer {
   wrapper: HTMLDivElement;
   rulerWrapper: HTMLDivElement;
   mainCanvas: HTMLCanvasElement;
+  uiCanvas: HTMLCanvasElement;
+  uiBuffer: HTMLCanvasElement;
   gridBuffer: HTMLCanvasElement;
   lCanvas: HTMLCanvasElement;
   cCanvas: HTMLCanvasElement;
@@ -148,6 +159,8 @@ export interface Renderer {
   cBuffer: HTMLCanvasElement;
   ctx: {
     main: CanvasRenderingContext2D;
+    ui: CanvasRenderingContext2D;
+    uiBuffer: CanvasRenderingContext2D;
     gridBuffer: CanvasRenderingContext2D;
     l: CanvasRenderingContext2D;
     c: CanvasRenderingContext2D;
@@ -158,6 +171,8 @@ export interface Renderer {
 
 export interface Ctx {
   main: CanvasRenderingContext2D;
+  ui: CanvasRenderingContext2D;
+  uiBuffer: CanvasRenderingContext2D;
   gridBuffer: CanvasRenderingContext2D;
   l: CanvasRenderingContext2D;
   c: CanvasRenderingContext2D;

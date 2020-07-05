@@ -19,6 +19,7 @@ export class CanvasComponent implements OnInit {
   @ViewChild('canvasWrapper', { static: true }) wrapper: ElementRef<HTMLDivElement>;
   @ViewChild('rulerWrapper', { static: true }) rulerWrapper: ElementRef<HTMLDivElement>;
   @ViewChild('canvasMain', { static: true }) main: ElementRef<HTMLCanvasElement>;
+  @ViewChild('canvasUI', { static: true }) ui: ElementRef<HTMLCanvasElement>;
   @ViewChild('canvasLine', { static: true }) l: ElementRef<HTMLCanvasElement>;
   @ViewChild('canvasColumn', { static: true }) c: ElementRef<HTMLCanvasElement>;
 
@@ -34,7 +35,7 @@ export class CanvasComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.memory.init(this.wrapper, this.rulerWrapper, this.main, this.l, this.c);
+    this.memory.init(this.wrapper, this.rulerWrapper, this.main, this.ui, this.l, this.c);
     this.render();
   }
 
