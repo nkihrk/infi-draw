@@ -1,10 +1,8 @@
+import { Trail } from '../model/trail.model';
+import { CanvasOffsets } from './canvas-offsets.model';
+
 export interface History {
-  canvasOffsets: {
-    zoomRatio: number;
-    prevOffsetX: number;
-    prevOffsetY: number;
-    newOffsetX: number;
-    newOffsetY: number;
-  };
+  trailLists: Trail[];
+  canvasOffsets: CanvasOffsets;
   isChangedStates: boolean;
 }
