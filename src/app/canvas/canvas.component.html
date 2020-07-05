@@ -1,0 +1,18 @@
+<div class="app-wrapper" style="z-index: 0;">
+  <div
+    #canvasWrapper
+    class="canvas-wrapper"
+    style="z-index: 0;"
+    appEvent
+    (dataSet)="onPointerEvents($event)"
+    (key)="onKeyEvents($event)"
+    (isUnload)="onUnload($event)"
+  >
+    <canvas #canvasMain class="canvas-render" style="z-index: 0;"></canvas>
+  </div>
+
+  <div #rulerWrapper class="ruler-wrapper" style="z-index: 1;">
+    <canvas #canvasLine class="ruler-line"></canvas>
+    <canvas #canvasColumn class="ruler-column"></canvas>
+  </div>
+</div>
