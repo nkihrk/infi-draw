@@ -12,10 +12,6 @@ export class RulerService {
   private childScale = 10; // Child scale of the window ruler
   private middleLength = 0.5; // Length of the middleScale
   private childLength = 0.25; // Length of the childScale
-  private scaleColor = '#606060'; // Color of the scale of the window ruler
-  private numColor = '#9e9e9e'; // Color of the number printed in the window ruler
-  private borderColor = '#606060'; // Border color of the window ruler
-  private fontType = 'bold sans-serif'; // Font of the window ruler
 
   constructor(private lib: LibService, private memory: MemoryService) {}
 
@@ -59,13 +55,13 @@ export class RulerService {
     ctxLbuffer.translate(0.5, 0.5);
 
     // Frame
-    ctxLbuffer.strokeStyle = this.borderColor;
+    ctxLbuffer.strokeStyle = this.memory.constant.RULER_COLOR;
     ctxLbuffer.lineWidth = 1;
     ctxLbuffer.strokeRect(0, 0, l.width, l.height);
 
-    ctxLbuffer.strokeStyle = this.scaleColor;
-    ctxLbuffer.font = this.fontType;
-    ctxLbuffer.fillStyle = this.numColor;
+    ctxLbuffer.strokeStyle = this.memory.constant.RULER_COLOR;
+    ctxLbuffer.font = this.memory.constant.FONT_TYPE;
+    ctxLbuffer.fillStyle = this.memory.constant.NUM_COLOR;
 
     //////////////////////////////////////////////////////////////////// Children
     const childStep: number = (this.parentScale / this.childScale) * canvasOffsets.zoomRatio;
@@ -131,7 +127,7 @@ export class RulerService {
     ctxLbuffer.beginPath();
     ctxLbuffer.setLineDash([]);
     ctxLbuffer.clearRect(0, 0, this.rulerThickness, this.rulerThickness);
-    ctxLbuffer.strokeStyle = this.borderColor;
+    ctxLbuffer.strokeStyle = this.memory.constant.RULER_COLOR;
     ctxLbuffer.strokeRect(0, 0, this.rulerThickness, this.rulerThickness);
     ctxLbuffer.stroke();
   }
@@ -152,13 +148,13 @@ export class RulerService {
     ctxCbuffer.clearRect(0, 0, c.width, c.height);
 
     // Frame
-    ctxCbuffer.strokeStyle = this.borderColor;
+    ctxCbuffer.strokeStyle = this.memory.constant.RULER_COLOR;
     ctxCbuffer.lineWidth = 1;
     ctxCbuffer.strokeRect(0, 0, c.width, c.height);
 
-    ctxCbuffer.strokeStyle = this.scaleColor;
-    ctxCbuffer.font = this.fontType;
-    ctxCbuffer.fillStyle = this.numColor;
+    ctxCbuffer.strokeStyle = this.memory.constant.RULER_COLOR;
+    ctxCbuffer.font = this.memory.constant.FONT_TYPE;
+    ctxCbuffer.fillStyle = this.memory.constant.NUM_COLOR;
 
     //////////////////////////////////////////////////////////////////// Children
     const childStep: number = (this.parentScale / this.childScale) * canvasOffsets.zoomRatio;
@@ -224,7 +220,7 @@ export class RulerService {
     ctxCbuffer.beginPath();
     ctxCbuffer.setLineDash([]);
     ctxCbuffer.clearRect(0, 0, this.rulerThickness, this.rulerThickness);
-    ctxCbuffer.strokeStyle = this.borderColor;
+    ctxCbuffer.strokeStyle = this.memory.constant.RULER_COLOR;
     ctxCbuffer.strokeRect(0, 0, this.rulerThickness, this.rulerThickness);
     ctxCbuffer.stroke();
   }

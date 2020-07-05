@@ -12,7 +12,6 @@ export class CanvasService {
 
   registerOnMouseDown(): void {
     const history: History = this.memory.history;
-    // To sync canvas offsets with dataList
     history.canvasOffsets.prevOffsetX = history.canvasOffsets.newOffsetX;
     history.canvasOffsets.prevOffsetY = history.canvasOffsets.newOffsetY;
   }

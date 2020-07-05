@@ -66,7 +66,6 @@ export class CpuService {
 
     this.register.onMouseDown();
 
-    // This flag should be here for some reason idk
     this.memory.states.isNeededToUpdateHistory = true;
   }
 
