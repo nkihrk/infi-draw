@@ -58,7 +58,12 @@ export class MemoryService {
   };
 
   public readonly constant = {
-    ZOOM_SPEED: 0.2 // Zoom speed of canvas
+    ZOOM_SPEED: 0.2, // Zoom speed of canvas
+    GRID_COLOR: '#373543',
+    GRID_SCALE: 50,
+    RULER_COLOR: '#606060',
+    NUM_COLOR: '#9e9e9e',
+    FONT_TYPE: 'bold sans-serif'
   };
 
   public renderer: Renderer = { ctx: {} as Ctx } as Renderer;
