@@ -30,8 +30,8 @@ export class RegisterService {
 
   onMouseMove($newOffsetX: number, $newOffsetY: number, $event: PointerEvent): void {
     if (this.memory.flgs.leftDownMoveFlg) {
-      if (this.memory.reserveByFunc.name === 'pen') {
-      } else if (this.memory.reserveByFunc.name === 'eraser') {
+      if (this.memory.reserveByFunc.name === 'draw') {
+      } else if (this.memory.reserveByFunc.name === 'erase') {
       }
     } else if (this.memory.flgs.middleDownMoveFlg) {
       // Update canvas coordinates
