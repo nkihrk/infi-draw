@@ -11,9 +11,8 @@ export class CanvasService {
   constructor(private memory: MemoryService, private coord: CoordService) {}
 
   registerOnMouseDown(): void {
-    const history: History = this.memory.history;
-    history.canvasOffsets.prevOffsetX = history.canvasOffsets.newOffsetX;
-    history.canvasOffsets.prevOffsetY = history.canvasOffsets.newOffsetY;
+    this.memory.canvasOffsets.prevOffsetX = this.memory.canvasOffsets.newOffsetX;
+    this.memory.canvasOffsets.prevOffsetY = this.memory.canvasOffsets.newOffsetY;
   }
 
   registerOnNoMouseDown($event: PointerEvent): void {
@@ -25,9 +24,9 @@ export class CanvasService {
   }
 
   updateOffsets($newOffsetX: number, $newOffsetY: number, $event?: PointerEvent): void {
-    this.coord.updateOffsets($newOffsetX, $newOffsetY, this.memory.history.canvasOffsets, $event);
-    this.memory.history.canvasOffsets.zoomRatio = this.coord.updateZoomRatioByWheel(
-      this.memory.history.canvasOffsets.zoomRatio,
+    this.coord.updateOffsets($newOffsetX, $newOffsetY, this.memory.canvasOffsets, $event);
+    this.memory.canvasOffsets.zoomRatio = this.coord.updateZoomRatioByWheel(
+      this.memory.canvasOffsets.zoomRatio,
       $event
     );
   }

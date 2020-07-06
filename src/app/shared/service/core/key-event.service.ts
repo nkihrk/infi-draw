@@ -15,14 +15,14 @@ export class KeyEventService {
   onKeyEvents($e: Key): void {
     if ($e.type === 'keydown') {
       this.keymap.keyDownEvent($e);
-      this._keyDownFunctions($e);
+      this._keyDownFuncs($e);
     } else if ($e.type === 'keyup') {
-      this._keyUpFunctions($e);
+      this._keyUpFuncs($e);
       this.keymap.keyUpEvent($e);
     }
   }
 
-  _keyDownFunctions($e: Key): void {
+  _keyDownFuncs($e: Key): void {
     const keymap: any = this.keymap.keyMap;
 
     if (keymap.Control) {
@@ -46,8 +46,12 @@ export class KeyEventService {
     }
   }
 
-  _keyUpFunctions($e: Key): void {
+  _keyUpFuncs($e: Key): void {
     switch (this.whichFunc) {
+      case 'draw':
+        this.func.draw();
+        break;
+
       default:
         break;
     }
@@ -59,16 +63,15 @@ export class KeyEventService {
   _draw($e: Key): void {
     $e.e.preventDefault();
     $e.e.stopPropagation();
-    if (this.whichFunc !== 'draw') this._keyUpFunctions($e);
+    if (this.whichFunc !== 'draw') this._keyUpFuncs($e);
 
     this.whichFunc = 'draw';
-    this.func.draw();
   }
 
   _undo($e: Key): void {
     $e.e.preventDefault();
     $e.e.stopPropagation();
-    if (this.whichFunc !== 'undo') this._keyUpFunctions($e);
+    if (this.whichFunc !== 'undo') this._keyUpFuncs($e);
 
     this.whichFunc = 'undo';
     this.func.undo();
@@ -77,7 +80,7 @@ export class KeyEventService {
   _redo($e: Key): void {
     $e.e.preventDefault();
     $e.e.stopPropagation();
-    if (this.whichFunc !== 'redo') this._keyUpFunctions($e);
+    if (this.whichFunc !== 'redo') this._keyUpFuncs($e);
 
     this.whichFunc = 'redo';
     this.func.redo();

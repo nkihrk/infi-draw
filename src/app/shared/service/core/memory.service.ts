@@ -2,6 +2,10 @@ import { ElementRef, Injectable } from '@angular/core';
 import * as _ from 'lodash';
 import { Flgs } from '../../model/flg.model';
 import { History } from '../../model/history.model';
+import { CanvasOffsets } from '../../model/canvas-offsets.model';
+import { Trail } from '../../model/trail.model';
+import { Erase } from '../../model/erase.model';
+import { Point } from '../../model/point.model';
 
 @Injectable({
   providedIn: 'root'
@@ -12,18 +16,23 @@ export class MemoryService {
 
   public historyList: History[] = [
     {
-      trailLists: [],
-      canvasOffsets: {
-        zoomRatio: 1,
-        prevOffsetX: 0,
-        prevOffsetY: 0,
-        newOffsetX: 0,
-        newOffsetY: 0
-      },
+      trailList: [],
       isChangedStates: false
     }
   ];
   public history: History = this.historyList[this.i];
+
+  public canvasOffsets: CanvasOffsets = {
+    zoomRatio: 1,
+    prevOffsetX: 0,
+    prevOffsetY: 0,
+    newOffsetX: 0,
+    newOffsetY: 0
+  };
+
+  public trailList: Trail[] = [];
+  public eraseList: Erase[] = [];
+  public oekakiOrder: number[] = [];
 
   public flgs: Flgs = {
     dblClickFlg: false,
@@ -51,10 +60,11 @@ export class MemoryService {
     isNeededToUpdateHistory: false
   };
 
-  public mousePos = { x: 0, y: 0, prevX: 0, prevY: 0, rawX: 0, rawY: 0 };
+  public mousePos = { x: 0, y: 0, rawX: 0, rawY: 0, prevX: 0, prevY: 0 };
 
-  public reserveByFunc = {
+  public reservedByFunc = {
     name: '',
+    type: '',
     flgs: ['']
   };
 
@@ -96,6 +106,7 @@ export class MemoryService {
     // Buffer
     this.renderer.uiBuffer = document.createElement('canvas');
     this.renderer.gridBuffer = document.createElement('canvas');
+    this.renderer.oekakiBuffer = document.createElement('canvas');
     this.renderer.lBuffer = document.createElement('canvas');
     this.renderer.cBuffer = document.createElement('canvas');
 
@@ -108,11 +119,13 @@ export class MemoryService {
     // ctx - Buffer
     this.renderer.ctx.uiBuffer = this.renderer.uiBuffer.getContext('2d');
     this.renderer.ctx.gridBuffer = this.renderer.gridBuffer.getContext('2d');
+    this.renderer.ctx.oekakiBuffer = this.renderer.gridBuffer.getContext('2d');
     this.renderer.ctx.lBuffer = this.renderer.lBuffer.getContext('2d');
     this.renderer.ctx.cBuffer = this.renderer.cBuffer.getContext('2d');
 
     // setInterval(() => {
-    // }, 1000);
+    //  console.log(this.trailList, this.oekakiOrder);
+    //}, 1000);
   }
 
   undo(): void {
@@ -132,17 +145,16 @@ export class MemoryService {
     this.history = this.historyList[this.i];
   }
 
-  pileNewHistory($history: History): void {
-    const h: History[] = _.take(this.historyList, this.i + 1);
-    this.historyList = h;
-    this.historyList.push({
-      trailLists: [],
-      canvasOffsets: _.cloneDeep($history.canvasOffsets),
-      isChangedStates: true // To tell its states changing
-    });
+  pileNewHistory(): void {
+    if (this.reservedByFunc.name === 'draw') {
+      const trail: Trail = {
+        id: this.trailList.length,
+        points: [] as Point[]
+      };
+      this.trailList.push(trail);
 
-    this.i += 1;
-    this.history = this.historyList[this.i];
+      this.oekakiOrder.push(1);
+    }
   }
 }
 
@@ -153,6 +165,7 @@ export interface Renderer {
   uiCanvas: HTMLCanvasElement;
   uiBuffer: HTMLCanvasElement;
   gridBuffer: HTMLCanvasElement;
+  oekakiBuffer: HTMLCanvasElement;
   lCanvas: HTMLCanvasElement;
   cCanvas: HTMLCanvasElement;
   lBuffer: HTMLCanvasElement;
@@ -162,6 +175,7 @@ export interface Renderer {
     ui: CanvasRenderingContext2D;
     uiBuffer: CanvasRenderingContext2D;
     gridBuffer: CanvasRenderingContext2D;
+    oekakiBuffer: CanvasRenderingContext2D;
     l: CanvasRenderingContext2D;
     c: CanvasRenderingContext2D;
     lBuffer: CanvasRenderingContext2D;
@@ -174,6 +188,7 @@ export interface Ctx {
   ui: CanvasRenderingContext2D;
   uiBuffer: CanvasRenderingContext2D;
   gridBuffer: CanvasRenderingContext2D;
+  oekakiBuffer: CanvasRenderingContext2D;
   l: CanvasRenderingContext2D;
   c: CanvasRenderingContext2D;
   lBuffer: CanvasRenderingContext2D;

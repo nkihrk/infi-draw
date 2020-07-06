@@ -100,7 +100,7 @@ export class CpuService {
 
   // https://jsfiddle.net/rafaylik/sLjyyfox/
   _detectWheelEnd(): void {
-    if (this.wCounter1 === 0) this.memory.pileNewHistory(this.memory.history);
+    // if (this.wCounter1 === 0) this.memory.pileNewHistory(this.memory.history);
     this.wCounter1 += 1;
     if (this.wMaker) this._wheelStart();
   }
@@ -142,8 +142,8 @@ export class CpuService {
       //
       //////////////////////////////////////////////////////////
 
-      if (this.memory.states.isNeededToUpdateHistory && this.memory.flgs.middleDownMoveFlg) {
-        this.memory.pileNewHistory(this.memory.history);
+      if (this.memory.states.isNeededToUpdateHistory && this.memory.reservedByFunc.type === 'oekaki') {
+        this.memory.pileNewHistory();
       }
 
       const newOffsetX: number = this.memory.mousePos.x - this.memory.mousePos.prevX;

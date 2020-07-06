@@ -19,5 +19,6 @@ export class GpuService {
     c.width = this.memory.renderer.wrapper.clientWidth;
     c.height = this.memory.renderer.wrapper.clientHeight;
     ctx.drawImage(this.memory.renderer.gridBuffer, 0, 0);
+    ctx.drawImage(this.memory.renderer.oekakiBuffer, 0, 0);
   }
 }
