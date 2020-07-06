@@ -19,7 +19,7 @@ export class GridService {
     c.width = this.memory.renderer.wrapper.clientWidth;
     c.height = this.memory.renderer.wrapper.clientHeight;
 
-    const canvasOffsets: CanvasOffsets = this.memory.history.canvasOffsets;
+    const canvasOffsets: CanvasOffsets = this.memory.canvasOffsets;
 
     // X-axis
     const offsetX: number = canvasOffsets.newOffsetX - 1; // -1 is prefix for a border width of main canvas

@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { PointerEvent } from '../../model/pointer-event.model';
 import { CanvasService } from './canvas.service';
 import { MemoryService } from './memory.service';
+import {DrawService} from './draw.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RegisterService {
-  constructor(private memory: MemoryService, private canvas: CanvasService) {}
+  constructor(private memory: MemoryService, private canvas: CanvasService, private drawFunc: DrawService) {}
 
   onMouseDown(): void {
     this.canvas.registerOnMouseDown();
@@ -30,8 +31,8 @@ export class RegisterService {
 
   onMouseMove($newOffsetX: number, $newOffsetY: number, $event: PointerEvent): void {
     if (this.memory.flgs.leftDownMoveFlg) {
-      if (this.memory.reserveByFunc.name === 'draw') {
-      } else if (this.memory.reserveByFunc.name === 'erase') {
+      if (this.memory.reservedByFunc.name === 'draw') {
+        this.drawFunc.recordTrail();
       }
     } else if (this.memory.flgs.middleDownMoveFlg) {
       // Update canvas coordinates

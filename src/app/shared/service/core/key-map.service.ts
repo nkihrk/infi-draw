@@ -16,9 +16,10 @@ export class KeyMapService {
     const isAltKey: boolean = this.keyMap.Alt;
     const isShiftKey: boolean = this.keyMap.Shift;
 
+    const isPkey: boolean = this.keyMap.p; // Draw
     const isZkey: boolean = this.keyMap.z; // Undo and redo
 
-    const isPermitkey: boolean = isCtrlKey || isAltKey || isShiftKey || isZkey;
+    const isPermitkey: boolean = isCtrlKey || isAltKey || isShiftKey || isZkey || isPkey;
     if (!isPermitkey) this.keyMap = {};
   }
 
@@ -26,7 +27,6 @@ export class KeyMapService {
     if ($e.key === 'Control') this.keyMap.Control = false;
     if ($e.key === 'Alt') this.keyMap.Alt = false;
     if ($e.key === 'Shift') this.keyMap.Shift = false;
-    if ($e.key === 'Enter') this.keyMap.Enter = false;
     this._initKeyMap();
   }
 
