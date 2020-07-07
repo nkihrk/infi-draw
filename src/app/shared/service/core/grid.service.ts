@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MemoryService } from './memory.service';
-import { CanvasOffsets } from '../../model/canvas-offsets.model';
+import { CanvasOffset } from '../../model/canvas-offset.model';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +19,7 @@ export class GridService {
     c.width = this.memory.renderer.wrapper.clientWidth;
     c.height = this.memory.renderer.wrapper.clientHeight;
 
-    const canvasOffsets: CanvasOffsets = this.memory.canvasOffsets;
+    const canvasOffsets: CanvasOffset = this.memory.canvasOffsets;
 
     // X-axis
     const offsetX: number = canvasOffsets.newOffsetX - 1; // -1 is prefix for a border width of main canvas

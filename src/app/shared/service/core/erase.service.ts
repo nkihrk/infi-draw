@@ -17,7 +17,14 @@ export class EraseService {
     };
   }
 
-  checkVisibility(): void {}
+  checkVisibility(): void {
+    const trailList: Trail[] = this.memory.trailList;
+
+    for (let i = 0; i < trailList.length; i++) {
+      const min = trailList[i].min;
+      const max = trailList[i].max;
+    }
+  }
 
   init(): void {
     this.debug.setToQueue(this.test);
