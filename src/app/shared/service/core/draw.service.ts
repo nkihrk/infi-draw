@@ -23,8 +23,8 @@ export class DrawService {
 
       for (let j = 0; j < t.points.length; j++) {
         const p: Point = t.points[j];
-        p.offsets.prevOffsetX = p.offsets.newOffsetX;
-        p.offsets.prevOffsetY = p.offsets.newOffsetY;
+        p.offset.prevOffsetX = p.offset.newOffsetX;
+        p.offset.prevOffsetY = p.offset.newOffsetY;
       }
     }
   }
@@ -47,7 +47,7 @@ export class DrawService {
 
       for (let j = 0; j < t.points.length; j++) {
         const p: Point = t.points[j];
-        this.coord.updateOffsets($newOffsetX, $newOffsetY, p.offsets, $event);
+        this.coord.updateOffsets($newOffsetX, $newOffsetY, p.offset, $event);
       }
     }
   }
@@ -68,7 +68,7 @@ export class DrawService {
       color: 'white',
       style: 'circle',
       visibility: true,
-      offsets: {
+      offset: {
         prevOffsetX: this.memory.mousePos.x,
         prevOffsetY: this.memory.mousePos.y,
         newOffsetX: this.memory.mousePos.x,
@@ -77,8 +77,8 @@ export class DrawService {
       pressure: 1
     };
 
-    if (this._ignoreDuplication(point.offsets.prevOffsetX, point.offsets.prevOffsetY)) {
-      this._validateMinMax(trail, point.offsets.newOffsetX, point.offsets.newOffsetY);
+    if (this._ignoreDuplication(point.offset.prevOffsetX, point.offset.prevOffsetY)) {
+      this._validateMinMax(trail, point.offset.newOffsetX, point.offset.newOffsetY);
       trail.points.push(point);
     }
   }
@@ -100,7 +100,7 @@ export class DrawService {
       const pointId: number = points.length - 1;
       const prevPoint: Point = points[pointId - 1];
 
-      if (prevPoint.offsets.newOffsetX === $x && prevPoint.offsets.newOffsetY === $y) {
+      if (prevPoint.offset.newOffsetX === $x && prevPoint.offset.newOffsetY === $y) {
         return false;
       }
     }
@@ -124,11 +124,11 @@ export class DrawService {
 
     for (let i = 0; i < trailList.length; i++) {
       const p0: Point = trailList[i].points[0];
-      ctxOekakiBuffer.moveTo(p0.offsets.newOffsetX, p0.offsets.newOffsetY);
+      ctxOekakiBuffer.moveTo(p0.offset.newOffsetX, p0.offset.newOffsetY);
 
       for (let j = 1; j < trailList[i].points.length; j++) {
         const p: Point = trailList[i].points[j];
-        ctxOekakiBuffer.lineTo(p.offsets.newOffsetX, p.offsets.newOffsetY);
+        ctxOekakiBuffer.lineTo(p.offset.newOffsetX, p.offset.newOffsetY);
       }
     }
 

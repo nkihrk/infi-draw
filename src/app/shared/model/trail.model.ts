@@ -1,18 +1,9 @@
 import { Point } from './point.model';
+import { Offset } from './offset.model';
 
 export interface Trail {
   id: number;
-  min: {
-    prevOffsetX: number;
-    prevOffsetY: number;
-    newOffsetX: number;
-    newOffsetY: number;
-  };
-  max: {
-    prevOffsetX: number;
-    prevOffsetY: number;
-    newOffsetX: number;
-    newOffsetY: number;
-  };
+  min: Offset;
+  max: Offset;
   points: Point[];
 }
