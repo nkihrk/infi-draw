@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { MemoryService } from './memory.service';
 import { Trail } from '../../model/trail.model';
 import { DebugService } from '../util/debug.service';
+import { Offset } from '../../model/offset.model';
+import { MouseOffset } from '../../model/mouse-offset.model';
 
 @Injectable({
   providedIn: 'root'
@@ -21,8 +23,10 @@ export class EraseService {
     const trailList: Trail[] = this.memory.trailList;
 
     for (let i = 0; i < trailList.length; i++) {
-      const min = trailList[i].min;
-      const max = trailList[i].max;
+      const min: Offset = trailList[i].min;
+      const max: Offset = trailList[i].max;
+
+      const mouseOffset: MouseOffset = this.memory.mouseOffset;
     }
   }
 

@@ -69,10 +69,10 @@ export class DrawService {
       style: 'circle',
       visibility: true,
       offset: {
-        prevOffsetX: this.memory.mousePos.x,
-        prevOffsetY: this.memory.mousePos.y,
-        newOffsetX: this.memory.mousePos.x,
-        newOffsetY: this.memory.mousePos.y
+        prevOffsetX: this.memory.mouseOffset.x,
+        prevOffsetY: this.memory.mouseOffset.y,
+        newOffsetX: this.memory.mouseOffset.x,
+        newOffsetY: this.memory.mouseOffset.y
       },
       pressure: 1
     };
