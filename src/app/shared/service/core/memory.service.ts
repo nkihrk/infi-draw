@@ -74,7 +74,8 @@ export class MemoryService {
     GRID_SCALE: 50,
     RULER_COLOR: '#606060',
     NUM_COLOR: '#9e9e9e',
-    FONT_TYPE: 'bold sans-serif'
+    FONT_TYPE: 'bold sans-serif',
+    LINE_WIDTH: 2
   };
 
   public renderer: Renderer = { ctx: {} as Ctx } as Renderer;
@@ -119,13 +120,19 @@ export class MemoryService {
     // ctx - Buffer
     this.renderer.ctx.uiBuffer = this.renderer.uiBuffer.getContext('2d');
     this.renderer.ctx.gridBuffer = this.renderer.gridBuffer.getContext('2d');
-    this.renderer.ctx.oekakiBuffer = this.renderer.gridBuffer.getContext('2d');
+    this.renderer.ctx.oekakiBuffer = this.renderer.oekakiBuffer.getContext('2d');
     this.renderer.ctx.lBuffer = this.renderer.lBuffer.getContext('2d');
     this.renderer.ctx.cBuffer = this.renderer.cBuffer.getContext('2d');
 
-    // setInterval(() => {
-    //  console.log(this.trailList, this.oekakiOrder);
-    //}, 1000);
+    setInterval(() => {
+      console.log(this.trailList[0].points[0].offsets);
+    }, 1000);
+
+    this.reservedByFunc = {
+      name: 'draw',
+      type: 'oekaki',
+      flgs: ['']
+    };
   }
 
   undo(): void {

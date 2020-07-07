@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { History } from '../../model/history.model';
 import { PointerEvent } from '../../model/pointer-event.model';
 import { CoordService } from '../util/coord.service';
 import { MemoryService } from '../../service/core/memory.service';
@@ -23,7 +22,7 @@ export class CanvasService {
     this.updateOffsets($newOffsetX, $newOffsetY, $event);
   }
 
-  updateOffsets($newOffsetX: number, $newOffsetY: number, $event?: PointerEvent): void {
+  updateOffsets($newOffsetX: number, $newOffsetY: number, $event: PointerEvent): void {
     this.coord.updateOffsets($newOffsetX, $newOffsetY, this.memory.canvasOffsets, $event);
     this.memory.canvasOffsets.zoomRatio = this.coord.updateZoomRatioByWheel(
       this.memory.canvasOffsets.zoomRatio,
