@@ -28,20 +28,20 @@ export class RulerService {
     const { renderer } = this.memory;
 
     this._createLine();
-    const l: HTMLCanvasElement = renderer.ctx.l.canvas;
+    const l: HTMLCanvasElement = renderer.ctx.rulerL.canvas;
     l.width = renderer.rulerWrapper.clientWidth;
     l.height = this.rulerThickness;
-    renderer.ctx.l.drawImage(renderer.lBuffer, 0, 0);
+    renderer.ctx.rulerL.drawImage(renderer.rulerLbuffer, 0, 0);
 
     this._createColumn();
-    const c: HTMLCanvasElement = renderer.ctx.c.canvas;
+    const c: HTMLCanvasElement = renderer.ctx.rulerC.canvas;
     c.width = this.rulerThickness;
     c.height = renderer.rulerWrapper.clientHeight;
-    renderer.ctx.c.drawImage(renderer.cBuffer, 0, 0);
+    renderer.ctx.rulerC.drawImage(renderer.rulerCbuffer, 0, 0);
   }
 
   _createLine(): void {
-    const ctxLbuffer: CanvasRenderingContext2D = this.memory.renderer.ctx.lBuffer;
+    const ctxLbuffer: CanvasRenderingContext2D = this.memory.renderer.ctx.rulerLbuffer;
     const l: HTMLCanvasElement = ctxLbuffer.canvas;
     l.width = this.memory.renderer.rulerWrapper.clientWidth;
     l.height = this.rulerThickness;
@@ -133,7 +133,7 @@ export class RulerService {
   }
 
   _createColumn(): void {
-    const ctxCbuffer: CanvasRenderingContext2D = this.memory.renderer.ctx.cBuffer;
+    const ctxCbuffer: CanvasRenderingContext2D = this.memory.renderer.ctx.rulerCbuffer;
     const c: HTMLCanvasElement = ctxCbuffer.canvas;
     c.width = this.rulerThickness;
     c.height = this.memory.renderer.rulerWrapper.clientHeight;

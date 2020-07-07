@@ -15,8 +15,14 @@ export class DrawService {
     const trailList: Trail[] = this.memory.trailList;
 
     for (let i = 0; i < trailList.length; i++) {
-      for (let j = 0; j < trailList[i].points.length; j++) {
-        const p: Point = trailList[i].points[j];
+      const t: Trail = trailList[i];
+      t.min.prevOffsetX = t.min.newOffsetX;
+      t.min.prevOffsetY = t.min.newOffsetY;
+      t.max.prevOffsetX = t.max.newOffsetX;
+      t.max.prevOffsetY = t.max.newOffsetY;
+
+      for (let j = 0; j < t.points.length; j++) {
+        const p: Point = t.points[j];
         p.offsets.prevOffsetX = p.offsets.newOffsetX;
         p.offsets.prevOffsetY = p.offsets.newOffsetY;
       }
@@ -35,8 +41,12 @@ export class DrawService {
     const trailList: Trail[] = this.memory.trailList;
 
     for (let i = 0; i < trailList.length; i++) {
-      for (let j = 0; j < trailList[i].points.length; j++) {
-        const p: Point = trailList[i].points[j];
+      const t: Trail = trailList[i];
+      this.coord.updateOffsets($newOffsetX, $newOffsetY, t.min, $event);
+      this.coord.updateOffsets($newOffsetX, $newOffsetY, t.max, $event);
+
+      for (let j = 0; j < t.points.length; j++) {
+        const p: Point = t.points[j];
         this.coord.updateOffsets($newOffsetX, $newOffsetY, p.offsets, $event);
       }
     }
@@ -68,8 +78,17 @@ export class DrawService {
     };
 
     if (this._ignoreDuplication(point.offsets.prevOffsetX, point.offsets.prevOffsetY)) {
+      this._validateMinMax(trail, point.offsets.newOffsetX, point.offsets.newOffsetY);
       trail.points.push(point);
     }
+  }
+
+  _validateMinMax($trail: Trail, $x: number, $y: number): void {
+    $trail.min.newOffsetX = Math.min($trail.min.newOffsetX, $x);
+    $trail.min.newOffsetY = Math.min($trail.min.newOffsetY, $y);
+
+    $trail.max.newOffsetX = Math.max($trail.max.newOffsetX, $x);
+    $trail.max.newOffsetY = Math.max($trail.max.newOffsetY, $y);
   }
 
   _ignoreDuplication($x: number, $y: number): boolean {

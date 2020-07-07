@@ -6,11 +6,13 @@ import { Key } from '../shared/model/key.model';
 import { GridService } from '../shared/service/core/grid.service';
 import { GpuService } from '../shared/service/core/gpu.service';
 import { MemoryService } from '../shared/service/core/memory.service';
+import { DebugService } from '../shared/service/util/debug.service';
 import { FlgEventService } from '../shared/service/core/flg-event.service';
 import { CpuService } from '../shared/service/core/cpu.service';
 import { PointerEvent } from '../shared/model/pointer-event.model';
 import { DrawService } from '../shared/service/core/draw.service';
 import { CursorService } from '../shared/service/core/cursor.service';
+import { EraseService } from '../shared/service/core/erase.service';
 
 @Component({
   selector: 'app-canvas',
@@ -33,14 +35,17 @@ export class CanvasComponent implements OnInit {
     private cpu: CpuService,
     private gpu: GpuService,
     private memory: MemoryService,
+    private debug: DebugService,
     private flg: FlgEventService,
     private draw: DrawService,
-    private cursor: CursorService
+    private cursor: CursorService,
+    private erase: EraseService
   ) {}
 
   ngOnInit() {
     this.memory.init(this.wrapper, this.rulerWrapper, this.main, this.ui, this.l, this.c);
     this.render();
+    this.erase.init();
   }
 
   onPointerEvents($event: PointerEvent): void {
@@ -70,6 +75,7 @@ export class CanvasComponent implements OnInit {
     this.grid.render();
     this.cursor.render();
     this.draw.render();
+    this.debug.render();
     this.gpu.render();
   }
 }
