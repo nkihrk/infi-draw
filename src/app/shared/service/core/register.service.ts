@@ -3,12 +3,20 @@ import { PointerEvent } from '../../model/pointer-event.model';
 import { CanvasService } from './canvas.service';
 import { MemoryService } from './memory.service';
 import { DrawService } from './draw.service';
+import { EraseService } from './erase.service';
+import { Erase } from '../../model/erase.model';
+import { Flgs } from '../../model/flgs.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RegisterService {
-  constructor(private memory: MemoryService, private canvas: CanvasService, private drawFunc: DrawService) {}
+  constructor(
+    private memory: MemoryService,
+    private canvas: CanvasService,
+    private drawFunc: DrawService,
+    private eraseFunc: EraseService
+  ) {}
 
   onMouseDown(): void {
     this.canvas.registerOnMouseDown();
@@ -16,28 +24,38 @@ export class RegisterService {
   }
 
   onNoMouseDown($event: PointerEvent): void {
+    const flgs: Flgs = this.memory.flgs;
+
     this.canvas.registerOnMouseDown();
     this.drawFunc.registerOnMouseDown();
+
     // Wheel event - zooming-in/out
-    if (this.memory.flgs.wheelFlg) {
+    if (flgs.wheelFlg) {
       this.canvas.registerOnNoMouseDown($event);
       this.drawFunc.registerOnNoMouseDown($event);
     }
   }
 
   onMouseUp(): void {
-    if (this.memory.flgs.leftUpFlg) {
-    } else if (this.memory.flgs.rightUpFlg) {
-    } else if (this.memory.flgs.middleUpFlg) {
+    const flgs: Flgs = this.memory.flgs;
+
+    if (flgs.leftUpFlg) {
+    } else if (flgs.rightUpFlg) {
+    } else if (flgs.middleUpFlg) {
     }
   }
 
   onMouseMove($newOffsetX: number, $newOffsetY: number, $event: PointerEvent): void {
-    if (this.memory.flgs.leftDownMoveFlg) {
-      if (this.memory.reservedByFunc.name === 'draw') {
+    const reserved = this.memory.reservedByFunc;
+    const flgs: Flgs = this.memory.flgs;
+
+    if (flgs.leftDownMoveFlg) {
+      if (reserved.name === 'draw') {
         this.drawFunc.recordTrail();
+      } else if (reserved.name === 'erase') {
+        this.eraseFunc.setVisibility();
       }
-    } else if (this.memory.flgs.middleDownMoveFlg) {
+    } else if (flgs.middleDownMoveFlg) {
       // Update canvas coordinates
       this.canvas.registerOnMouseMiddleMove($newOffsetX, $newOffsetY, $event);
       // Update trail point coordinates

@@ -16,11 +16,11 @@ export class RulerService {
   constructor(private lib: LibService, private memory: MemoryService) {}
 
   render(): void {
-    const canvasOffsets: CanvasOffset = this.memory.canvasOffsets;
-    if (this.parentScale * canvasOffsets.zoomRatio * 2 < 100) {
+    const canvasOffset: CanvasOffset = this.memory.canvasOffset;
+    if (this.parentScale * canvasOffset.zoomRatio * 2 < 100) {
       this.parentScale *= 2;
     }
-    if ((this.parentScale * canvasOffsets.zoomRatio) / 2 > 50) {
+    if ((this.parentScale * canvasOffset.zoomRatio) / 2 > 50) {
       const half = this.parentScale / 2;
       if (Number.isInteger(half)) this.parentScale = half;
     }
@@ -46,11 +46,11 @@ export class RulerService {
     l.width = this.memory.renderer.rulerWrapper.clientWidth;
     l.height = this.rulerThickness;
 
-    const canvasOffsets: CanvasOffset = this.memory.canvasOffsets;
+    const canvasOffset: CanvasOffset = this.memory.canvasOffset;
 
-    const offsetX: number = l.height + canvasOffsets.newOffsetX;
-    const remain: number = Math.floor(offsetX / (this.parentScale * canvasOffsets.zoomRatio));
-    const cutoff: number = offsetX - remain * this.parentScale * canvasOffsets.zoomRatio;
+    const offsetX: number = l.height + canvasOffset.newOffsetX;
+    const remain: number = Math.floor(offsetX / (this.parentScale * canvasOffset.zoomRatio));
+    const cutoff: number = offsetX - remain * this.parentScale * canvasOffset.zoomRatio;
 
     ctxLbuffer.translate(0.5, 0.5);
 
@@ -64,7 +64,7 @@ export class RulerService {
     ctxLbuffer.fillStyle = this.memory.constant.NUM_COLOR;
 
     //////////////////////////////////////////////////////////////////// Children
-    const childStep: number = (this.parentScale / this.childScale) * canvasOffsets.zoomRatio;
+    const childStep: number = (this.parentScale / this.childScale) * canvasOffset.zoomRatio;
     const childOffsetY: number = this.rulerThickness * (1 - this.childLength);
 
     ctxLbuffer.beginPath();
@@ -81,7 +81,7 @@ export class RulerService {
     ctxLbuffer.stroke();
 
     //////////////////////////////////////////////////////////////////// Middle
-    const middleStep = (this.parentScale / 2) * canvasOffsets.zoomRatio;
+    const middleStep = (this.parentScale / 2) * canvasOffset.zoomRatio;
     const middleOffsetY: number = this.rulerThickness * (1 - this.middleLength);
 
     ctxLbuffer.beginPath();
@@ -101,7 +101,7 @@ export class RulerService {
 
     //////////////////////////////////////////////////////////////////// Parents
     let scaleCount = 0;
-    const parentStep: number = this.parentScale * canvasOffsets.zoomRatio;
+    const parentStep: number = this.parentScale * canvasOffset.zoomRatio;
 
     ctxLbuffer.beginPath();
     // Parents - positive
@@ -138,11 +138,11 @@ export class RulerService {
     c.width = this.rulerThickness;
     c.height = this.memory.renderer.rulerWrapper.clientHeight;
 
-    const canvasOffsets: CanvasOffset = this.memory.canvasOffsets;
+    const canvasOffset: CanvasOffset = this.memory.canvasOffset;
 
-    const offsetY: number = c.width + canvasOffsets.newOffsetY;
-    const remain: number = Math.floor(offsetY / (this.parentScale * canvasOffsets.zoomRatio));
-    const cutoff: number = offsetY - remain * this.parentScale * canvasOffsets.zoomRatio;
+    const offsetY: number = c.width + canvasOffset.newOffsetY;
+    const remain: number = Math.floor(offsetY / (this.parentScale * canvasOffset.zoomRatio));
+    const cutoff: number = offsetY - remain * this.parentScale * canvasOffset.zoomRatio;
 
     ctxCbuffer.translate(0.5, 0.5);
     ctxCbuffer.clearRect(0, 0, c.width, c.height);
@@ -157,7 +157,7 @@ export class RulerService {
     ctxCbuffer.fillStyle = this.memory.constant.NUM_COLOR;
 
     //////////////////////////////////////////////////////////////////// Children
-    const childStep: number = (this.parentScale / this.childScale) * canvasOffsets.zoomRatio;
+    const childStep: number = (this.parentScale / this.childScale) * canvasOffset.zoomRatio;
     const childOffsetX: number = this.rulerThickness * (1 - this.childLength);
 
     ctxCbuffer.beginPath();
@@ -174,7 +174,7 @@ export class RulerService {
     ctxCbuffer.stroke();
 
     //////////////////////////////////////////////////////////////////// Middle
-    const middleStep: number = (this.parentScale / 2) * canvasOffsets.zoomRatio;
+    const middleStep: number = (this.parentScale / 2) * canvasOffset.zoomRatio;
     const middleOffsetX: number = this.rulerThickness * (1 - this.middleLength);
 
     ctxCbuffer.beginPath();
@@ -194,7 +194,7 @@ export class RulerService {
 
     //////////////////////////////////////////////////////////////////// Parents
     let scaleCount = 0;
-    const parentStep: number = this.parentScale * canvasOffsets.zoomRatio;
+    const parentStep: number = this.parentScale * canvasOffset.zoomRatio;
 
     ctxCbuffer.beginPath();
     // Parents - positive
