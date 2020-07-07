@@ -75,6 +75,7 @@ export class MemoryService {
     RULER_COLOR: '#606060',
     NUM_COLOR: '#9e9e9e',
     FONT_TYPE: 'bold sans-serif',
+    STROKE_STYLE: '#ffffff',
     LINE_WIDTH: 2
   };
 
@@ -124,9 +125,9 @@ export class MemoryService {
     this.renderer.ctx.lBuffer = this.renderer.lBuffer.getContext('2d');
     this.renderer.ctx.cBuffer = this.renderer.cBuffer.getContext('2d');
 
-    setInterval(() => {
-      console.log(this.trailList[0].points[0].offsets);
-    }, 1000);
+    //    setInterval(() => {
+    //console.log(this.trailList[0].points[0].offsets);
+    //}, 1000);
 
     this.reservedByFunc = {
       name: 'draw',

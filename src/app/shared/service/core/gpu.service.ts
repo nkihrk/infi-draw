@@ -20,5 +20,11 @@ export class GpuService {
     c.height = this.memory.renderer.wrapper.clientHeight;
     ctx.drawImage(this.memory.renderer.gridBuffer, 0, 0);
     ctx.drawImage(this.memory.renderer.oekakiBuffer, 0, 0);
+
+    const ctxUi: CanvasRenderingContext2D = this.memory.renderer.ctx.ui;
+    const d: HTMLCanvasElement = ctxUi.canvas;
+    d.width = this.memory.renderer.wrapper.clientWidth;
+    d.height = this.memory.renderer.wrapper.clientHeight;
+    ctxUi.drawImage(this.memory.renderer.uiBuffer, 0, 0);
   }
 }

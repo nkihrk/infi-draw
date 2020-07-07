@@ -100,7 +100,7 @@ export class DrawService {
     ctxOekakiBuffer.translate(0.5, 0.5);
 
     ctxOekakiBuffer.beginPath();
-    ctxOekakiBuffer.strokeStyle = '#ffffff';
+    ctxOekakiBuffer.strokeStyle = this.memory.constant.STROKE_STYLE;
     ctxOekakiBuffer.lineWidth = this.memory.constant.LINE_WIDTH * this.memory.canvasOffsets.zoomRatio;
 
     for (let i = 0; i < trailList.length; i++) {
