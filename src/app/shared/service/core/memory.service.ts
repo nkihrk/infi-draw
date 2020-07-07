@@ -108,33 +108,37 @@ export class MemoryService {
     this.renderer.rulerWrapper = $rulerWrapperElem.nativeElement;
 
     // Renderer
-    this.renderer.mainCanvas = $mainElem.nativeElement;
-    this.renderer.uiCanvas = $uiElem.nativeElement;
-    this.renderer.lCanvas = $lElem.nativeElement;
-    this.renderer.cCanvas = $cElem.nativeElement;
+    this.renderer.main = $mainElem.nativeElement;
+    this.renderer.ui = $uiElem.nativeElement;
+    this.renderer.rulerL = $lElem.nativeElement;
+    this.renderer.rulerC = $cElem.nativeElement;
 
     // Buffer
     this.renderer.uiBuffer = document.createElement('canvas');
     this.renderer.gridBuffer = document.createElement('canvas');
     this.renderer.oekakiBuffer = document.createElement('canvas');
-    this.renderer.lBuffer = document.createElement('canvas');
-    this.renderer.cBuffer = document.createElement('canvas');
+    this.renderer.rulerLbuffer = document.createElement('canvas');
+    this.renderer.rulerCbuffer = document.createElement('canvas');
 
     // ctx - Renderer
-    this.renderer.ctx.main = this.renderer.mainCanvas.getContext('2d');
-    this.renderer.ctx.ui = this.renderer.uiCanvas.getContext('2d');
-    this.renderer.ctx.l = this.renderer.lCanvas.getContext('2d');
-    this.renderer.ctx.c = this.renderer.cCanvas.getContext('2d');
+    this.renderer.ctx.main = this.renderer.main.getContext('2d');
+    this.renderer.ctx.ui = this.renderer.ui.getContext('2d');
+    this.renderer.ctx.rulerL = this.renderer.rulerL.getContext('2d');
+    this.renderer.ctx.rulerC = this.renderer.rulerC.getContext('2d');
 
     // ctx - Buffer
     this.renderer.ctx.uiBuffer = this.renderer.uiBuffer.getContext('2d');
     this.renderer.ctx.gridBuffer = this.renderer.gridBuffer.getContext('2d');
     this.renderer.ctx.oekakiBuffer = this.renderer.oekakiBuffer.getContext('2d');
-    this.renderer.ctx.lBuffer = this.renderer.lBuffer.getContext('2d');
-    this.renderer.ctx.cBuffer = this.renderer.cBuffer.getContext('2d');
+    this.renderer.ctx.rulerLbuffer = this.renderer.rulerLbuffer.getContext('2d');
+    this.renderer.ctx.rulerCbuffer = this.renderer.rulerCbuffer.getContext('2d');
+
+    // Debugger
+    this.renderer.debug = document.createElement('canvas');
+    this.renderer.ctx.debug = this.renderer.debug.getContext('2d');
 
     //    setInterval(() => {
-    //console.log(this.trailList[0].points[0].offsets);
+    //console.log(this.trailList[0].min, this.trailList[0].max);
     //}, 1000);
   }
 
@@ -160,12 +164,16 @@ export class MemoryService {
       const trail: Trail = {
         id: this.trailList.length,
         min: {
-          x: 0,
-          y: 0
+          prevOffsetX: Infinity,
+          prevOffsetY: Infinity,
+          newOffsetX: Infinity,
+          newOffsetY: Infinity
         },
         max: {
-          x: 0,
-          y: 0
+          prevOffsetX: -Infinity,
+          prevOffsetY: -Infinity,
+          newOffsetX: -Infinity,
+          newOffsetY: -Infinity
         },
         points: [] as Point[]
       };
@@ -181,36 +189,48 @@ export class MemoryService {
 export interface Renderer {
   wrapper: HTMLDivElement;
   rulerWrapper: HTMLDivElement;
-  mainCanvas: HTMLCanvasElement;
-  uiCanvas: HTMLCanvasElement;
+  // Debugger
+  debug: HTMLCanvasElement;
+  // Renderer
+  main: HTMLCanvasElement;
+  ui: HTMLCanvasElement;
+  rulerL: HTMLCanvasElement;
+  rulerC: HTMLCanvasElement;
+  // Buffer
   uiBuffer: HTMLCanvasElement;
   gridBuffer: HTMLCanvasElement;
   oekakiBuffer: HTMLCanvasElement;
-  lCanvas: HTMLCanvasElement;
-  cCanvas: HTMLCanvasElement;
-  lBuffer: HTMLCanvasElement;
-  cBuffer: HTMLCanvasElement;
+  rulerLbuffer: HTMLCanvasElement;
+  rulerCbuffer: HTMLCanvasElement;
   ctx: {
+    // Debugger
+    debug: CanvasRenderingContext2D;
+    // Renderer
     main: CanvasRenderingContext2D;
     ui: CanvasRenderingContext2D;
+    rulerL: CanvasRenderingContext2D;
+    rulerC: CanvasRenderingContext2D;
+    // Buffer
     uiBuffer: CanvasRenderingContext2D;
     gridBuffer: CanvasRenderingContext2D;
     oekakiBuffer: CanvasRenderingContext2D;
-    l: CanvasRenderingContext2D;
-    c: CanvasRenderingContext2D;
-    lBuffer: CanvasRenderingContext2D;
-    cBuffer: CanvasRenderingContext2D;
+    rulerLbuffer: CanvasRenderingContext2D;
+    rulerCbuffer: CanvasRenderingContext2D;
   };
 }
 
 export interface Ctx {
+  // Debugger
+  debug: CanvasRenderingContext2D;
+  // Renderer
   main: CanvasRenderingContext2D;
   ui: CanvasRenderingContext2D;
+  rulerL: CanvasRenderingContext2D;
+  rulerC: CanvasRenderingContext2D;
+  // Buffer
   uiBuffer: CanvasRenderingContext2D;
   gridBuffer: CanvasRenderingContext2D;
   oekakiBuffer: CanvasRenderingContext2D;
-  l: CanvasRenderingContext2D;
-  c: CanvasRenderingContext2D;
-  lBuffer: CanvasRenderingContext2D;
-  cBuffer: CanvasRenderingContext2D;
+  rulerLbuffer: CanvasRenderingContext2D;
+  rulerCbuffer: CanvasRenderingContext2D;
 }
