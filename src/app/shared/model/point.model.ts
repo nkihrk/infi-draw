@@ -3,7 +3,11 @@ export interface Point {
   color: string;
   style: string;
   visibility: boolean;
-  x: number;
-  y: number;
+  offsets: {
+    prevOffsetX: number;
+    prevOffsetY: number;
+    newOffsetX: number;
+    newOffsetY: number;
+  };
   pressure: number;
 }

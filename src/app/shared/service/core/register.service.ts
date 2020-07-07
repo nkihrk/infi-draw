@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { PointerEvent } from '../../model/pointer-event.model';
 import { CanvasService } from './canvas.service';
 import { MemoryService } from './memory.service';
-import {DrawService} from './draw.service';
+import { DrawService } from './draw.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,13 +12,16 @@ export class RegisterService {
 
   onMouseDown(): void {
     this.canvas.registerOnMouseDown();
+    this.drawFunc.registerOnMouseDown();
   }
 
   onNoMouseDown($event: PointerEvent): void {
     this.canvas.registerOnMouseDown();
+    this.drawFunc.registerOnMouseDown();
     // Wheel event - zooming-in/out
     if (this.memory.flgs.wheelFlg) {
       this.canvas.registerOnNoMouseDown($event);
+      this.drawFunc.registerOnNoMouseDown($event);
     }
   }
 
@@ -37,6 +40,8 @@ export class RegisterService {
     } else if (this.memory.flgs.middleDownMoveFlg) {
       // Update canvas coordinates
       this.canvas.registerOnMouseMiddleMove($newOffsetX, $newOffsetY, $event);
+      // Update trail point coordinates
+      this.drawFunc.registerOnMouseMiddleMove($newOffsetX, $newOffsetY, $event);
     }
   }
 }

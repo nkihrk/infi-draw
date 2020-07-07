@@ -142,7 +142,11 @@ export class CpuService {
       //
       //////////////////////////////////////////////////////////
 
-      if (this.memory.states.isNeededToUpdateHistory && this.memory.reservedByFunc.type === 'oekaki') {
+      if (
+        this.memory.states.isNeededToUpdateHistory &&
+        this.memory.reservedByFunc.type === 'oekaki' &&
+        this.memory.flgs.leftDownMoveFlg
+      ) {
         this.memory.pileNewHistory();
       }
 
