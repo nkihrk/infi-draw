@@ -2,7 +2,7 @@ import { ElementRef, Injectable } from '@angular/core';
 import * as _ from 'lodash';
 import { Flgs } from '../../model/flg.model';
 import { History } from '../../model/history.model';
-import { CanvasOffsets } from '../../model/canvas-offsets.model';
+import { CanvasOffset } from '../../model/canvas-offset.model';
 import { Trail } from '../../model/trail.model';
 import { Erase } from '../../model/erase.model';
 import { Point } from '../../model/point.model';
@@ -22,7 +22,7 @@ export class MemoryService {
   ];
   public history: History = this.historyList[this.i];
 
-  public canvasOffsets: CanvasOffsets = {
+  public canvasOffsets: CanvasOffset = {
     zoomRatio: 1,
     prevOffsetX: 0,
     prevOffsetY: 0,

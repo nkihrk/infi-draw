@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanvasOffsets } from '../../model/canvas-offsets.model';
+import { CanvasOffset } from '../../model/canvas-offset.model';
 import { LibService } from '../util/lib.service';
 import { MemoryService } from './memory.service';
 
@@ -16,7 +16,7 @@ export class RulerService {
   constructor(private lib: LibService, private memory: MemoryService) {}
 
   render(): void {
-    const canvasOffsets: CanvasOffsets = this.memory.canvasOffsets;
+    const canvasOffsets: CanvasOffset = this.memory.canvasOffsets;
     if (this.parentScale * canvasOffsets.zoomRatio * 2 < 100) {
       this.parentScale *= 2;
     }
@@ -46,7 +46,7 @@ export class RulerService {
     l.width = this.memory.renderer.rulerWrapper.clientWidth;
     l.height = this.rulerThickness;
 
-    const canvasOffsets: CanvasOffsets = this.memory.canvasOffsets;
+    const canvasOffsets: CanvasOffset = this.memory.canvasOffsets;
 
     const offsetX: number = l.height + canvasOffsets.newOffsetX;
     const remain: number = Math.floor(offsetX / (this.parentScale * canvasOffsets.zoomRatio));
@@ -138,7 +138,7 @@ export class RulerService {
     c.width = this.rulerThickness;
     c.height = this.memory.renderer.rulerWrapper.clientHeight;
 
-    const canvasOffsets: CanvasOffsets = this.memory.canvasOffsets;
+    const canvasOffsets: CanvasOffset = this.memory.canvasOffsets;
 
     const offsetY: number = c.width + canvasOffsets.newOffsetY;
     const remain: number = Math.floor(offsetY / (this.parentScale * canvasOffsets.zoomRatio));
