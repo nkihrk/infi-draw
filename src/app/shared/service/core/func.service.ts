@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { MemoryService } from './memory.service';
 import { DrawService } from './draw.service';
+import { EraseService } from './erase.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FuncService {
-  constructor(private memory: MemoryService, private drawFunc: DrawService) {}
+  constructor(private memory: MemoryService, private drawFunc: DrawService, private eraseFunc: EraseService) {}
 
   //////////////////////////////////////////////////////////
   //
@@ -28,6 +29,16 @@ export class FuncService {
 
   draw(): void {
     this.drawFunc.activate();
+  }
+
+  //////////////////////////////////////////////////////////
+  //
+  // Erase
+  //
+  //////////////////////////////////////////////////////////
+
+  erase(): void {
+    this.eraseFunc.activate();
   }
 
   //////////////////////////////////////////////////////////

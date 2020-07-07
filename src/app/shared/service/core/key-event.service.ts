@@ -40,7 +40,9 @@ export class KeyEventService {
         }
       }
     } else {
-      if (keymap.p) {
+      if (keymap.e) {
+        this._erase($e);
+      } else if (keymap.p) {
         this._draw($e);
       }
     }
@@ -48,6 +50,10 @@ export class KeyEventService {
 
   _keyUpFuncs($e: Key): void {
     switch (this.whichFunc) {
+      case 'erase':
+        this.func.erase();
+        break;
+
       case 'draw':
         this.func.draw();
         break;
@@ -58,6 +64,14 @@ export class KeyEventService {
 
     // Initialize
     this.whichFunc = '';
+  }
+
+  _erase($e: Key): void {
+    $e.e.preventDefault();
+    $e.e.stopPropagation();
+    if (this.whichFunc !== 'erase') this._keyUpFuncs($e);
+
+    this.whichFunc = 'erase';
   }
 
   _draw($e: Key): void {
