@@ -16,10 +16,11 @@ export class KeyMapService {
     const isAltKey: boolean = this.keyMap.Alt;
     const isShiftKey: boolean = this.keyMap.Shift;
 
+    const isEkey: boolean = this.keyMap.e; // Erase
     const isPkey: boolean = this.keyMap.p; // Draw
     const isZkey: boolean = this.keyMap.z; // Undo and redo
 
-    const isPermitkey: boolean = isCtrlKey || isAltKey || isShiftKey || isZkey || isPkey;
+    const isPermitkey: boolean = isCtrlKey || isAltKey || isShiftKey || isEkey || isPkey || isZkey;
     if (!isPermitkey) this.keyMap = {};
   }
 

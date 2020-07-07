@@ -61,11 +61,18 @@ export class MemoryService {
     isChangedStates: false
   };
 
-  public mousePos = { x: 0, y: 0, rawX: 0, rawY: 0, prevX: 0, prevY: 0 };
+  public mousePos = {
+    x: -Infinity,
+    y: -Infinity,
+    rawX: -Infinity,
+    rawY: -Infinity,
+    prevX: -Infinity,
+    prevY: -Infinity
+  };
 
   public reservedByFunc = {
-    name: '',
-    type: '',
+    name: 'draw',
+    type: 'oekaki',
     flgs: ['']
   };
 
@@ -129,12 +136,6 @@ export class MemoryService {
     //    setInterval(() => {
     //console.log(this.trailList[0].points[0].offsets);
     //}, 1000);
-
-    this.reservedByFunc = {
-      name: 'draw',
-      type: 'oekaki',
-      flgs: ['']
-    };
   }
 
   undo(): void {
@@ -158,6 +159,14 @@ export class MemoryService {
     if (this.reservedByFunc.name === 'draw') {
       const trail: Trail = {
         id: this.trailList.length,
+        min: {
+          x: 0,
+          y: 0
+        },
+        max: {
+          x: 0,
+          y: 0
+        },
         points: [] as Point[]
       };
       this.trailList.push(trail);
