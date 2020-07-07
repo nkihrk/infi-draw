@@ -1,6 +1,6 @@
 import { ElementRef, Injectable } from '@angular/core';
 import * as _ from 'lodash';
-import { Flgs } from '../../model/flg.model';
+import { Flgs } from '../../model/flgs.model';
 import { History } from '../../model/history.model';
 import { CanvasOffset } from '../../model/canvas-offset.model';
 import { Trail } from '../../model/trail.model';
@@ -22,7 +22,7 @@ export class MemoryService {
   ];
   public history: History = this.historyList[this.i];
 
-  public canvasOffsets: CanvasOffset = {
+  public canvasOffset: CanvasOffset = {
     zoomRatio: 1,
     prevOffsetX: 0,
     prevOffsetY: 0,

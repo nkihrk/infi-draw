@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Flgs } from '../../model/flg.model';
+import { Flgs } from '../../model/flgs.model';
 import { MemoryService } from './memory.service';
 
 @Injectable({
