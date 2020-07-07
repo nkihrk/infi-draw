@@ -57,7 +57,8 @@ export class MemoryService {
     isPreventSelect: false,
     isPreventWheel: false,
     isPreventWholeTrans: false,
-    isNeededToUpdateHistory: false
+    isNeededToUpdateHistory: false,
+    isChangedStates: false
   };
 
   public mousePos = { x: 0, y: 0, rawX: 0, rawY: 0, prevX: 0, prevY: 0 };
@@ -162,6 +163,8 @@ export class MemoryService {
       this.trailList.push(trail);
 
       this.oekakiOrder.push(1);
+
+      this.states.isChangedStates = true;
     }
   }
 }

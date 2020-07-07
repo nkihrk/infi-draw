@@ -15,7 +15,7 @@ export class FuncService {
   //////////////////////////////////////////////////////////
 
   unload($e: any): void {
-    if (this.memory.history.isChangedStates) {
+    if (this.memory.states.isChangedStates) {
       $e.returnValue = true;
     }
   }
