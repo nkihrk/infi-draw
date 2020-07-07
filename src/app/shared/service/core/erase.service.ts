@@ -23,10 +23,10 @@ export class EraseService {
     this.debug.setToQueue(this.test);
   }
 
-  test($ctxDebug: CanvasRenderingContext2D, $memory: MemoryService): void {
-    $ctxDebug.beginPath();
-    $ctxDebug.strokeStyle = $memory.constant.STROKE_STYLE;
-    $ctxDebug.lineWidth = $memory.constant.LINE_WIDTH;
+  test($ctxDebugger: CanvasRenderingContext2D, $memory: MemoryService): void {
+    $ctxDebugger.beginPath();
+    $ctxDebugger.strokeStyle = $memory.constant.STROKE_STYLE;
+    $ctxDebugger.lineWidth = $memory.constant.LINE_WIDTH;
 
     const trailList: Trail[] = $memory.trailList;
     for (let i = 0; i < trailList.length; i++) {
@@ -35,9 +35,9 @@ export class EraseService {
       const y: number = trail.min.newOffsetY;
       const w: number = trail.max.newOffsetX - x;
       const h: number = trail.max.newOffsetY - y;
-      $ctxDebug.strokeRect(x, y, w, h);
+      $ctxDebugger.strokeRect(x, y, w, h);
     }
 
-    $ctxDebug.stroke();
+    $ctxDebugger.stroke();
   }
 }

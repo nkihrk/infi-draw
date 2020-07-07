@@ -15,15 +15,15 @@ export class DebugService {
   }
 
   render(): void {
-    const ctxDebug: CanvasRenderingContext2D = this.memory.renderer.ctx.debug;
-    const c: HTMLCanvasElement = ctxDebug.canvas;
+    const ctxDebugger: CanvasRenderingContext2D = this.memory.renderer.ctx.debugger;
+    const c: HTMLCanvasElement = ctxDebugger.canvas;
     c.width = this.memory.renderer.wrapper.clientWidth;
     c.height = this.memory.renderer.wrapper.clientHeight;
 
-    ctxDebug.translate(0.5, 0.5);
+    ctxDebugger.translate(0.5, 0.5);
 
     for (let i = 0; i < this.queueList.length; i++) {
-      this.queueList[i](ctxDebug, this.memory);
+      this.queueList[i](ctxDebugger, this.memory);
     }
   }
 }
