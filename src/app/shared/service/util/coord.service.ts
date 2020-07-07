@@ -19,17 +19,17 @@ export class CoordService {
         offsetY += $newOffsetY;
       }
     } else {
-      offsetX -= this.memory.mousePos.x;
-      offsetY -= this.memory.mousePos.y;
+      offsetX -= this.memory.mouseOffset.x;
+      offsetY -= this.memory.mouseOffset.y;
 
       if ($event.delta > 0) {
         const ratio: number = 1 - this.memory.constant.ZOOM_SPEED;
-        offsetX = offsetX * ratio + this.memory.mousePos.x;
-        offsetY = offsetY * ratio + this.memory.mousePos.y;
+        offsetX = offsetX * ratio + this.memory.mouseOffset.x;
+        offsetY = offsetY * ratio + this.memory.mouseOffset.y;
       } else {
         const ratio: number = 1 + this.memory.constant.ZOOM_SPEED;
-        offsetX = offsetX * ratio + this.memory.mousePos.x;
-        offsetY = offsetY * ratio + this.memory.mousePos.y;
+        offsetX = offsetX * ratio + this.memory.mouseOffset.x;
+        offsetY = offsetY * ratio + this.memory.mouseOffset.y;
       }
     }
 
@@ -52,17 +52,17 @@ export class CoordService {
       }
     } else {
       if (!this.memory.states.isPreventWheel) {
-        offsetX -= this.memory.mousePos.x;
-        offsetY -= this.memory.mousePos.y;
+        offsetX -= this.memory.mouseOffset.x;
+        offsetY -= this.memory.mouseOffset.y;
 
         if ($event.delta > 0) {
           const ratio: number = 1 - this.memory.constant.ZOOM_SPEED;
-          offsetX = offsetX * ratio + this.memory.mousePos.x;
-          offsetY = offsetY * ratio + this.memory.mousePos.y;
+          offsetX = offsetX * ratio + this.memory.mouseOffset.x;
+          offsetY = offsetY * ratio + this.memory.mouseOffset.y;
         } else {
           const ratio: number = 1 + this.memory.constant.ZOOM_SPEED;
-          offsetX = offsetX * ratio + this.memory.mousePos.x;
-          offsetY = offsetY * ratio + this.memory.mousePos.y;
+          offsetX = offsetX * ratio + this.memory.mouseOffset.x;
+          offsetY = offsetY * ratio + this.memory.mouseOffset.y;
         }
       }
     }

@@ -22,11 +22,11 @@ export class CpuService {
   ////////////////////////////////////////////////////////////////////////////////////////////
 
   update($event: PointerEvent): void {
-    // Update mousePos
-    this.memory.mousePos.x = $event.x - this.memory.renderer.wrapper.getBoundingClientRect().left;
-    this.memory.mousePos.y = $event.y - this.memory.renderer.wrapper.getBoundingClientRect().top;
-    this.memory.mousePos.rawX = $event.x;
-    this.memory.mousePos.rawY = $event.y;
+    // Update mouseOffset
+    this.memory.mouseOffset.x = $event.x - this.memory.renderer.wrapper.getBoundingClientRect().left;
+    this.memory.mouseOffset.y = $event.y - this.memory.renderer.wrapper.getBoundingClientRect().top;
+    this.memory.mouseOffset.rawX = $event.x;
+    this.memory.mouseOffset.rawY = $event.y;
 
     // When mouse button is down
     if (this.memory.flgs.leftDownFlg || this.memory.flgs.middleDownFlg || this.memory.flgs.rightDownFlg) {
@@ -61,8 +61,8 @@ export class CpuService {
 
   _onMouseDown(): void {
     // Mousedown event with no mousemove
-    this.memory.mousePos.prevX = this.memory.mousePos.x;
-    this.memory.mousePos.prevY = this.memory.mousePos.y;
+    this.memory.mouseOffset.prevX = this.memory.mouseOffset.x;
+    this.memory.mouseOffset.prevY = this.memory.mouseOffset.y;
 
     this.register.onMouseDown();
 
@@ -150,8 +150,8 @@ export class CpuService {
         this.memory.pileNewHistory();
       }
 
-      const newOffsetX: number = this.memory.mousePos.x - this.memory.mousePos.prevX;
-      const newOffsetY: number = this.memory.mousePos.y - this.memory.mousePos.prevY;
+      const newOffsetX: number = this.memory.mouseOffset.x - this.memory.mouseOffset.prevX;
+      const newOffsetY: number = this.memory.mouseOffset.y - this.memory.mouseOffset.prevY;
 
       this.register.onMouseMove(newOffsetX, newOffsetY, $event);
 

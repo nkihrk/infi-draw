@@ -61,7 +61,7 @@ export class MemoryService {
     isChangedStates: false
   };
 
-  public mousePos = {
+  public mouseOffset = {
     x: -Infinity,
     y: -Infinity,
     rawX: -Infinity,
