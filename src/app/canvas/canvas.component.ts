@@ -10,6 +10,7 @@ import { FlgEventService } from '../shared/service/core/flg-event.service';
 import { CpuService } from '../shared/service/core/cpu.service';
 import { PointerEvent } from '../shared/model/pointer-event.model';
 import { DrawService } from '../shared/service/core/draw.service';
+import { CursorService } from '../shared/service/core/cursor.service';
 
 @Component({
   selector: 'app-canvas',
@@ -33,7 +34,8 @@ export class CanvasComponent implements OnInit {
     private gpu: GpuService,
     private memory: MemoryService,
     private flg: FlgEventService,
-    private draw: DrawService
+    private draw: DrawService,
+    private cursor: CursorService
   ) {}
 
   ngOnInit() {
@@ -66,6 +68,7 @@ export class CanvasComponent implements OnInit {
   _render(): void {
     this.ruler.render();
     this.grid.render();
+    this.cursor.render();
     this.draw.render();
     this.gpu.render();
   }
