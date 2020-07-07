@@ -134,8 +134,8 @@ export class MemoryService {
     this.renderer.ctx.rulerCbuffer = this.renderer.rulerCbuffer.getContext('2d');
 
     // Debugger
-    this.renderer.debug = document.createElement('canvas');
-    this.renderer.ctx.debug = this.renderer.debug.getContext('2d');
+    this.renderer.debugger = document.createElement('canvas');
+    this.renderer.ctx.debugger = this.renderer.debugger.getContext('2d');
 
     //    setInterval(() => {
     //console.log(this.trailList[0].min, this.trailList[0].max);
@@ -190,7 +190,7 @@ export interface Renderer {
   wrapper: HTMLDivElement;
   rulerWrapper: HTMLDivElement;
   // Debugger
-  debug: HTMLCanvasElement;
+  debugger: HTMLCanvasElement;
   // Renderer
   main: HTMLCanvasElement;
   ui: HTMLCanvasElement;
@@ -204,7 +204,7 @@ export interface Renderer {
   rulerCbuffer: HTMLCanvasElement;
   ctx: {
     // Debugger
-    debug: CanvasRenderingContext2D;
+    debugger: CanvasRenderingContext2D;
     // Renderer
     main: CanvasRenderingContext2D;
     ui: CanvasRenderingContext2D;
@@ -221,7 +221,7 @@ export interface Renderer {
 
 export interface Ctx {
   // Debugger
-  debug: CanvasRenderingContext2D;
+  debugger: CanvasRenderingContext2D;
   // Renderer
   main: CanvasRenderingContext2D;
   ui: CanvasRenderingContext2D;
