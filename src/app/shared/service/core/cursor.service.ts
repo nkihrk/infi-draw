@@ -21,7 +21,10 @@ export class CursorService {
 
     const x: number = this.memory.mouseOffset.x;
     const y: number = this.memory.mouseOffset.y;
-    const r: number = (this.memory.constant.LINE_WIDTH * this.memory.canvasOffset.zoomRatio) / 2;
+    const r: number =
+      this.memory.reservedByFunc.name === 'draw'
+        ? (this.memory.constant.LINE_WIDTH * this.memory.canvasOffset.zoomRatio) / 2
+        : this.memory.constant.ERASER_LINE_WIDTH;
     ctxUiBuffer.arc(x, y, r, 0, 2 * Math.PI);
 
     ctxUiBuffer.stroke();

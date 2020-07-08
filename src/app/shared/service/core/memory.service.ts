@@ -84,7 +84,8 @@ export class MemoryService {
     NUM_COLOR: '#9e9e9e',
     FONT_TYPE: 'bold sans-serif',
     STROKE_STYLE: '#ffffff',
-    LINE_WIDTH: 2
+    LINE_WIDTH: 2,
+    ERASER_LINE_WIDTH: 50
   };
 
   public renderer: Renderer = { ctx: {} as Ctx } as Renderer;
@@ -137,8 +138,8 @@ export class MemoryService {
     this.renderer.debugger = document.createElement('canvas');
     this.renderer.ctx.debugger = this.renderer.debugger.getContext('2d');
 
-    //    setInterval(() => {
-    //console.log(this.trailList[0].min, this.trailList[0].max);
+    //setInterval(() => {
+    //console.log(this.trailList[0].points);
     //}, 1000);
   }
 

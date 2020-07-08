@@ -118,31 +118,30 @@ export class DrawService {
 
     ctxOekakiBuffer.translate(0.5, 0.5);
 
-    ctxOekakiBuffer.beginPath();
-    ctxOekakiBuffer.lineCap = 'round';
-    ctxOekakiBuffer.lineJoin = 'round';
-    ctxOekakiBuffer.strokeStyle = this.memory.constant.STROKE_STYLE;
-    ctxOekakiBuffer.lineWidth = this.memory.constant.LINE_WIDTH * this.memory.canvasOffset.zoomRatio;
-
     for (let i = 0; i < trailList.length; i++) {
-      const p0: Point = trailList[i].points[0];
-      if (p0.visibility) ctxOekakiBuffer.moveTo(p0.offset.newOffsetX, p0.offset.newOffsetY);
+      ctxOekakiBuffer.beginPath();
+      ctxOekakiBuffer.lineCap = 'round';
+      ctxOekakiBuffer.lineJoin = 'round';
+      ctxOekakiBuffer.strokeStyle = this.memory.constant.STROKE_STYLE;
+      ctxOekakiBuffer.lineWidth = this.memory.constant.LINE_WIDTH * this.memory.canvasOffset.zoomRatio;
 
-      for (let j = 1; j < trailList[i].points.length; j++) {
-        const prevP: Point = trailList[i].points[j - i];
+      for (let j = 0; j < trailList[i].points.length; j++) {
+        const prevP: Point = trailList[i].points[j - 1];
         const currentP: Point = trailList[i].points[j];
         const nextP: Point = trailList[i].points[j + 1];
 
         if (currentP.visibility) {
-          if (prevP && !prevP.visibility && nextP.visibility) {
-            ctxOekakiBuffer.moveTo(currentP.offset.newOffsetX, currentP.offset.newOffsetY);
+          ctxOekakiBuffer.moveTo(currentP.offset.newOffsetX, currentP.offset.newOffsetY);
+
+          if (nextP && nextP.visibility) {
+            ctxOekakiBuffer.lineTo(nextP.offset.newOffsetX, nextP.offset.newOffsetY);
           } else {
-            ctxOekakiBuffer.lineTo(currentP.offset.newOffsetX, currentP.offset.newOffsetY);
+            if (prevP && prevP.visibility) ctxOekakiBuffer.lineTo(prevP.offset.newOffsetX, prevP.offset.newOffsetY);
           }
         }
       }
-    }
 
-    ctxOekakiBuffer.stroke();
+      ctxOekakiBuffer.stroke();
+    }
   }
 }
