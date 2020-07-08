@@ -44,11 +44,29 @@ export class EraseService {
       const min: Offset = trailList[i].min;
       const max: Offset = trailList[i].max;
       const mouseOffset: MouseOffset = this.memory.mouseOffset;
+      const x: number = min.newOffsetX;
+      const y: number = min.newOffsetY;
+      const r: number = this.memory.constant.ERASER_LINE_WIDTH;
 
-      const isInBoundX: boolean = min.newOffsetX < mouseOffset.x && mouseOffset.x < max.newOffsetX;
-      const isInBoundY: boolean = min.newOffsetY < mouseOffset.y && mouseOffset.y < max.newOffsetY;
+      // diff
+      const diffX0: number = x - mouseOffset.x;
+      const diffY0: number = y - mouseOffset.y;
+      const diffX1: number = max.newOffsetX - mouseOffset.x;
+      const diffY1: number = max.newOffsetY - mouseOffset.y;
 
-      if (isInBoundX && isInBoundY) validList.push(i);
+      // Corner
+      const corner0: boolean = diffX0 < r && diffY0 < r;
+      const corner1: boolean = diffX0 < r && diffY1 < r;
+      const corner2: boolean = diffX1 < r && diffY0 < r;
+      const corner3: boolean = diffX1 < r && diffY1 < r;
+      const corner: boolean = corner0 || corner1 || corner2 || corner3;
+
+      // Middle
+      const middle0: boolean = min.newOffsetY < mouseOffset.y - r && mouseOffset.y + r < max.newOffsetY;
+      const middle1: boolean = min.newOffsetX < mouseOffset.x - r && mouseOffset.x + r < max.newOffsetX;
+      const middle: boolean = middle0 && middle1;
+
+      if (corner || middle) validList.push(i);
     }
 
     return validList;
@@ -62,7 +80,7 @@ export class EraseService {
       const pointX: number = points[i].offset.newOffsetX;
       const pointY: number = points[i].offset.newOffsetY;
       const mouseOffset: MouseOffset = this.memory.mouseOffset;
-      const r: number = (this.memory.constant.LINE_WIDTH * this.memory.canvasOffset.zoomRatio) / 2;
+      const r: number = this.memory.constant.ERASER_LINE_WIDTH;
 
       const diffX: number = pointX - mouseOffset.x;
       const diffY: number = pointY - mouseOffset.y;
