@@ -5,6 +5,7 @@ import { DebugService } from '../util/debug.service';
 import { Offset } from '../../model/offset.model';
 import { MouseOffset } from '../../model/mouse-offset.model';
 import { Point } from '../../model/point.model';
+import { Erase } from '../../model/erase.model';
 
 @Injectable({
   providedIn: 'root'
@@ -30,6 +31,13 @@ export class EraseService {
       for (let j = 0; j < pointIndexes.length; j++) {
         const pId: number = pointIndexes[j];
         const p: Point = this.memory.trailList[tId].points[pId];
+
+        if (p.visibility) {
+          const erase: Erase = this.memory.eraseList[this.memory.eraseList.length - 1];
+          if (!erase.trailList[tId]) erase.trailList[tId] = { trailId: -1, pointIdList: [] };
+          erase.trailList[tId].trailId = tId;
+          erase.trailList[tId].pointIdList.push(pId);
+        }
 
         p.visibility = false;
       }
@@ -92,27 +100,5 @@ export class EraseService {
     }
 
     return validList;
-  }
-
-  init(): void {
-    this.debug.setToQueue(this.test);
-  }
-
-  test($ctxDebugger: CanvasRenderingContext2D, $memory: MemoryService): void {
-    $ctxDebugger.beginPath();
-    $ctxDebugger.strokeStyle = $memory.constant.STROKE_STYLE;
-    $ctxDebugger.lineWidth = $memory.constant.LINE_WIDTH;
-
-    const trailList: Trail[] = $memory.trailList;
-    for (let i = 0; i < trailList.length; i++) {
-      const trail: Trail = trailList[i];
-      const x: number = trail.min.newOffsetX;
-      const y: number = trail.min.newOffsetY;
-      const w: number = trail.max.newOffsetX - x;
-      const h: number = trail.max.newOffsetY - y;
-      $ctxDebugger.strokeRect(x, y, w, h);
-    }
-
-    $ctxDebugger.stroke();
   }
 }

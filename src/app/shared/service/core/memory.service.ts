@@ -11,16 +11,12 @@ import { Point } from '../../model/point.model';
   providedIn: 'root'
 })
 export class MemoryService {
-  // Current history index
-  private i = 0;
-
-  public historyList: History[] = [
-    {
-      trailList: [],
-      isChangedStates: false
-    }
-  ];
-  public history: History = this.historyList[this.i];
+  // oekakiOrder
+  private orderId = 0;
+  // draw
+  private drawId = 0;
+  // erase
+  private eraseId = 0;
 
   public canvasOffset: CanvasOffset = {
     zoomRatio: 1,
@@ -92,10 +88,6 @@ export class MemoryService {
 
   constructor() {}
 
-  get refIndex(): number {
-    return this.i;
-  }
-
   init(
     $wrapperElem: ElementRef<HTMLDivElement>,
     $rulerWrapperElem: ElementRef,
@@ -139,31 +131,55 @@ export class MemoryService {
     this.renderer.ctx.debugger = this.renderer.debugger.getContext('2d');
 
     //setInterval(() => {
-    //console.log(this.trailList[0].points);
+    //console.log(this.eraseList);
     //}, 1000);
   }
 
   undo(): void {
-    let i: number = this.refIndex;
-    i -= i - 1 > -1 ? 1 : 0;
-    this._updateRefIndex(i);
+    const drawOrErase: number = this.oekakiOrder[this.orderId - 1];
+    if (drawOrErase === 1) {
+      // draw
+      if (this.drawId > 0) {
+        const trail: Trail = this.trailList[this.drawId - 1];
+        trail.visibility = false;
+
+        let dId: number = this.drawId;
+        dId -= dId - 1 > -1 ? 1 : 0;
+        this.drawId = dId;
+      }
+    } else {
+      // erase
+    }
+
+    let oId: number = this.orderId;
+    oId -= oId - 1 > 0 ? 1 : 0;
+    this.orderId = oId;
   }
 
   redo(): void {
-    let i: number = this.refIndex;
-    i += i + 1 < this.historyList.length ? 1 : 0;
-    this._updateRefIndex(i);
-  }
+    let oId: number = this.orderId;
+    oId += oId < this.oekakiOrder.length ? 1 : 0;
+    this.orderId = oId;
 
-  _updateRefIndex($i: number): void {
-    this.i = $i;
-    this.history = this.historyList[this.i];
+    const drawOrErase: number = this.oekakiOrder[oId - 1];
+    if (drawOrErase === 1) {
+      // draw
+      let dId: number = this.drawId;
+      dId += dId < this.trailList.length ? 1 : 0;
+      this.drawId = dId;
+
+      const trail: Trail = this.trailList[dId - 1];
+      trail.visibility = true;
+    } else {
+      // erase
+    }
   }
 
   pileNewHistory(): void {
     if (this.reservedByFunc.name === 'draw') {
       const trail: Trail = {
         id: this.trailList.length,
+        visibility: true,
         min: {
           prevOffsetX: Infinity,
           prevOffsetY: Infinity,
@@ -180,10 +196,23 @@ export class MemoryService {
       };
       this.trailList.push(trail);
 
+      // To tell 'draw'
       this.oekakiOrder.push(1);
+      this.drawId++;
+    } else if (this.reservedByFunc.name === 'erase') {
+      const erase: Erase = {
+        id: this.eraseList.length,
+        trailList: []
+      };
+      this.eraseList.push(erase);
 
-      this.states.isChangedStates = true;
+      // To tell 'erase'
+      this.oekakiOrder.push(0);
+      this.eraseId++;
     }
+
+    this.orderId++;
+    this.states.isChangedStates = true;
   }
 }
 

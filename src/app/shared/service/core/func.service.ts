@@ -48,12 +48,10 @@ export class FuncService {
   //////////////////////////////////////////////////////////
 
   undo() {
-    if (!this.memory.reservedByFunc.name) this.memory.undo();
-    // console.log(this.memory.history.deleteList);
+    this.memory.undo();
   }
 
   redo() {
-    if (!this.memory.reservedByFunc.name) this.memory.redo();
-    // console.log(this.memory.history.deleteList);
+    this.memory.redo();
   }
 }
