@@ -176,6 +176,10 @@ export class MemoryService {
   }
 
   pileNewHistory(): void {
+    this.oekakiOrder = _.take(this.oekakiOrder, this.orderId);
+    this.trailList = _.take(this.trailList, this.drawId);
+    this.eraseList = _.take(this.eraseList, this.eraseId);
+
     if (this.reservedByFunc.name === 'draw') {
       const trail: Trail = {
         id: this.trailList.length,
