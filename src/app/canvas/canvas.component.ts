@@ -45,7 +45,6 @@ export class CanvasComponent implements OnInit {
   ngOnInit() {
     this.memory.init(this.wrapper, this.rulerWrapper, this.main, this.ui, this.l, this.c);
     this.render();
-    //     this.erase.init();
   }
 
   onPointerEvents($event: PointerEvent): void {

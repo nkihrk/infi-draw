@@ -119,24 +119,26 @@ export class DrawService {
     ctxOekakiBuffer.translate(0.5, 0.5);
 
     for (let i = 0; i < trailList.length; i++) {
-      ctxOekakiBuffer.beginPath();
-      ctxOekakiBuffer.lineCap = 'round';
-      ctxOekakiBuffer.lineJoin = 'round';
-      ctxOekakiBuffer.strokeStyle = this.memory.constant.STROKE_STYLE;
-      ctxOekakiBuffer.lineWidth = this.memory.constant.LINE_WIDTH * this.memory.canvasOffset.zoomRatio;
+      if (trailList[i].visibility) {
+        ctxOekakiBuffer.beginPath();
+        ctxOekakiBuffer.lineCap = 'round';
+        ctxOekakiBuffer.lineJoin = 'round';
+        ctxOekakiBuffer.strokeStyle = this.memory.constant.STROKE_STYLE;
+        ctxOekakiBuffer.lineWidth = this.memory.constant.LINE_WIDTH * this.memory.canvasOffset.zoomRatio;
 
-      for (let j = 0; j < trailList[i].points.length; j++) {
-        const prevP: Point = trailList[i].points[j - 1];
-        const currentP: Point = trailList[i].points[j];
-        const nextP: Point = trailList[i].points[j + 1];
+        for (let j = 0; j < trailList[i].points.length; j++) {
+          const prevP: Point = trailList[i].points[j - 1];
+          const currentP: Point = trailList[i].points[j];
+          const nextP: Point = trailList[i].points[j + 1];
 
-        if (currentP.visibility) {
-          ctxOekakiBuffer.moveTo(currentP.offset.newOffsetX, currentP.offset.newOffsetY);
+          if (currentP.visibility) {
+            ctxOekakiBuffer.moveTo(currentP.offset.newOffsetX, currentP.offset.newOffsetY);
 
-          if (nextP && nextP.visibility) {
-            ctxOekakiBuffer.lineTo(nextP.offset.newOffsetX, nextP.offset.newOffsetY);
-          } else {
-            if (prevP && prevP.visibility) ctxOekakiBuffer.lineTo(prevP.offset.newOffsetX, prevP.offset.newOffsetY);
+            if (nextP && nextP.visibility) {
+              ctxOekakiBuffer.lineTo(nextP.offset.newOffsetX, nextP.offset.newOffsetY);
+            } else {
+              if (prevP && prevP.visibility) ctxOekakiBuffer.lineTo(prevP.offset.newOffsetX, prevP.offset.newOffsetY);
+            }
           }
         }
       }
