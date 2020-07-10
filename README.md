@@ -9,6 +9,14 @@
 Currently working on
 <br><br>
 
+# Demo
+- Key bindings
+  - 'p' : Pen (by default)
+  - 'e' : Eraser
+  - 'Ctrl + z' : Undo
+  - 'Ctrl + Alt + z' : Redo
+<br><br>
+
 # Licence
 MIT Licence
 
