@@ -16,8 +16,8 @@ export class DebugService {
   render(): void {
     const ctxDebugger: CanvasRenderingContext2D = this.memory.renderer.ctx.debugger;
     const c: HTMLCanvasElement = ctxDebugger.canvas;
-    c.width = this.memory.renderer.wrapper.clientWidth;
-    c.height = this.memory.renderer.wrapper.clientHeight;
+    c.width = this.memory.renderer.canvasWrapper.clientWidth;
+    c.height = this.memory.renderer.canvasWrapper.clientHeight;
 
     ctxDebugger.translate(0.5, 0.5);
 

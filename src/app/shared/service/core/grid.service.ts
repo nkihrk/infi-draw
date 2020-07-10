@@ -16,8 +16,8 @@ export class GridService {
     // Initialize grid buffer
     const ctxGridBuffer: CanvasRenderingContext2D = this.memory.renderer.ctx.gridBuffer;
     const c: HTMLCanvasElement = ctxGridBuffer.canvas;
-    c.width = this.memory.renderer.wrapper.clientWidth;
-    c.height = this.memory.renderer.wrapper.clientHeight;
+    c.width = this.memory.renderer.canvasWrapper.clientWidth;
+    c.height = this.memory.renderer.canvasWrapper.clientHeight;
 
     const canvasOffset: CanvasOffset = this.memory.canvasOffset;
 

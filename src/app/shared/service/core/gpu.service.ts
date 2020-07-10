@@ -16,15 +16,15 @@ export class GpuService {
 
     const ctx: CanvasRenderingContext2D = this.memory.renderer.ctx.main;
     const c: HTMLCanvasElement = ctx.canvas;
-    c.width = this.memory.renderer.wrapper.clientWidth;
-    c.height = this.memory.renderer.wrapper.clientHeight;
+    c.width = this.memory.renderer.canvasWrapper.clientWidth;
+    c.height = this.memory.renderer.canvasWrapper.clientHeight;
     ctx.drawImage(this.memory.renderer.gridBuffer, 0, 0);
     ctx.drawImage(this.memory.renderer.oekakiBuffer, 0, 0);
 
     const ctxUi: CanvasRenderingContext2D = this.memory.renderer.ctx.ui;
     const d: HTMLCanvasElement = ctxUi.canvas;
-    d.width = this.memory.renderer.wrapper.clientWidth;
-    d.height = this.memory.renderer.wrapper.clientHeight;
+    d.width = this.memory.renderer.canvasWrapper.clientWidth;
+    d.height = this.memory.renderer.canvasWrapper.clientHeight;
     ctxUi.drawImage(this.memory.renderer.uiBuffer, 0, 0);
     ctxUi.drawImage(this.memory.renderer.debugger, 0, 0);
   }

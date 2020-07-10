@@ -12,7 +12,6 @@ import { CpuService } from '../shared/service/core/cpu.service';
 import { PointerEvent } from '../shared/model/pointer-event.model';
 import { DrawService } from '../shared/service/core/draw.service';
 import { CursorService } from '../shared/service/core/cursor.service';
-import { EraseService } from '../shared/service/core/erase.service';
 
 @Component({
   selector: 'app-canvas',
@@ -20,7 +19,7 @@ import { EraseService } from '../shared/service/core/erase.service';
   styleUrls: ['./canvas.component.scss']
 })
 export class CanvasComponent implements OnInit {
-  @ViewChild('canvasWrapper', { static: true }) wrapper: ElementRef<HTMLDivElement>;
+  @ViewChild('canvasWrapper', { static: true }) canvasWrapper: ElementRef<HTMLDivElement>;
   @ViewChild('rulerWrapper', { static: true }) rulerWrapper: ElementRef<HTMLDivElement>;
   @ViewChild('canvasMain', { static: true }) main: ElementRef<HTMLCanvasElement>;
   @ViewChild('canvasUI', { static: true }) ui: ElementRef<HTMLCanvasElement>;
@@ -38,12 +37,11 @@ export class CanvasComponent implements OnInit {
     private debug: DebugService,
     private flg: FlgEventService,
     private draw: DrawService,
-    private cursor: CursorService,
-    private erase: EraseService
+    private cursor: CursorService
   ) {}
 
   ngOnInit() {
-    this.memory.init(this.wrapper, this.rulerWrapper, this.main, this.ui, this.l, this.c);
+    this.memory.init(this.canvasWrapper, this.rulerWrapper, this.main, this.ui, this.l, this.c);
     this.render();
   }
 
@@ -70,10 +68,13 @@ export class CanvasComponent implements OnInit {
   }
 
   _render(): void {
+    // Module renderer
     this.ruler.render();
     this.grid.render();
     this.cursor.render();
     this.draw.render();
+
+    // Main renderer
     this.debug.render();
     this.gpu.render();
   }

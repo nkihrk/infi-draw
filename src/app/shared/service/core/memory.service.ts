@@ -89,7 +89,7 @@ export class MemoryService {
   constructor() {}
 
   init(
-    $wrapperElem: ElementRef<HTMLDivElement>,
+    $canvasWrapperElem: ElementRef<HTMLDivElement>,
     $rulerWrapperElem: ElementRef,
     $mainElem: ElementRef<HTMLCanvasElement>,
     $uiElem: ElementRef<HTMLCanvasElement>,
@@ -97,7 +97,7 @@ export class MemoryService {
     $cElem: ElementRef<HTMLCanvasElement>
   ): void {
     // Wrapper
-    this.renderer.wrapper = $wrapperElem.nativeElement;
+    this.renderer.canvasWrapper = $canvasWrapperElem.nativeElement;
     this.renderer.rulerWrapper = $rulerWrapperElem.nativeElement;
 
     // Renderer
@@ -260,7 +260,8 @@ export class MemoryService {
 }
 
 export interface Renderer {
-  wrapper: HTMLDivElement;
+  // Wrapper
+  canvasWrapper: HTMLDivElement;
   rulerWrapper: HTMLDivElement;
   // Debugger
   debugger: HTMLCanvasElement;

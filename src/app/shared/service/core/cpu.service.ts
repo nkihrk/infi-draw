@@ -23,8 +23,8 @@ export class CpuService {
 
   update($event: PointerEvent): void {
     // Update mouseOffset
-    this.memory.mouseOffset.x = $event.x - this.memory.renderer.wrapper.getBoundingClientRect().left;
-    this.memory.mouseOffset.y = $event.y - this.memory.renderer.wrapper.getBoundingClientRect().top;
+    this.memory.mouseOffset.x = $event.x - this.memory.renderer.canvasWrapper.getBoundingClientRect().left;
+    this.memory.mouseOffset.y = $event.y - this.memory.renderer.canvasWrapper.getBoundingClientRect().top;
     this.memory.mouseOffset.rawX = $event.x;
     this.memory.mouseOffset.rawY = $event.y;
 

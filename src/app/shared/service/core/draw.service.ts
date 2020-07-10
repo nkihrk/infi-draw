@@ -65,8 +65,7 @@ export class DrawService {
     const trail: Trail = this.memory.trailList[trailId];
     const point: Point = {
       id: trail.points.length,
-      color: 'white',
-      style: 'circle',
+      color: '#ffffff',
       visibility: true,
       offset: {
         prevOffsetX: this.memory.mouseOffset.x,
@@ -111,8 +110,8 @@ export class DrawService {
   render(): void {
     const ctxOekakiBuffer: CanvasRenderingContext2D = this.memory.renderer.ctx.oekakiBuffer;
     const c: HTMLCanvasElement = ctxOekakiBuffer.canvas;
-    c.width = this.memory.renderer.wrapper.clientWidth;
-    c.height = this.memory.renderer.wrapper.clientHeight;
+    c.width = this.memory.renderer.canvasWrapper.clientWidth;
+    c.height = this.memory.renderer.canvasWrapper.clientHeight;
 
     const trailList: Trail[] = this.memory.trailList;
 
@@ -123,7 +122,6 @@ export class DrawService {
         ctxOekakiBuffer.beginPath();
         ctxOekakiBuffer.lineCap = 'round';
         ctxOekakiBuffer.lineJoin = 'round';
-        ctxOekakiBuffer.strokeStyle = this.memory.constant.STROKE_STYLE;
         ctxOekakiBuffer.lineWidth = this.memory.constant.LINE_WIDTH * this.memory.canvasOffset.zoomRatio;
 
         for (let j = 0; j < trailList[i].points.length; j++) {
@@ -132,12 +130,15 @@ export class DrawService {
           const nextP: Point = trailList[i].points[j + 1];
 
           if (currentP.visibility) {
+            ctxOekakiBuffer.strokeStyle = currentP.color;
             ctxOekakiBuffer.moveTo(currentP.offset.newOffsetX, currentP.offset.newOffsetY);
 
             if (nextP && nextP.visibility) {
-              ctxOekakiBuffer.lineTo(nextP.offset.newOffsetX, nextP.offset.newOffsetY);
-            } else {
-              if (prevP && prevP.visibility) ctxOekakiBuffer.lineTo(prevP.offset.newOffsetX, prevP.offset.newOffsetY);
+              //ctxOekakiBuffer.lineTo(nextP.offset.newOffsetX, nextP.offset.newOffsetY);
+              this._createBezierCurve(ctxOekakiBuffer, currentP, nextP);
+            } else if (prevP && prevP.visibility) {
+              // ctxOekakiBuffer.lineTo(prevP.offset.newOffsetX, prevP.offset.newOffsetY);
+              this._createBezierCurve(ctxOekakiBuffer, currentP, prevP);
             }
           }
         }
@@ -145,5 +146,27 @@ export class DrawService {
 
       ctxOekakiBuffer.stroke();
     }
+  }
+
+  _createBezierCurve($ctxOekakiBuffer: CanvasRenderingContext2D, $currentP, $newP): void {
+    const currentP = {
+      x: $currentP.offset.newOffsetX,
+      y: $currentP.offset.newOffsetY
+    };
+    const newP = {
+      x: $newP.offset.newOffsetX,
+      y: $newP.offset.newOffsetY
+    };
+    const midPoint = this._midPointBetween(currentP, newP);
+
+    $ctxOekakiBuffer.quadraticCurveTo($currentP.offset.newOffsetX, $currentP.offset.newOffsetY, midPoint.x, midPoint.y);
+    $ctxOekakiBuffer.lineTo($newP.offset.newOffsetX, $newP.offset.newOffsetY);
+  }
+
+  _midPointBetween(p1: { x: number; y: number }, p2: { x: number; y: number }) {
+    return {
+      x: p1.x + (p2.x - p1.x) / 2,
+      y: p1.y + (p2.y - p1.y) / 2
+    };
   }
 }
