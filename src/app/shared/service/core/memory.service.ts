@@ -12,11 +12,11 @@ import { Point } from '../../model/point.model';
 })
 export class MemoryService {
   // oekakiOrder
-  private orderId = 0;
+  private orderId = -1;
   // draw
-  private drawId = 0;
+  private drawId = -1;
   // erase
-  private eraseId = 0;
+  private eraseId = -1;
 
   public canvasOffset: CanvasOffset = {
     zoomRatio: 1,
@@ -131,97 +131,92 @@ export class MemoryService {
     this.renderer.ctx.debugger = this.renderer.debugger.getContext('2d');
 
     //setInterval(() => {
-    //console.log(this.eraseList);
+    //console.log(this.oekakiOrder, this.trailList, this.eraseList);
     //}, 1000);
   }
 
   undo(): void {
-    const drawOrErase: number = this.oekakiOrder[this.orderId - 1];
-    if (drawOrErase === 1) {
-      // draw
-      if (this.drawId > 0) {
-        const trail: Trail = this.trailList[this.drawId - 1];
-        trail.visibility = false;
+    const drawOrErase: number = this.oekakiOrder[this.orderId];
+
+    if (drawOrErase !== undefined) {
+      if (drawOrErase === 1 && this.drawId > -1) {
+        // draw
+        this._updateDraw(this.drawId, false);
 
         let dId: number = this.drawId;
-        dId -= dId - 1 > -1 ? 1 : 0;
+        dId -= dId > -1 ? 1 : 0;
         this.drawId = dId;
-      }
-    } else {
-      // erase
-      if (this.eraseId > 0) {
-        const erase: Erase = this.eraseList[this.eraseId - 1];
-        const trailList: { trailId: number; pointIdList: number[] }[] = erase.trailList;
-
-        for (let i = 0; i < trailList.length; i++) {
-          if (trailList[i]) {
-            const pointList: number[] = trailList[i].pointIdList;
-
-            for (let j = 0; j < pointList.length; j++) {
-              const tId: number = trailList[i].trailId;
-              const pId: number = pointList[j];
-              const trail: Trail = this.trailList[tId];
-
-              if (trail.points[pId]) trail.points[pId].visibility = !trail.points[pId].visibility;
-            }
-          }
-        }
+      } else if (drawOrErase === 0 && this.eraseId > -1) {
+        // erase
+        this._updateErase(this.eraseId);
 
         let eId: number = this.eraseId;
-        eId -= eId - 1 > -1 ? 1 : 0;
+        eId -= eId > -1 ? 1 : 0;
         this.eraseId = eId;
       }
-    }
 
-    let oId: number = this.orderId;
-    oId -= oId - 1 > 0 ? 1 : 0;
-    this.orderId = oId;
+      let oId: number = this.orderId;
+      oId -= oId > -1 ? 1 : 0;
+      this.orderId = oId;
+    }
   }
 
   redo(): void {
     let oId: number = this.orderId;
-    oId += oId < this.oekakiOrder.length ? 1 : 0;
-    this.orderId = oId;
+    oId += oId < this.oekakiOrder.length - 1 ? 1 : 0;
 
-    const drawOrErase: number = this.oekakiOrder[oId - 1];
-    if (drawOrErase === 1) {
-      // draw
-      let dId: number = this.drawId;
-      dId += dId < this.trailList.length ? 1 : 0;
-      this.drawId = dId;
+    const drawOrErase: number = this.oekakiOrder[oId];
+    if (drawOrErase !== undefined) {
+      if (drawOrErase === 1 && this.drawId < this.trailList.length - 1) {
+        // draw
+        let dId: number = this.drawId;
+        dId += dId < this.trailList.length - 1 ? 1 : 0;
 
-      const trail: Trail = this.trailList[dId - 1];
-      trail.visibility = true;
-    } else {
-      // erase
-      let eId: number = this.eraseId;
-      eId += eId < this.eraseList.length ? 1 : 0;
-      this.eraseId = eId;
+        this._updateDraw(dId, true);
+        this.drawId = dId;
+      } else if (drawOrErase === 0 && this.eraseId < this.eraseList.length - 1) {
+        // erase
+        let eId: number = this.eraseId;
+        eId += eId < this.eraseList.length - 1 ? 1 : 0;
 
-      const erase: Erase = this.eraseList[eId - 1];
-      const trailList: { trailId: number; pointIdList: number[] }[] = erase.trailList;
+        this._updateErase(eId);
+        this.eraseId = eId;
+      }
 
-      for (let i = 0; i < trailList.length; i++) {
-        if (trailList[i]) {
-          const pointList: number[] = trailList[i].pointIdList;
+      this.orderId = oId;
+    }
+  }
 
-          for (let j = 0; j < pointList.length; j++) {
-            const tId: number = trailList[i].trailId;
-            const pId: number = pointList[j];
-            const trail: Trail = this.trailList[tId];
+  _updateDraw($dId: number, $flg: boolean): void {
+    const trail: Trail = this.trailList[$dId];
+    trail.visibility = $flg;
+  }
 
-            if (trail.points[pId]) trail.points[pId].visibility = !trail.points[pId].visibility;
-          }
+  _updateErase($eId: number): void {
+    const erase: Erase = this.eraseList[$eId];
+    const trailList: { trailId: number; pointIdList: number[] }[] = erase.trailList;
+
+    for (let i = 0; i < trailList.length; i++) {
+      if (trailList[i]) {
+        const pointList: number[] = trailList[i].pointIdList;
+
+        for (let j = 0; j < pointList.length; j++) {
+          const tId: number = trailList[i].trailId;
+          const pId: number = pointList[j];
+          const trail: Trail = this.trailList[tId];
+
+          if (trail && trail.points[pId]) trail.points[pId].visibility = !trail.points[pId].visibility;
         }
       }
     }
   }
 
   pileNewHistory(): void {
-    this.oekakiOrder = _.take(this.oekakiOrder, this.orderId);
+    // Remove unnecessary event ids
+    this.oekakiOrder = _.take(this.oekakiOrder, this.orderId + 1);
 
     if (this.reservedByFunc.name === 'draw') {
-      this.trailList = _.take(this.trailList, this.drawId);
+      this.trailList = _.take(this.trailList, this.drawId + 1);
 
       const trail: Trail = {
         id: this.trailList.length,
@@ -246,7 +241,7 @@ export class MemoryService {
       this.oekakiOrder.push(1);
       this.drawId++;
     } else if (this.reservedByFunc.name === 'erase') {
-      this.eraseList = _.take(this.eraseList, this.eraseId);
+      this.eraseList = _.take(this.eraseList, this.eraseId + 1);
 
       const erase: Erase = {
         id: this.eraseList.length,
