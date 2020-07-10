@@ -10,9 +10,6 @@ export class EventDirective {
   @Output() key = new EventEmitter<Key>();
   @Output() isUnload = new EventEmitter<any>();
 
-  private eCache: any[] = [];
-  private prevDiff = -1;
-
   // Mouse position
   private clientX = 0;
   private clientY = 0;
@@ -125,7 +122,6 @@ export class EventDirective {
   @HostListener('document:pointerdown', ['$event']) onPointerDown($e) {
     $e.preventDefault();
     $e.stopPropagation();
-    this.eCache.push($e);
     this._onDown($e);
   }
 
@@ -133,18 +129,6 @@ export class EventDirective {
   @HostListener('document:pointerup', ['$event']) onPointerUp($e) {
     $e.preventDefault();
     $e.stopPropagation();
-
-    const eCache = this.eCache;
-    for (let i = 0; i < eCache.length; i++) {
-      if (eCache[i].pointerId === $e.pointerId) {
-        eCache.splice(i, 1);
-        break;
-      }
-    }
-
-    if (eCache.length < 2) {
-      this.prevDiff = -1;
-    }
 
     this._onUp($e);
   }
