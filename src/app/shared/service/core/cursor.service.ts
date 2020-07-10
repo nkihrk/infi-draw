@@ -10,8 +10,8 @@ export class CursorService {
   render(): void {
     const ctxUiBuffer: CanvasRenderingContext2D = this.memory.renderer.ctx.uiBuffer;
     const c: HTMLCanvasElement = ctxUiBuffer.canvas;
-    c.width = this.memory.renderer.wrapper.clientWidth;
-    c.height = this.memory.renderer.wrapper.clientHeight;
+    c.width = this.memory.renderer.canvasWrapper.clientWidth;
+    c.height = this.memory.renderer.canvasWrapper.clientHeight;
 
     ctxUiBuffer.translate(0.5, 0.5);
 
