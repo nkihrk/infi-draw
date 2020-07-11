@@ -4,7 +4,6 @@ import { CanvasService } from './canvas.service';
 import { MemoryService } from './memory.service';
 import { DrawService } from './draw.service';
 import { EraseService } from './erase.service';
-import { Erase } from '../../model/erase.model';
 import { Flgs } from '../../model/flgs.model';
 
 @Injectable({
