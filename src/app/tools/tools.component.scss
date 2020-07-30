@@ -1,0 +1,15 @@
+@import "../variables";
+
+.tools-wrapper {
+  display: flex;
+  flex-direction: column;
+  border-top: solid 1px $mid-white;
+  padding: 0 5px;
+
+  .tool {
+    width: 30px;
+    height: 30px;
+    border-radius: 3px;
+    margin-top: 10px;
+  }
+}

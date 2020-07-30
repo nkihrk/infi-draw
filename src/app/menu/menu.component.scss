@@ -1,0 +1,14 @@
+@import "../variables";
+
+.menu-wrapper-prefix {
+  display: flex;
+  width: 100vw;
+  padding: 5px;
+  border-top: solid 1px $mid-white;
+}
+
+.menu {
+  margin-left: 10px;
+  color: $white;
+  font-size: 0.8rem;
+}
