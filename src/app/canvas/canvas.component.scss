@@ -6,7 +6,6 @@
   height: 100vh;
   padding-top: 25px;
   padding-left: 25px;
-  background-color: $canvas-color;
   overflow: hidden;
 }
 
@@ -15,7 +14,7 @@
   height: 100%;
   position: relative;
   overflow: hidden;
-  border: solid 1px #606060;
+  border: solid 1px $mid-white;
   border-right: none;
   border-bottom: none;
 

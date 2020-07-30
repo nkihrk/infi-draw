@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { CanvasComponent } from './canvas/canvas.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/canvas', pathMatch: 'full' },
-  { path: 'canvas', component: CanvasComponent },
+  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+  { path: 'dashboard', component: DashboardComponent }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes, { useHash: true })],
-  exports: [RouterModule],
+  exports: [RouterModule]
 })
 export class AppRoutingModule {}
