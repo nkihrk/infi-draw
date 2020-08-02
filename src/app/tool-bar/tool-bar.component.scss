@@ -1,15 +1,34 @@
 @import "../variables";
 
-.tools-wrapper {
+.tool-bar-wrapper {
   display: flex;
   flex-direction: column;
   border-top: solid 1px $mid-white;
-  padding: 0 5px;
+  border-right: solid 1px $mid-white;
+  padding: 5px;
+  height:100%;
 
-  .tool {
+  .icon-prefix {
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     width: 30px;
     height: 30px;
-    border-radius: 3px;
-    margin-top: 10px;
+    color: rgba($white, 0.6);
+    font-size: 1rem;
+
+    &:hover {
+      border-radius: 2px;
+      background-color: rgba($white, 0.2);
+    }
   }
 }
+
+.fa-line {
+  width: 2px;
+  height: 50%;
+  background-color: rgba($white, 0.6);
+  transform: rotate(45deg);
+}
+

@@ -1,23 +1,22 @@
 @import "../variables";
 
-.menu-wrapper-prefix {
+.menu-wrapper {
   display: flex;
-  width: 100vw;
+	width: 100%;
   padding: 5px;
-  border-top: solid 1px $mid-white;
 
   cursor: pointer;
   user-select: none;
-}
 
-.menu {
-  color: $white;
-  font-size: 0.8rem;
-  padding: 1px 10px;
+	.menu {
+		color: $white;
+		font-size: 0.8rem;
+		padding: 1px 10px;
 
-  &:hover {
-    border-radius: 2px;
-    background-color: rgba($white, 0.2);
-  }
+		&:hover {
+			border-radius: 2px;
+			background-color: rgba($white, 0.2);
+		}
+	}
 }
 
