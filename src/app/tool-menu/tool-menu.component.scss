@@ -10,10 +10,15 @@
   user-select: none;
 }
 
-.menu {
-  color: $white;
-  font-size: 0.8rem;
-  padding: 1px 10px;
+.icon-prefix {
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 100%;
+  color: rgba($white, 0.6);
+  font-size: 1rem;
 
   &:hover {
     border-radius: 2px;
