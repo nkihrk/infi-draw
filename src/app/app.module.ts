@@ -6,12 +6,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CanvasComponent } from './canvas/canvas.component';
 import { EventDirective } from './shared/directive/event.directive';
-import { ToolsComponent } from './tools/tools.component';
+import { ToolBarComponent } from './tool-bar/tool-bar.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { MenuComponent } from './menu/menu.component';
+import { ToolMenuComponent } from './tool-menu/tool-menu.component';
 
 @NgModule({
-  declarations: [AppComponent, CanvasComponent, EventDirective, ToolsComponent, DashboardComponent, MenuComponent],
+  declarations: [AppComponent, CanvasComponent, EventDirective, ToolBarComponent, DashboardComponent, MenuComponent, ToolMenuComponent],
   imports: [BrowserModule, AppRoutingModule, FontAwesomeModule],
   providers: [],
   bootstrap: [AppComponent]
