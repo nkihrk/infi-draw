@@ -1,10 +1,11 @@
 @import "../variables";
 
-.menu-wrapper-prefix {
+.tool-menu-wrapper {
   display: flex;
   width: 100vw;
   padding: 5px;
   border-top: solid 1px $mid-white;
+  border-bottom: solid 1px $mid-white;
 
   cursor: pointer;
   user-select: none;

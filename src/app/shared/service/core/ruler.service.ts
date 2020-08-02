@@ -57,7 +57,7 @@ export class RulerService {
     // Frame
     ctxLbuffer.strokeStyle = this.memory.constant.RULER_COLOR;
     ctxLbuffer.lineWidth = 1;
-    ctxLbuffer.strokeRect(0, 0, l.width, l.height);
+    //ctxLbuffer.strokeRect(0, 0, l.width, l.height);
 
     ctxLbuffer.strokeStyle = this.memory.constant.RULER_COLOR;
     ctxLbuffer.font = this.memory.constant.FONT_TYPE;
@@ -126,9 +126,10 @@ export class RulerService {
     // Empty box
     ctxLbuffer.beginPath();
     ctxLbuffer.setLineDash([]);
-    ctxLbuffer.clearRect(0, 0, this.rulerThickness, this.rulerThickness);
+    ctxLbuffer.clearRect(-0.5, -0.5, this.rulerThickness, this.rulerThickness);
     ctxLbuffer.strokeStyle = this.memory.constant.RULER_COLOR;
-    ctxLbuffer.strokeRect(0, 0, this.rulerThickness, this.rulerThickness);
+    ctxLbuffer.moveTo(this.rulerThickness, 0);
+    ctxLbuffer.lineTo(this.rulerThickness, this.rulerThickness);
     ctxLbuffer.stroke();
   }
 
@@ -150,7 +151,7 @@ export class RulerService {
     // Frame
     ctxCbuffer.strokeStyle = this.memory.constant.RULER_COLOR;
     ctxCbuffer.lineWidth = 1;
-    ctxCbuffer.strokeRect(0, 0, c.width, c.height);
+    //ctxCbuffer.strokeRect(0, 0, c.width, c.height);
 
     ctxCbuffer.strokeStyle = this.memory.constant.RULER_COLOR;
     ctxCbuffer.font = this.memory.constant.FONT_TYPE;
@@ -219,9 +220,10 @@ export class RulerService {
     // Empty box
     ctxCbuffer.beginPath();
     ctxCbuffer.setLineDash([]);
-    ctxCbuffer.clearRect(0, 0, this.rulerThickness, this.rulerThickness);
+    ctxCbuffer.clearRect(-0.5, -0.5, this.rulerThickness, this.rulerThickness);
     ctxCbuffer.strokeStyle = this.memory.constant.RULER_COLOR;
-    ctxCbuffer.strokeRect(0, 0, this.rulerThickness, this.rulerThickness);
+    ctxCbuffer.moveTo(0, this.rulerThickness);
+    ctxCbuffer.lineTo(this.rulerThickness, this.rulerThickness);
     ctxCbuffer.stroke();
   }
 
