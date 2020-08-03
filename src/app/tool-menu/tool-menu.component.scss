@@ -2,6 +2,8 @@
 
 .tool-menu-wrapper {
   display: flex;
+	flex-direction: row;
+	align-items: center;
   width: 100vw;
   padding: 5px;
   border-top: solid 1px $mid-white;
@@ -25,5 +27,45 @@
     border-radius: 2px;
     background-color: rgba($white, 0.2);
   }
+}
+
+.separator-wrapper {
+	display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 100%;
+
+	.separator {
+		width: 1px;
+		height: 20px;
+		background-color: rgba($white, 0.3);
+	}
+}
+
+.brush-size-wrapper {
+	position: relative;
+	width: 60px;
+	height:18px;
+	border: solid 1px rgba($white, 0.6);
+	border-radius: 2px;
+	margin: 0 6px;
+
+	.brush-size-meter {
+		width: 70%;
+		height: 100%;
+		background-color: rgba($white, 0.3);
+	}
+
+	.brush-size-info {
+		position: absolute;
+		top: 0;
+		left: 50%;
+		font-size:0.7rem;
+		font-weight: bold;
+		transform: translateX(-50%);
+		color: $white;
+	}
 }
 

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { faSave } from '@fortawesome/free-regular-svg-icons';
 import { faUndo } from '@fortawesome/free-solid-svg-icons';
 import { faRedo } from '@fortawesome/free-solid-svg-icons';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faQuidditch } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-tool-menu',
@@ -13,7 +13,7 @@ export class ToolMenuComponent implements OnInit {
   faSave = faSave;
   faUndo = faUndo;
   faRedo = faRedo;
-  faTrash = faTrash;
+  faQuidditch = faQuidditch;
 
   constructor() { }
 
