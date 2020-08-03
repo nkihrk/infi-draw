@@ -44,13 +44,24 @@
 	}
 }
 
+.tool-menu-prefix {
+	margin: 0 6px;
+}
+
+.color-picker {
+	border: solid 2px rgba($white, 0.6);
+	border-radius: 50%;
+	width: 18px;
+	height: 18px;
+	background-color: white;
+}
+
 .brush-size-wrapper {
 	position: relative;
 	width: 60px;
 	height:18px;
 	border: solid 1px rgba($white, 0.6);
 	border-radius: 2px;
-	margin: 0 6px;
 
 	.brush-size-meter {
 		width: 70%;
