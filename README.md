@@ -5,6 +5,8 @@
 </p>
 <br>
 
+![InfiDraw_preview](./src/assets/image.png)
+
 # Document
 Currently working on
 <br><br>
