@@ -4,8 +4,8 @@
   position: relative;
   width: 100%;
   height: 100vh;
-  padding-top: 25px;
-  padding-left: 25px;
+  padding-top: $ruler-thickness;
+  padding-left: $ruler-thickness;
   overflow: hidden;
 }
 
