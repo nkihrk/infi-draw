@@ -64,30 +64,6 @@ export class EventDirective {
     this.isUnload.emit($e);
   }
 
-  // Dragover listener
-  @HostListener('document:dragover', ['$event']) onDragOver($e) {
-    $e.preventDefault();
-    $e.stopPropagation();
-  }
-
-  // Dragleave listener
-  @HostListener('document:dragleave', ['$event']) onDragLeave($e) {
-    $e.preventDefault();
-    $e.stopPropagation();
-  }
-
-  // Drop listener
-  @HostListener('document:drop', ['$event']) onDrop($e: DragEvent) {
-    $e.preventDefault();
-    $e.stopPropagation();
-  }
-
-  // Paste listener
-  @HostListener('document:paste', ['$event']) onPaste($e: ClipboardEvent) {
-    $e.preventDefault();
-    $e.stopPropagation();
-  }
-
   // Keydown listener
   @HostListener('document:keydown', ['$event']) onKeyDown($e) {
     this.keyDownFlg = true;
@@ -119,78 +95,55 @@ export class EventDirective {
   }
 
   // Pointerdown listener
-  @HostListener('document:pointerdown', ['$event']) onPointerDown($e) {
-    $e.preventDefault();
-    $e.stopPropagation();
+  @HostListener('pointerdown', ['$event']) onPointerDown($e) {
     this._onDown($e);
   }
 
   // Pointerup listener
   @HostListener('document:pointerup', ['$event']) onPointerUp($e) {
-    $e.preventDefault();
-    $e.stopPropagation();
-
     this._onUp($e);
   }
 
   // Pointermove listener
   @HostListener('document:pointermove', ['$event']) onPointerMove($e) {
-    $e.preventDefault();
-    $e.stopPropagation();
-
     this._onMove($e);
   }
 
   // Touchstart listener
-  @HostListener('document:touchstart', ['$event']) onTouchStart($e) {
-    // $e.preventDefault();
-    $e.stopPropagation();
+  @HostListener('touchstart', ['$event']) onTouchStart($e) {
     this._onDown($e);
   }
 
   // Touchend listener
   @HostListener('document:touchend', ['$event']) onTouchEnd($e) {
-    // $e.preventDefault();
-    $e.stopPropagation();
     this._onUp($e);
   }
 
   // Touchmove listener
   @HostListener('document:touchmove', ['$event']) onTouchMove($e) {
-    // $e.preventDefault();
-    $e.stopPropagation();
     this._onMove($e);
   }
 
   // Mousedown listener
-  @HostListener('document:mousedown', ['$event']) onMouseDown($e) {
-    $e.preventDefault();
-    $e.stopPropagation();
+  @HostListener('mousedown', ['$event']) onMouseDown($e) {
     this._onDown($e);
   }
 
   // Mouseup listener
   @HostListener('document:mouseup', ['$event']) onMouseUp($e) {
-    $e.preventDefault();
-    $e.stopPropagation();
     this._onUp($e);
   }
 
   // Mouseleave listener
-  @HostListener('document:mouseleave', ['$event']) onMouseLeave($e) {}
+  @HostListener('mouseleave', ['$event']) onMouseLeave($e) {}
 
   // Mousemove listener
   @HostListener('document:mousemove', ['$event']) onMouseMove($e) {
-    $e.preventDefault();
-    $e.stopPropagation();
     this._onMove($e);
   }
 
   // Mousemove listener
-  @HostListener('document:dblclick', ['$event']) onDoubleClick($e) {
-    $e.preventDefault();
-    $e.stopPropagation();
-
+  @HostListener('dblclick', ['$event']) onDoubleClick($e) {
     const clientX = $e.clientX;
     const clientY = $e.clientY;
 
@@ -204,8 +157,8 @@ export class EventDirective {
   }
 
   // Wheel listener
-  @HostListener('document:wheel', ['$event']) onMouseWheel($e) {
-    $e.stopPropagation();
+  @HostListener('wheel', ['$event']) onMouseWheel($e) {
+    $e.preventDefault();
 
     const clientX = $e.clientX;
     const clientY = $e.clientY;
@@ -220,7 +173,6 @@ export class EventDirective {
   // Contextmenu listener
   @HostListener('document:contextmenu', ['$event']) onContextMenu($e) {
     $e.preventDefault();
-    $e.stopPropagation();
   }
 
   // Down event
