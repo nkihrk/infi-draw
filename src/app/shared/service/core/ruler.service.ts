@@ -7,7 +7,7 @@ import { MemoryService } from './memory.service';
   providedIn: 'root'
 })
 export class RulerService {
-  private rulerThickness = 25; // Thickness of the window ruler
+  private rulerThickness = 20; // Thickness of the window ruler
   private parentScale = 100; // Parent scale of the window ruler
   private childScale = 10; // Child scale of the window ruler
   private middleLength = 0.5; // Length of the middleScale
