@@ -9,11 +9,11 @@
   border-top: solid 1px $mid-white;
   border-bottom: solid 1px $mid-white;
 
-  cursor: pointer;
   user-select: none;
 }
 
 .icon-prefix {
+	position: relative;
   display:flex;
   flex-direction: column;
   justify-content: center;
@@ -27,6 +27,51 @@
     border-radius: 2px;
     background-color: rgba($white, 0.2);
   }
+}
+
+.name-info-wrapper {
+	position: relative;
+
+	&:hover {
+		.name-info-row {
+			opacity: 1;
+		}
+	}
+
+	.name-info-row {
+		display: flex;
+		align-content: center;
+		justify-content: center;
+		position: absolute;
+		z-index: 100;
+		top: 40px;
+		left: 50%;
+		transform: translateX(-50%);
+		font-size: 0.8rem;
+		font-weight: bold;
+		padding: 5px 10px;
+		border-radius: 3px;
+		white-space: nowrap;
+		opacity: 0;
+
+		color: white;
+		background-color: black;
+		border: none;
+
+		user-select: none;
+		pointer-events: none;
+		transition: opacity $transition;
+
+		&:before {
+			content: "";
+			position: absolute;
+			top: -12px;
+			left: 50%;
+			transform: translateX(-50%);
+			border: 6px solid transparent;
+			border-bottom: 6px solid black;
+		}
+	}
 }
 
 .separator-wrapper {

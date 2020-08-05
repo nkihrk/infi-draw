@@ -7,20 +7,20 @@
   align-items: center;
   width: 100%;
   padding: 5px;
-
   user-select: none;
-    .menu-wrapper {
-      display: flex;
-      flex-direction: row;
-    }
 
-    .user-name {
-      border: solid 1px rgba($white, 0.3);
-      border-radius: 30px;
-      white-space: nowrap;
-      overflow: hidden;
-      margin: 0 10px;
-    }
+	.menu-wrapper {
+		display: flex;
+		flex-direction: row;
+	}
+
+	.user-name {
+		border: solid 1px rgba($white, 0.3);
+		border-radius: 30px;
+		white-space: nowrap;
+		overflow: hidden;
+		margin: 0 10px;
+	}
 }
 
 .menu {

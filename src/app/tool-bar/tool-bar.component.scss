@@ -32,3 +32,48 @@
   transform: rotate(45deg);
 }
 
+.name-info-wrapper {
+	position: relative;
+
+	&:hover {
+		.name-info-column {
+			opacity: 1;
+		}
+	}
+
+	.name-info-column {
+		display: flex;
+		align-content: center;
+		justify-content: center;
+		position: absolute;
+		z-index: 100;
+		top: 50%;
+		left: 45px;
+		transform: translateY(-50%);
+		font-size: 0.8rem;
+		font-weight: bold;
+		padding: 5px 10px;
+		border-radius: 3px;
+		white-space: nowrap;
+		opacity: 0;
+
+		color: white;
+		background-color: black;
+		border: none;
+
+		user-select: none;
+		pointer-events: none;
+		transition: opacity $transition;
+
+		&:before {
+			content: "";
+			position: absolute;
+			top: 50%;
+			left: -12px;
+			transform: translateY(-50%);
+			border: 6px solid transparent;
+			border-right: 6px solid black;
+		}
+	}
+}
+
