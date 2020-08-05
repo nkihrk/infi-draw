@@ -1,19 +1,150 @@
-<div class="flex-left-right">
+<div class="flex-space-between">
   <div class="menu-wrapper">
-    <div class="menu">ファイル</div>
-    <div class="menu">編集</div>
-    <div class="menu">変更</div>
-    <div class="menu">表示</div>
-    <div class="menu">ヘルプ</div>
+    <div class="menu-prefix">
+      ファイル
+      <div class="menu-list-prefix">
+        <ul>
+          <li>
+            <span>新規デザイン</span>
+            <span>Alt+N</span>
+          </li>
+          <li>
+            <span>テンプレートから新規デザイン...</span>
+          </li>
+          <li>
+            <span>クリップボードから新規作成</span>
+            <span>Shift+Ctrl+Alt+N</span>
+          </li>
+          <li>
+            <div class="separator"></div>
+          </li>
+          <li>
+            <span>ローカルファイルを開く...</span>
+            <span>Ctrl+O</span>
+          </li>
+          <li>
+            <span>Cloudから開く...</span>
+            <span>Shift+Ctrl+O</span>
+          </li>
+          <li>
+            <span>最近のファイルを開く</span>
+            <span>▶</span>
+          </li>
+          <li>
+            <div class="separator"></div>
+          </li>
+          <li>
+            <span>保存</span>
+            <span>Ctrl+S</span>
+          </li>
+          <li>
+            <span>ファイルダウンロード</span>
+          </li>
+          <li>
+            <span>名前を付けてCloudに保存...</span>
+            <span>Shift+Ctrl+S</span>
+          </li>
+          <li>
+            <span>バージョン履歴を表示</span>
+          </li>
+          <li>
+            <div class="separator"></div>
+          </li>
+          <li>
+            <span>インポート</span>
+            <span>▶</span>
+          </li>
+          <li>
+            <div class="separator"></div>
+          </li>
+          <li>
+            <span>エクスポート</span>
+            <span>▶</span>
+          </li>
+          <li>
+            <span>印刷...</span>
+            <span>Ctrl+P</span>
+          </li>
+          <li>
+            <div class="separator"></div>
+          </li>
+          <li>
+            <span>デスクトップにインストール</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="menu-prefix">
+      編集
+      <div class="menu-list-prefix">
+        <ul>
+          <li>テスト</li>
+          <li>テスト</li>
+          <li>テスト</li>
+          <li>テスト</li>
+          <li>テスト</li>
+          <li>テスト</li>
+          <li>テスト</li>
+          <li>テスト</li>
+        </ul>
+      </div>
+    </div>
+    <div class="menu-prefix">
+      変更
+      <div class="menu-list-prefix">
+        <ul>
+          <li>テスト</li>
+          <li>テスト</li>
+          <li>テスト</li>
+          <li>テスト</li>
+          <li>テスト</li>
+          <li>テスト</li>
+          <li>テスト</li>
+          <li>テスト</li>
+        </ul>
+      </div>
+    </div>
+    <div class="menu-prefix">
+      表示
+      <div class="menu-list-prefix">
+        <ul>
+          <li>テスト</li>
+          <li>テスト</li>
+          <li>テスト</li>
+          <li>テスト</li>
+          <li>テスト</li>
+          <li>テスト</li>
+          <li>テスト</li>
+          <li>テスト</li>
+        </ul>
+      </div>
+    </div>
+    <div class="menu-prefix">
+      ヘルプ
+      <div class="menu-list-prefix">
+        <ul>
+          <li>テスト</li>
+          <li>テスト</li>
+          <li>テスト</li>
+          <li>テスト</li>
+          <li>テスト</li>
+          <li>テスト</li>
+          <li>テスト</li>
+          <li>テスト</li>
+        </ul>
+      </div>
+    </div>
   </div>
 
-  <div class="menu" style="font-weight: bold;">
-    <fa-icon [icon]="faPenNib" [fixedWidth]="true" size="sm"></fa-icon>
-    InfiDraw v0.0.1
-  </div>
+  <a href="https://github.com/nkihrk/infi-draw" target="_blank">
+    <div class="menu-prefix" style="font-weight: bold;">
+      <fa-icon [icon]="faPenNib" [fixedWidth]="true" size="sm"></fa-icon>
+      InfiDraw v0.0.1
+    </div>
+  </a>
 
   <div class="user-name">
-    <div class="menu">
+    <div class="menu-prefix">
       <fa-icon [icon]="faUser" [fixedWidth]="true" size="sm"></fa-icon>
       赤井はあと
     </div>
