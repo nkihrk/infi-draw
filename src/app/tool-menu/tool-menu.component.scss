@@ -2,8 +2,8 @@
 
 .tool-menu-wrapper {
   display: flex;
-	flex-direction: row;
-	align-items: center;
+  flex-direction: row;
+  align-items: center;
   width: 100vw;
   padding: 5px;
   border-top: solid 1px $mid-white;
@@ -30,53 +30,53 @@
 }
 
 .separator-wrapper {
-	display:flex;
+  display:flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 30px;
   height: 100%;
 
-	.separator {
-		width: 1px;
-		height: 20px;
-		background-color: rgba($white, 0.3);
-	}
+  .separator {
+    width: 1px;
+    height: 20px;
+    background-color: rgba($white, 0.3);
+  }
 }
 
 .tool-menu-prefix {
-	margin: 0 6px;
+  margin: 0 6px;
 }
 
 .color-picker {
-	border: solid 2px rgba($white, 0.6);
-	border-radius: 50%;
-	width: 18px;
-	height: 18px;
-	background-color: white;
+  border: solid 2px rgba($white, 0.6);
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  background-color: white;
 }
 
 .brush-size-wrapper {
-	position: relative;
-	width: 60px;
-	height:18px;
-	border: solid 1px rgba($white, 0.6);
-	border-radius: 2px;
+  position: relative;
+  width: 60px;
+  height:18px;
+  border: solid 1px rgba($white, 0.6);
+  border-radius: 2px;
 
-	.brush-size-meter {
-		width: 70%;
-		height: 100%;
-		background-color: rgba($white, 0.3);
-	}
+  .brush-size-meter {
+    width: 70%;
+    height: 100%;
+    background-color: rgba($white, 0.3);
+  }
 
-	.brush-size-info {
-		position: absolute;
-		top: 0;
-		left: 50%;
-		font-size:0.7rem;
-		font-weight: bold;
-		transform: translateX(-50%);
-		color: $white;
-	}
+  .brush-size-info {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    font-size:0.7rem;
+    font-weight: bold;
+    transform: translateX(-50%);
+    color: $white;
+  }
 }
 

@@ -1,39 +1,36 @@
 @import "../variables";
 
 .flex-left-right {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	align-items: center;
-	width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
   padding: 5px;
 
-  cursor: pointer;
   user-select: none;
+    .menu-wrapper {
+      display: flex;
+      flex-direction: row;
+    }
 
-	.menu-wrapper {
-		display: flex;
-		flex-direction: row;
-	}
-
-	.user-name {
-		border: solid 1px rgba($white, 0.3);
-		border-radius: 30px;
-		white-space: nowrap;
-		overflow: hidden;
-		margin: 0 10px;
-	}
+    .user-name {
+      border: solid 1px rgba($white, 0.3);
+      border-radius: 30px;
+      white-space: nowrap;
+      overflow: hidden;
+      margin: 0 10px;
+    }
 }
 
 .menu {
-	color: $white;
-	font-size: 0.8rem;
-	padding: 1px 10px;
+  color: $white;
+  font-size: 0.8rem;
+  padding: 1px 10px;
 
-	&:hover {
-		border-radius: 2px;
-		background-color: rgba($white, 0.2);
-	}
+  &:hover {
+    border-radius: 2px;
+    background-color: rgba($white, 0.2);
+  }
 }
-
 
