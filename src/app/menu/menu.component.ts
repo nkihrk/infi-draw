@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { faPenNib } from '@fortawesome/free-solid-svg-icons';
 import { faUser } from '@fortawesome/free-regular-svg-icons';
+import { faCaretRight } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-menu',
@@ -10,6 +11,7 @@ import { faUser } from '@fortawesome/free-regular-svg-icons';
 export class MenuComponent implements OnInit {
   faPenNib = faPenNib;
   faUser = faUser;
+  faCaretRight = faCaretRight;
 
   constructor() { }
 

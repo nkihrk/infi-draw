@@ -66,18 +66,22 @@
 	display: flex;
 	justify-content: space-between;
 
+	&.separator-wrapper {
+	  pointer-events: none;
+	}
+
 	&:hover {
 	  border-radius: 2px;
 	  background-color: rgba($white, 0.1);
 	}
 
-	 span {
-	   margin: 4px 8px 4px 25px;
-	 }
+	span {
+	  margin: 4px 8px 4px 25px;
+	}
 
-	 span:nth-child(2) {
-	   font-size: 0.7rem;
-	 }
+	span:nth-child(2) {
+	  font-size: 0.7rem;
+	}
       }
     }
   }
