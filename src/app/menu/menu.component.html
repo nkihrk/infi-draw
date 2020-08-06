@@ -15,7 +15,7 @@
             <span>クリップボードから新規作成</span>
             <span>Shift+Ctrl+Alt+N</span>
           </li>
-          <li>
+          <li class="separator-wrapper">
             <div class="separator"></div>
           </li>
           <li>
@@ -28,9 +28,9 @@
           </li>
           <li>
             <span>最近のファイルを開く</span>
-            <span>▶</span>
+            <span><fa-icon [icon]="faCaretRight" [fixedWidth]="true" size="sm"></fa-icon></span>
           </li>
-          <li>
+          <li class="separator-wrapper">
             <div class="separator"></div>
           </li>
           <li>
@@ -47,25 +47,25 @@
           <li>
             <span>バージョン履歴を表示</span>
           </li>
-          <li>
+          <li class="separator-wrapper">
             <div class="separator"></div>
           </li>
           <li>
             <span>インポート</span>
-            <span>▶</span>
+            <span><fa-icon [icon]="faCaretRight" [fixedWidth]="true" size="sm"></fa-icon></span>
           </li>
-          <li>
+          <li class="separator-wrapper">
             <div class="separator"></div>
           </li>
           <li>
             <span>エクスポート</span>
-            <span>▶</span>
+            <span><fa-icon [icon]="faCaretRight" [fixedWidth]="true" size="sm"></fa-icon></span>
           </li>
           <li>
             <span>印刷...</span>
             <span>Ctrl+P</span>
           </li>
-          <li>
+          <li class="separator-wrapper">
             <div class="separator"></div>
           </li>
           <li>
@@ -78,14 +78,67 @@
       編集
       <div class="menu-list-prefix">
         <ul>
-          <li>テスト</li>
-          <li>テスト</li>
-          <li>テスト</li>
-          <li>テスト</li>
-          <li>テスト</li>
-          <li>テスト</li>
-          <li>テスト</li>
-          <li>テスト</li>
+          <li>
+            <span>元に戻す</span>
+            <span>Ctrl+Z</span>
+          </li>
+          <li>
+            <span>やり直す</span>
+            <span>Shift+Ctrl+Z</span>
+          </li>
+          <li class="separator-wrapper">
+            <div class="separator"></div>
+          </li>
+          <li>
+            <span>切り取り</span>
+            <span>Ctrl+X</span>
+          </li>
+          <li>
+            <span>コピー</span>
+            <span>Ctrl+C</span>
+          </li>
+          <li>
+            <span>貼り付け</span>
+            <span><fa-icon [icon]="faCaretRight" [fixedWidth]="true" size="sm"></fa-icon></span>
+          </li>
+          <li>
+            <span>削除</span>
+            <span>Del</span>
+          </li>
+          <li>
+            <span>複製</span>
+            <span>Ctrl+D</span>
+          </li>
+          <li class="separator-wrapper">
+            <div class="separator"></div>
+          </li>
+          <li>
+            <span>選択範囲の編集</span>
+          </li>
+          <li>
+            <span>すべての選択</span>
+            <span>Ctrl+A</span>
+          </li>
+          <li>
+            <span>すべて選択解除</span>
+            <span>Shift+Ctrl+A</span>
+          </li>
+          <li>
+            <span>選択範囲を反転</span>
+            <span>Shift+Ctrl+I</span>
+          </li>
+          <li class="separator-wrapper">
+            <div class="separator"></div>
+          </li>
+          <li>
+            <span>フォントの種類で選択</span>
+          </li>
+          <li class="separator-wrapper">
+            <div class="separator"></div>
+          </li>
+          <li>
+            <span>設定...</span>
+          </li>
         </ul>
       </div>
     </div>
@@ -93,14 +146,18 @@
       変更
       <div class="menu-list-prefix">
         <ul>
-          <li>テスト</li>
-          <li>テスト</li>
-          <li>テスト</li>
-          <li>テスト</li>
-          <li>テスト</li>
-          <li>テスト</li>
-          <li>テスト</li>
-          <li>テスト</li>
+          <li>
+            <span>重ね順</span>
+            <span><fa-icon [icon]="faCaretRight" [fixedWidth]="true" size="sm"></fa-icon></span>
+          </li>
+          <li>
+            <span>配置</span>
+            <span><fa-icon [icon]="faCaretRight" [fixedWidth]="true" size="sm"></fa-icon></span>
+          </li>
+          <li>
+            <span>移動</span>
+            <span><fa-icon [icon]="faCaretRight" [fixedWidth]="true" size="sm"></fa-icon></span>
+          </li>
         </ul>
       </div>
     </div>
@@ -108,14 +165,55 @@
       表示
       <div class="menu-list-prefix">
         <ul>
-          <li>テスト</li>
-          <li>テスト</li>
-          <li>テスト</li>
-          <li>テスト</li>
-          <li>テスト</li>
-          <li>テスト</li>
-          <li>テスト</li>
-          <li>テスト</li>
+          <li>
+            <span>元のビュー</span>
+            <span>Ctrl+O</span>
+          </li>
+          <li>
+            <span>選択範囲を画面に合わせる</span>
+          </li>
+          <li>
+            <span>レイヤーを画面に合わせる</span>
+          </li>
+          <li>
+            <span>全体を画面に合わせる</span>
+            <span>Alt+Ctrl+O</span>
+          </li>
+          <li>
+            <span>拡大 - 縮小</span>
+            <span><fa-icon [icon]="faCaretRight" [fixedWidth]="true" size="sm"></fa-icon></span>
+          </li>
+          <li class="separator-wrapper">
+            <div class="separator"></div>
+          </li>
+          <li>
+            <span>輪郭の表示</span>
+          </li>
+          <li>
+            <span>ファーストビュー</span>
+          </li>
+          <li class="separator-wrapper">
+            <div class="separator"></div>
+          </li>
+          <li>
+            <span>キャンバス</span>
+            <span><fa-icon [icon]="faCaretRight" [fixedWidth]="true" size="sm"></fa-icon></span>
+          </li>
+          <li class="separator-wrapper">
+            <div class="separator"></div>
+          </li>
+          <li>
+            <span>スナップ</span>
+            <span><fa-icon [icon]="faCaretRight" [fixedWidth]="true" size="sm"></fa-icon></span>
+          </li>
+          <li class="separator-wrapper">
+            <div class="separator"></div>
+          </li>
+          <li>
+            <span>フル画面に切り替え...</span>
+            <span>Alt+Enter</span>
+          </li>
+
         </ul>
       </div>
     </div>
@@ -123,14 +221,27 @@
       ヘルプ
       <div class="menu-list-prefix">
         <ul>
-          <li>テスト</li>
-          <li>テスト</li>
-          <li>テスト</li>
-          <li>テスト</li>
-          <li>テスト</li>
-          <li>テスト</li>
-          <li>テスト</li>
-          <li>テスト</li>
+          <li>
+            <span>サポート</span>
+            <span><fa-icon [icon]="faCaretRight" [fixedWidth]="true" size="sm"></fa-icon></span>
+          </li>
+          <li>
+            <span>学習</span>
+            <span><fa-icon [icon]="faCaretRight" [fixedWidth]="true" size="sm"></fa-icon></span>
+          </li>
+          <li>
+            <span>最新情報</span>
+          </li>
+          <li>
+            <span>言語</span>
+            <span><fa-icon [icon]="faCaretRight" [fixedWidth]="true" size="sm"></fa-icon></span>
+          </li>
+          <li>
+            <span>Welcomeスクリーンを表示</span>
+          </li>
+          <li>
+            <span>更新をチェック</span>
+          </li>
         </ul>
       </div>
     </div>
@@ -138,7 +249,7 @@
 
   <a href="https://github.com/nkihrk/infi-draw" target="_blank">
     <div class="menu-prefix" style="font-weight: bold;">
-      <fa-icon [icon]="faPenNib" [fixedWidth]="true" size="sm"></fa-icon>
+      <fa-icon [icon]="faCaretRight" [fixedWidth]="true" size="sm"></fa-icon>
       InfiDraw v0.0.1
     </div>
   </a>
