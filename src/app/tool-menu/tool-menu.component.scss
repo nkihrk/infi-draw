@@ -13,7 +13,7 @@
 }
 
 .icon-prefix {
-	position: relative;
+  position: relative;
   display:flex;
   flex-direction: column;
   justify-content: center;
@@ -30,48 +30,49 @@
 }
 
 .name-info-wrapper {
-	position: relative;
+  position: relative;
 
-	&:hover {
-		.name-info-row {
-			opacity: 1;
-		}
-	}
+  &:hover {
+    .name-info-row {
+      transition-delay: 500ms;
+      opacity: 1;
+    }
+  }
 
-	.name-info-row {
-		display: flex;
-		align-content: center;
-		justify-content: center;
-		position: absolute;
-		z-index: 100;
-		top: 40px;
-		left: 50%;
-		transform: translateX(-50%);
-		font-size: 0.8rem;
-		font-weight: bold;
-		padding: 5px 10px;
-		border-radius: 3px;
-		white-space: nowrap;
-		opacity: 0;
+  .name-info-row {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    position: absolute;
+    z-index: 100;
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.7rem;
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 3px;
+    white-space: nowrap;
+    opacity: 0;
 
-		color: white;
-		background-color: black;
-		border: none;
+    color: white;
+    background-color: black;
+    border: none;
 
-		user-select: none;
-		pointer-events: none;
-		transition: opacity $transition;
+    user-select: none;
+    pointer-events: none;
+    transition: opacity $transition;
 
-		&:before {
-			content: "";
-			position: absolute;
-			top: -12px;
-			left: 50%;
-			transform: translateX(-50%);
-			border: 6px solid transparent;
-			border-bottom: 6px solid black;
-		}
-	}
+    &:before {
+      content: "";
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 6px solid transparent;
+      border-bottom: 6px solid black;
+    }
+  }
 }
 
 .separator-wrapper {
