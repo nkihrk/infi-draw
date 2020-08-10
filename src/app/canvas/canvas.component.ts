@@ -19,6 +19,7 @@ import { CursorService } from '../shared/service/core/cursor.service';
   styleUrls: ['./canvas.component.scss']
 })
 export class CanvasComponent implements OnInit {
+  @ViewChild('appWrapper', { static: true }) appWrapper: ElementRef<HTMLDivElement>;
   @ViewChild('canvasWrapper', { static: true }) canvasWrapper: ElementRef<HTMLDivElement>;
   @ViewChild('rulerWrapper', { static: true }) rulerWrapper: ElementRef<HTMLDivElement>;
   @ViewChild('canvasMain', { static: true }) main: ElementRef<HTMLCanvasElement>;
@@ -40,8 +41,8 @@ export class CanvasComponent implements OnInit {
     private cursor: CursorService
   ) {}
 
-  ngOnInit() {
-    this.memory.init(this.canvasWrapper, this.rulerWrapper, this.main, this.ui, this.l, this.c);
+  ngOnInit(): void {
+    this.memory.init(this.appWrapper, this.canvasWrapper, this.rulerWrapper, this.main, this.ui, this.l, this.c);
     this.render();
   }
 
