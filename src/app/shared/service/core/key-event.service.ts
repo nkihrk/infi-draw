@@ -44,18 +44,25 @@ export class KeyEventService {
         this._erase($e);
       } else if (keymap.p) {
         this._draw($e);
+      } else if (keymap.h) {
+        this._hand($e);
       }
+
     }
   }
 
   _keyUpFuncs($e: Key): void {
     switch (this.whichFunc) {
+      case 'draw':
+        this.func.draw();
+        break;
+
       case 'erase':
         this.func.erase();
         break;
 
-      case 'draw':
-        this.func.draw();
+      case 'hand':
+        this.func.hand();
         break;
 
       default:
@@ -66,37 +73,36 @@ export class KeyEventService {
     this.whichFunc = '';
   }
 
-  _erase($e: Key): void {
-    $e.e.preventDefault();
-    $e.e.stopPropagation();
-    if (this.whichFunc !== 'erase') this._keyUpFuncs($e);
-
-    this.whichFunc = 'erase';
-  }
-
   _draw($e: Key): void {
-    $e.e.preventDefault();
-    $e.e.stopPropagation();
     if (this.whichFunc !== 'draw') this._keyUpFuncs($e);
 
     this.whichFunc = 'draw';
   }
 
-  _undo($e: Key): void {
-    $e.e.preventDefault();
-    $e.e.stopPropagation();
-    if (this.whichFunc !== 'undo') this._keyUpFuncs($e);
+  _erase($e: Key): void {
+    if (this.whichFunc !== 'erase') this._keyUpFuncs($e);
 
-    this.whichFunc = 'undo';
-    this.func.undo();
+    this.whichFunc = 'erase';
   }
 
+  _hand($e: Key): void {
+    if (this.whichFunc !== 'hand') this._keyUpFuncs($e);
+
+    this.whichFunc = 'hand';
+  }
   _redo($e: Key): void {
     $e.e.preventDefault();
-    $e.e.stopPropagation();
     if (this.whichFunc !== 'redo') this._keyUpFuncs($e);
 
     this.whichFunc = 'redo';
     this.func.redo();
+  }
+
+  _undo($e: Key): void {
+    $e.e.preventDefault();
+    if (this.whichFunc !== 'undo') this._keyUpFuncs($e);
+
+    this.whichFunc = 'undo';
+    this.func.undo();
   }
 }

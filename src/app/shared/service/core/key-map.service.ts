@@ -9,7 +9,7 @@ export class KeyMapService {
 
   constructor() {}
 
-  keyDownEvent($e: Key) {
+  keyDownEvent($e: Key): void {
     this.keyMap[$e.key] = true;
 
     const isCtrlKey: boolean = this.keyMap.Control;
@@ -17,21 +17,22 @@ export class KeyMapService {
     const isShiftKey: boolean = this.keyMap.Shift;
 
     const isEkey: boolean = this.keyMap.e; // Erase
+    const isHkey: boolean = this.keyMap.h; // Hand
     const isPkey: boolean = this.keyMap.p; // Draw
     const isZkey: boolean = this.keyMap.z; // Undo and redo
 
-    const isPermitkey: boolean = isCtrlKey || isAltKey || isShiftKey || isEkey || isPkey || isZkey;
+    const isPermitkey: boolean = isCtrlKey || isAltKey || isShiftKey || isEkey || isHkey || isPkey || isZkey;
     if (!isPermitkey) this.keyMap = {};
   }
 
-  keyUpEvent($e: Key) {
+  keyUpEvent($e: Key): void {
     if ($e.key === 'Control') this.keyMap.Control = false;
     if ($e.key === 'Alt') this.keyMap.Alt = false;
     if ($e.key === 'Shift') this.keyMap.Shift = false;
     this._initKeyMap();
   }
 
-  _initKeyMap() {
+  _initKeyMap(): void {
     if (this.keyMap.Control) {
       if (this.keyMap.Shift) {
         this.keyMap = {};

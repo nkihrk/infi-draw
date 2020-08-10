@@ -134,7 +134,7 @@ export class DrawService {
             ctxOekakiBuffer.moveTo(currentP.offset.newOffsetX, currentP.offset.newOffsetY);
 
             if (nextP && nextP.visibility) {
-              //ctxOekakiBuffer.lineTo(nextP.offset.newOffsetX, nextP.offset.newOffsetY);
+              // ctxOekakiBuffer.lineTo(nextP.offset.newOffsetX, nextP.offset.newOffsetY);
               this._createBezierCurve(ctxOekakiBuffer, currentP, nextP);
             } else if (prevP && prevP.visibility) {
               // ctxOekakiBuffer.lineTo(prevP.offset.newOffsetX, prevP.offset.newOffsetY);
@@ -163,7 +163,7 @@ export class DrawService {
     $ctxOekakiBuffer.lineTo($newP.offset.newOffsetX, $newP.offset.newOffsetY);
   }
 
-  _midPointBetween(p1: { x: number; y: number }, p2: { x: number; y: number }) {
+  _midPointBetween(p1: { x: number; y: number }, p2: { x: number; y: number }): {x: number, y: number} {
     return {
       x: p1.x + (p2.x - p1.x) / 2,
       y: p1.y + (p2.y - p1.y) / 2
