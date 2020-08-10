@@ -47,11 +47,25 @@ export class FuncService {
   //
   //////////////////////////////////////////////////////////
 
-  undo() {
+  undo(): void {
     this.memory.undo();
   }
 
-  redo() {
+  redo(): void{
     this.memory.redo();
+  }
+
+  //////////////////////////////////////////////////////////
+  //
+  // Hand
+  //
+  //////////////////////////////////////////////////////////
+
+  hand(): void {
+    this.memory.reservedByFunc = {
+      name: 'hand',
+      type: '',
+      flgs: ['']
+    };
   }
 }
