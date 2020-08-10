@@ -18,7 +18,7 @@
     color: rgba($white, 0.6);
     font-size: 1rem;
 
-    &:hover {
+    &:hover, &.active {
       border-radius: 2px;
       background-color: rgba($white, 0.2);
     }
