@@ -7,6 +7,18 @@
   padding-top: $ruler-thickness;
   padding-left: $ruler-thickness;
   overflow: hidden;
+
+  &.no-cursor {
+    cursor: none;
+  }
+
+	&.hand-cursor {
+		cursor: grab;
+
+		&:active {
+			cursor: grabbing;
+		}
+	}
 }
 
 .canvas-wrapper {

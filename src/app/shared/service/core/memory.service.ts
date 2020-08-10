@@ -89,6 +89,7 @@ export class MemoryService {
   constructor() {}
 
   init(
+    $appWrapperElem: ElementRef<HTMLDivElement>,
     $canvasWrapperElem: ElementRef<HTMLDivElement>,
     $rulerWrapperElem: ElementRef,
     $mainElem: ElementRef<HTMLCanvasElement>,
@@ -97,6 +98,7 @@ export class MemoryService {
     $cElem: ElementRef<HTMLCanvasElement>
   ): void {
     // Wrapper
+    this.renderer.appWrapper = $appWrapperElem.nativeElement;
     this.renderer.canvasWrapper = $canvasWrapperElem.nativeElement;
     this.renderer.rulerWrapper = $rulerWrapperElem.nativeElement;
 
@@ -187,12 +189,12 @@ export class MemoryService {
     }
   }
 
-  _updateDraw($dId: number, $flg: boolean): void {
+  private _updateDraw($dId: number, $flg: boolean): void {
     const trail: Trail = this.trailList[$dId];
     trail.visibility = $flg;
   }
 
-  _updateErase($eId: number): void {
+  private _updateErase($eId: number): void {
     const erase: Erase = this.eraseList[$eId];
     const trailList: { trailId: number; pointIdList: number[] }[] = erase.trailList;
 
@@ -261,6 +263,7 @@ export class MemoryService {
 
 export interface Renderer {
   // Wrapper
+  appWrapper: HTMLDivElement;
   canvasWrapper: HTMLDivElement;
   rulerWrapper: HTMLDivElement;
   // Debugger
