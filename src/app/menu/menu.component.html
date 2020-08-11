@@ -1,6 +1,6 @@
 <div class="flex-space-between">
   <div class="menu-wrapper">
-    <div class="menu-prefix">
+    <div #file (click)="toggleActiveMenu()" class="menu-prefix">
       ファイル
       <div class="menu-list-prefix main-menu-list-prefix">
         <ul>
@@ -92,7 +92,7 @@
         </ul>
       </div>
     </div>
-    <div class="menu-prefix">
+    <div #edit (click)="toggleActiveMenu()"  class="menu-prefix">
       編集
       <div class="menu-list-prefix main-menu-list-prefix">
         <ul>
@@ -167,7 +167,7 @@
         </ul>
       </div>
     </div>
-    <div class="menu-prefix">
+    <div #modify (click)="toggleActiveMenu()"  class="menu-prefix">
       変更
       <div class="menu-list-prefix main-menu-list-prefix">
         <ul>
@@ -240,7 +240,7 @@
         </ul>
       </div>
     </div>
-    <div class="menu-prefix">
+    <div #show (click)="toggleActiveMenu()"  class="menu-prefix">
       表示
       <div class="menu-list-prefix main-menu-list-prefix">
         <ul>
@@ -346,7 +346,7 @@
         </ul>
       </div>
     </div>
-    <div class="menu-prefix">
+    <div #help (click)="toggleActiveMenu()"  class="menu-prefix">
       ヘルプ
       <div class="menu-list-prefix main-menu-list-prefix">
         <ul>
