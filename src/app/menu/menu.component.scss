@@ -33,7 +33,9 @@
 
   &:hover {
     background-color: rgba($white, 0.2);
+  }
 
+  &.active:hover {
     .main-menu-list-prefix {
       opacity: 1;
       pointer-events: initial;
