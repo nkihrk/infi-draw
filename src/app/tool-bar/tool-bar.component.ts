@@ -77,93 +77,67 @@ export class ToolBarComponent implements OnInit {
     requestAnimationFrame(r);
   }
 
-  _render(): void {
+  private _render(): void {
     const name: string = this.memory.reservedByFunc.name;
     let t: HTMLDivElement;
 
     switch (name) {
       case 'select':
         t = this.select.nativeElement;
-        if (!t.classList.contains('active')) {
-          this._resetToolBarClassAll();
-        }
         break;
 
       case 'hand':
         t = this.hand.nativeElement;
-        if (!t.classList.contains('active')) {
-          this._resetToolBarClassAll();
-          t.classList.add('active');
-        }
+        this._toggleActive(t);
         break;
 
       case 'draw':
         t = this.draw.nativeElement;
-        if (!t.classList.contains('active')) {
-          this._resetToolBarClassAll();
-          t.classList.add('active');
-        }
+        this._toggleActive(t);
         break;
 
       case 'erase':
         t = this.erase.nativeElement;
-        if (!t.classList.contains('active')) {
-          this._resetToolBarClassAll();
-          t.classList.add('active');
-        }
+        this._toggleActive(t);
         break;
 
       case 'createSquare':
         t = this.createSquare.nativeElement;
-        if (!t.classList.contains('active')) {
-          this._resetToolBarClassAll();
-        }
         break;
 
       case 'createCircle':
         t = this.createCircle.nativeElement;
-        if (!t.classList.contains('active')) {
-          this._resetToolBarClassAll();
-        }
         break;
 
       case 'createLine':
         t = this.createLine.nativeElement;
-        if (!t.classList.contains('active')) {
-          this._resetToolBarClassAll();
-        }
         break;
 
       case 'text':
         t = this.text.nativeElement;
-        if (!t.classList.contains('active')) {
-          this._resetToolBarClassAll();
-        }
         break;
 
       case 'colorPicker':
         t = this.colorPicker.nativeElement;
-        if (!t.classList.contains('active')) {
-          this._resetToolBarClassAll();
-        }
         break;
 
       case 'zoomIn':
         t = this.zoomIn.nativeElement;
-        if (!t.classList.contains('active')) {
-          this._resetToolBarClassAll();
-        }
         break;
 
       case 'zoomOut':
         t = this.zoomOut.nativeElement;
-        if (!t.classList.contains('active')) {
-          this._resetToolBarClassAll();
-        }
         break;
 
       default:
         break;
+    }
+  }
+
+  private _toggleActive($targetElem: HTMLDivElement): void {
+    if (!$targetElem.classList.contains('active')) {
+      this._resetToolBarClassAll();
+      $targetElem.classList.add('active');
     }
   }
 
