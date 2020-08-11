@@ -27,7 +27,7 @@ export class ToolBarComponent implements OnInit {
   @ViewChild('createSquare', {static: true}) createSquare: ElementRef<HTMLDivElement>;
   @ViewChild('createCircle', {static: true}) createCircle: ElementRef<HTMLDivElement>;
   @ViewChild('createLine', {static: true}) createLine: ElementRef<HTMLDivElement>;
-  @ViewChild('font', {static: true}) font: ElementRef<HTMLDivElement>;
+  @ViewChild('text', {static: true}) text: ElementRef<HTMLDivElement>;
   @ViewChild('colorPicker', {static: true}) colorPicker: ElementRef<HTMLDivElement>;
   @ViewChild('zoomIn', {static: true}) zoomIn: ElementRef<HTMLDivElement>;
   @ViewChild('zoomOut', {static: true}) zoomOut: ElementRef<HTMLDivElement>;
@@ -47,6 +47,25 @@ export class ToolBarComponent implements OnInit {
 
   ngOnInit(): void {
     this.render();
+  }
+
+  execFunc($name: string): void {
+    switch ($name) {
+      case 'hand':
+        this.func.hand();
+        break;
+
+      case 'draw':
+        this.func.draw();
+        break;
+
+      case 'erase':
+        this.func.erase();
+        break;
+
+      default:
+        break;
+    }
   }
 
   render(): void {
@@ -115,8 +134,8 @@ export class ToolBarComponent implements OnInit {
         }
         break;
 
-      case 'font':
-        t = this.font.nativeElement;
+      case 'text':
+        t = this.text.nativeElement;
         if (!t.classList.contains('active')) {
           this._resetToolBarClassAll();
         }
@@ -156,7 +175,7 @@ export class ToolBarComponent implements OnInit {
     this._resetToolBarClass(this.createSquare.nativeElement);
     this._resetToolBarClass(this.createCircle.nativeElement);
     this._resetToolBarClass(this.createLine.nativeElement);
-    this._resetToolBarClass(this.font.nativeElement);
+    this._resetToolBarClass(this.text.nativeElement);
     this._resetToolBarClass(this.colorPicker.nativeElement);
     this._resetToolBarClass(this.zoomIn.nativeElement);
     this._resetToolBarClass(this.zoomOut.nativeElement);

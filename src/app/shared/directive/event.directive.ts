@@ -28,7 +28,7 @@ export class EventDirective {
 
   constructor() {}
 
-  _emitData($clientX: number, $clientY: number) {
+  _emitData($clientX: number, $clientY: number): void {
     this.dataSet.emit({
       x: $clientX,
       y: $clientY,
@@ -41,7 +41,7 @@ export class EventDirective {
     });
   }
 
-  _resetAllFlgs() {
+  _resetAllFlgs(): void {
     this.downFlg = false;
     this.moveFlg = false;
     this.keyDownFlg = false;
@@ -49,7 +49,7 @@ export class EventDirective {
   }
 
   // Window unload listener
-  @HostListener('window:unload', ['$event']) onUnload($e) {
+  @HostListener('window:unload', ['$event']) onUnload($e): void {
     // console.log($e.returnValue);
     // $e.returnValue = true;
 
@@ -57,7 +57,7 @@ export class EventDirective {
   }
 
   // Window unload listener
-  @HostListener('window:beforeunload', ['$event']) onBeforeUnload($e) {
+  @HostListener('window:beforeunload', ['$event']) onBeforeUnload($e): void {
     // console.log($e.returnValue);
     // $e.returnValue = true;
 
@@ -65,7 +65,7 @@ export class EventDirective {
   }
 
   // Keydown listener
-  @HostListener('document:keydown', ['$event']) onKeyDown($e) {
+  @HostListener('document:keydown', ['$event']) onKeyDown($e): void {
     this.keyDownFlg = true;
     this.key.emit({
       key: $e.key,
@@ -80,7 +80,7 @@ export class EventDirective {
   }
 
   // Keyup listener
-  @HostListener('document:keyup', ['$event']) onKeyUp($e) {
+  @HostListener('document:keyup', ['$event']) onKeyUp($e): void {
     this.keyDownFlg = false;
     this.key.emit({
       key: $e.key,
@@ -95,55 +95,55 @@ export class EventDirective {
   }
 
   // Pointerdown listener
-  @HostListener('pointerdown', ['$event']) onPointerDown($e) {
+  @HostListener('pointerdown', ['$event']) onPointerDown($e): void {
     this._onDown($e);
   }
 
   // Pointerup listener
-  @HostListener('document:pointerup', ['$event']) onPointerUp($e) {
+  @HostListener('document:pointerup', ['$event']) onPointerUp($e): void {
     this._onUp($e);
   }
 
   // Pointermove listener
-  @HostListener('document:pointermove', ['$event']) onPointerMove($e) {
+  @HostListener('document:pointermove', ['$event']) onPointerMove($e): void {
     this._onMove($e);
   }
 
   // Touchstart listener
-  @HostListener('touchstart', ['$event']) onTouchStart($e) {
+  @HostListener('touchstart', ['$event']) onTouchStart($e): void {
     this._onDown($e);
   }
 
   // Touchend listener
-  @HostListener('document:touchend', ['$event']) onTouchEnd($e) {
+  @HostListener('document:touchend', ['$event']) onTouchEnd($e): void {
     this._onUp($e);
   }
 
   // Touchmove listener
-  @HostListener('document:touchmove', ['$event']) onTouchMove($e) {
+  @HostListener('document:touchmove', ['$event']) onTouchMove($e): void {
     this._onMove($e);
   }
 
   // Mousedown listener
-  @HostListener('mousedown', ['$event']) onMouseDown($e) {
+  @HostListener('mousedown', ['$event']) onMouseDown($e): void {
     this._onDown($e);
   }
 
   // Mouseup listener
-  @HostListener('document:mouseup', ['$event']) onMouseUp($e) {
+  @HostListener('document:mouseup', ['$event']) onMouseUp($e): void {
     this._onUp($e);
   }
 
   // Mouseleave listener
-  @HostListener('mouseleave', ['$event']) onMouseLeave($e) {}
+  @HostListener('mouseleave', ['$event']) onMouseLeave($e): void {}
 
   // Mousemove listener
-  @HostListener('document:mousemove', ['$event']) onMouseMove($e) {
+  @HostListener('document:mousemove', ['$event']) onMouseMove($e): void {
     this._onMove($e);
   }
 
   // Mousemove listener
-  @HostListener('dblclick', ['$event']) onDoubleClick($e) {
+  @HostListener('dblclick', ['$event']) onDoubleClick($e): void {
     const clientX = $e.clientX;
     const clientY = $e.clientY;
 
@@ -157,7 +157,7 @@ export class EventDirective {
   }
 
   // Wheel listener
-  @HostListener('wheel', ['$event']) onMouseWheel($e) {
+  @HostListener('wheel', ['$event']) onMouseWheel($e): void {
     $e.preventDefault();
 
     const clientX = $e.clientX;
@@ -171,12 +171,12 @@ export class EventDirective {
   }
 
   // Contextmenu listener
-  @HostListener('document:contextmenu', ['$event']) onContextMenu($e) {
+  @HostListener('document:contextmenu', ['$event']) onContextMenu($e): void {
     $e.preventDefault();
   }
 
   // Down event
-  _onDown($e: any) {
+  _onDown($e: any): void {
     let clientX: number;
     let clientY: number;
 
@@ -200,7 +200,7 @@ export class EventDirective {
   }
 
   // Up event
-  _onUp($e: any) {
+  _onUp($e: any): void {
     let clientX: number;
     let clientY: number;
 
@@ -221,7 +221,7 @@ export class EventDirective {
   }
 
   // Move event
-  _onMove($e: any) {
+  _onMove($e: any): void {
     let clientX: number;
     let clientY: number;
 

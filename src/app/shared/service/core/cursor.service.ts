@@ -37,29 +37,39 @@ export class CursorService {
   }
 
   private _oekaki($name: string, $ctxUiBuffer: CanvasRenderingContext2D): void {
+    const rawX: number = this.memory.mouseOffset.rawX;
+    const rawY: number = this.memory.mouseOffset.rawY;
+    const canvasX: number = this.memory.renderer.main.getBoundingClientRect().x;
+    const canvasY: number = this.memory.renderer.main.getBoundingClientRect().y;
+    const isCanvas: boolean = canvasX < rawX && canvasY < rawY;
+
     const appWrapper: HTMLDivElement = this.memory.renderer.appWrapper;
-    if (!appWrapper.classList.contains('no-cursor')) {
+    if (!appWrapper.classList.contains('no-cursor') && isCanvas) {
       this._resetAppWrapperClass();
       appWrapper.classList.add('no-cursor');
+    } else if (appWrapper.classList.contains('no-cursor') && !isCanvas) {
+      this._resetAppWrapperClass();
     }
 
-    const x: number = this.memory.mouseOffset.x;
-    const y: number = this.memory.mouseOffset.y;
-    let r = 0;
+    if (isCanvas) {
+      const x: number = this.memory.mouseOffset.x;
+      const y: number = this.memory.mouseOffset.y;
 
-    if ($name === 'draw') {
-      r = (this.memory.constant.LINE_WIDTH * this.memory.canvasOffset.zoomRatio) / 2;
-    } else if ($name === 'erase') {
-      r = this.memory.constant.ERASER_LINE_WIDTH;
-    }
+      let r = 0;
+      if ($name === 'draw') {
+        r = (this.memory.constant.LINE_WIDTH * this.memory.canvasOffset.zoomRatio) / 2;
+      } else if ($name === 'erase') {
+        r = this.memory.constant.ERASER_LINE_WIDTH;
+      }
 
-    if (r > 0) {
-      $ctxUiBuffer.translate(0.5, 0.5);
-      $ctxUiBuffer.beginPath();
-      $ctxUiBuffer.strokeStyle = this.memory.constant.STROKE_STYLE;
-      $ctxUiBuffer.lineWidth = 1;
-      $ctxUiBuffer.arc(x, y, r, 0, 2 * Math.PI);
-      $ctxUiBuffer.stroke();
-    }
+      if (r > 0) {
+        $ctxUiBuffer.translate(0.5, 0.5);
+        $ctxUiBuffer.beginPath();
+        $ctxUiBuffer.strokeStyle = this.memory.constant.STROKE_STYLE;
+        $ctxUiBuffer.lineWidth = 1;
+        $ctxUiBuffer.arc(x, y, r, 0, 2 * Math.PI);
+        $ctxUiBuffer.stroke();
+      }
+    } else {}
   }
 }
