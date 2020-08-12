@@ -20,17 +20,17 @@ import { faSearchMinus } from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./tool-bar.component.scss']
 })
 export class ToolBarComponent implements OnInit {
-  @ViewChild('select', {static: true}) select: ElementRef<HTMLDivElement>;
-  @ViewChild('hand', {static: true}) hand: ElementRef<HTMLDivElement>;
-  @ViewChild('draw', {static: true}) draw: ElementRef<HTMLDivElement>;
-  @ViewChild('erase', {static: true}) erase: ElementRef<HTMLDivElement>;
-  @ViewChild('createSquare', {static: true}) createSquare: ElementRef<HTMLDivElement>;
-  @ViewChild('createCircle', {static: true}) createCircle: ElementRef<HTMLDivElement>;
-  @ViewChild('createLine', {static: true}) createLine: ElementRef<HTMLDivElement>;
-  @ViewChild('text', {static: true}) text: ElementRef<HTMLDivElement>;
-  @ViewChild('colorPicker', {static: true}) colorPicker: ElementRef<HTMLDivElement>;
-  @ViewChild('zoomIn', {static: true}) zoomIn: ElementRef<HTMLDivElement>;
-  @ViewChild('zoomOut', {static: true}) zoomOut: ElementRef<HTMLDivElement>;
+  @ViewChild('select', { static: true }) select: ElementRef<HTMLDivElement>;
+  @ViewChild('hand', { static: true }) hand: ElementRef<HTMLDivElement>;
+  @ViewChild('draw', { static: true }) draw: ElementRef<HTMLDivElement>;
+  @ViewChild('erase', { static: true }) erase: ElementRef<HTMLDivElement>;
+  @ViewChild('createSquare', { static: true }) createSquare: ElementRef<HTMLDivElement>;
+  @ViewChild('createCircle', { static: true }) createCircle: ElementRef<HTMLDivElement>;
+  @ViewChild('createLine', { static: true }) createLine: ElementRef<HTMLDivElement>;
+  @ViewChild('text', { static: true }) text: ElementRef<HTMLDivElement>;
+  @ViewChild('colorPicker', { static: true }) colorPicker: ElementRef<HTMLDivElement>;
+  @ViewChild('zoomIn', { static: true }) zoomIn: ElementRef<HTMLDivElement>;
+  @ViewChild('zoomOut', { static: true }) zoomOut: ElementRef<HTMLDivElement>;
 
   faMousePointer = faMousePointer;
   faHandPaper = faHandPaper;
@@ -43,7 +43,7 @@ export class ToolBarComponent implements OnInit {
   faSearchPlus = faSearchPlus;
   faSearchMinus = faSearchMinus;
 
-  constructor(private memory: MemoryService, private func: FuncService) { }
+  constructor(private memory: MemoryService, private func: FuncService) {}
 
   ngOnInit(): void {
     this.render();
