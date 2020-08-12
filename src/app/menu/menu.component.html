@@ -1,6 +1,6 @@
-<div class="flex-space-between">
+<div appMenu (isPointerUp)="onPointerUp($event)" class="flex-space-between">
   <div class="menu-wrapper">
-    <div #file (click)="toggleActiveMenu()" class="menu-prefix">
+    <div #file (click)="toggleActiveMenu()" appMenu (isHover)="onPointerHover('file')" class="menu-prefix">
       ファイル
       <div class="menu-list-prefix main-menu-list-prefix">
         <ul>
@@ -92,7 +92,7 @@
         </ul>
       </div>
     </div>
-    <div #edit (click)="toggleActiveMenu()"  class="menu-prefix">
+    <div #edit (click)="toggleActiveMenu()" appMenu (isHover)="onPointerHover('edit')" class="menu-prefix">
       編集
       <div class="menu-list-prefix main-menu-list-prefix">
         <ul>
@@ -167,7 +167,7 @@
         </ul>
       </div>
     </div>
-    <div #modify (click)="toggleActiveMenu()"  class="menu-prefix">
+    <div #modify (click)="toggleActiveMenu()" appMenu (isHover)="onPointerHover('modify')" class="menu-prefix">
       変更
       <div class="menu-list-prefix main-menu-list-prefix">
         <ul>
@@ -240,7 +240,7 @@
         </ul>
       </div>
     </div>
-    <div #show (click)="toggleActiveMenu()"  class="menu-prefix">
+    <div #show (click)="toggleActiveMenu()" appMenu (isHover)="onPointerHover('show')" class="menu-prefix">
       表示
       <div class="menu-list-prefix main-menu-list-prefix">
         <ul>
@@ -346,7 +346,7 @@
         </ul>
       </div>
     </div>
-    <div #help (click)="toggleActiveMenu()"  class="menu-prefix">
+    <div #help (click)="toggleActiveMenu()" appMenu (isHover)="onPointerHover('help')" class="menu-prefix">
       ヘルプ
       <div class="menu-list-prefix main-menu-list-prefix">
         <ul>

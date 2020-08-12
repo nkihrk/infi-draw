@@ -10,9 +10,10 @@ import { ToolBarComponent } from './tool-bar/tool-bar.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { MenuComponent } from './menu/menu.component';
 import { ToolMenuComponent } from './tool-menu/tool-menu.component';
+import { MenuDirective } from './shared/directive/menu.directive';
 
 @NgModule({
-  declarations: [AppComponent, CanvasComponent, EventDirective, ToolBarComponent, DashboardComponent, MenuComponent, ToolMenuComponent],
+  declarations: [AppComponent, CanvasComponent, EventDirective, ToolBarComponent, DashboardComponent, MenuComponent, ToolMenuComponent, MenuDirective],
   imports: [BrowserModule, AppRoutingModule, FontAwesomeModule],
   providers: [],
   bootstrap: [AppComponent]
