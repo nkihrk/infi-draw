@@ -31,11 +31,11 @@
   padding: 1px 10px;
   white-space: nowrap;
 
-  &:hover {
+  &:hover, &.active.active-stick {
     background-color: rgba($white, 0.2);
   }
 
-  &.active:hover {
+  &.active:hover, &.active.active-stick {
     .main-menu-list-prefix {
       opacity: 1;
       pointer-events: initial;
