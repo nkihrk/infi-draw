@@ -9,18 +9,17 @@ import { faCaretRight } from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./menu.component.scss']
 })
 export class MenuComponent implements OnInit {
-  @ViewChild('file', {static: true}) file: ElementRef<HTMLDivElement>;
-  @ViewChild('edit', {static: true}) edit: ElementRef<HTMLDivElement>;
-  @ViewChild('modify', {static: true}) modify: ElementRef<HTMLDivElement>;
-  @ViewChild('show', {static: true}) show: ElementRef<HTMLDivElement>;
-  @ViewChild('help', {static: true}) help: ElementRef<HTMLDivElement>;
+  @ViewChild('file', { static: true }) file: ElementRef<HTMLDivElement>;
+  @ViewChild('edit', { static: true }) edit: ElementRef<HTMLDivElement>;
+  @ViewChild('modify', { static: true }) modify: ElementRef<HTMLDivElement>;
+  @ViewChild('show', { static: true }) show: ElementRef<HTMLDivElement>;
+  @ViewChild('help', { static: true }) help: ElementRef<HTMLDivElement>;
 
   faPenNib = faPenNib;
   faUser = faUser;
   faCaretRight = faCaretRight;
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   onPointerUp($event: boolean): void {
     this._initMenus();
@@ -116,4 +115,3 @@ export class MenuComponent implements OnInit {
     if (!$target.classList.contains('active-stick')) $target.classList.add('active-stick');
   }
 }
-
