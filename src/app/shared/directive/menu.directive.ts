@@ -5,27 +5,24 @@ import { Directive, EventEmitter, HostListener, Output } from '@angular/core';
 })
 export class MenuDirective {
   @Output() isHover = new EventEmitter<boolean>();
-  @Output() isPointerUp = new EventEmitter<boolean>();
+  @Output() isPointerDown = new EventEmitter<boolean>();
 
-  constructor() { }
+  constructor() {}
 
-  // Pointerover listener
-  @HostListener('pointerover', ['$event']) onPointerOver($e): void {
+  // Pointerenter listener
+  @HostListener('pointerenter', ['$event']) onPointerEnter($e): void {
+    $e.stopPropagation();
     this.isHover.emit(true);
   }
 
-  // Pointerup listener
-  @HostListener('document:pointerup', ['$event']) onPointerUp($e): void {
-    this.isPointerUp.emit(true);
+  // Pointerenter listener
+  @HostListener('pointerleave', ['$event']) onPointerLeave($e): void {
+    $e.stopPropagation();
+    this.isHover.emit(false);
   }
-
-  // Touchend listener
-  @HostListener('document:touchend', ['$event']) onTouchEnd($e): void {
-    this.isPointerUp.emit(true);
-  }
-
-  // Mouseup listener
-  @HostListener('document:mouseup', ['$event']) onMouseUp($e): void {
-    this.isPointerUp.emit(true);
+  // Pointerdown listener
+  @HostListener('document:pointerdown', ['$event']) onPointerdown($e): void {
+    $e.stopPropagation();
+    this.isPointerDown.emit(true);
   }
 }

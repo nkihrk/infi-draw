@@ -1,8 +1,15 @@
-<div appMenu (isPointerUp)="onPointerUp($event)" class="flex-space-between">
+<div (pointerup)="onPointerUp($event)" class="flex-space-between">
   <div class="menu-wrapper">
-    <div #file (click)="toggleActiveMenu()" appMenu (isHover)="onPointerHover('file')" class="menu-prefix">
+    <div
+      #file
+      (click)="toggleActiveMenu()"
+      [ngClass]="toggleActiveMenuFlg ? 'active' : ''"
+      appMenu
+      (isHover)="onPointerHover('file', 'menu')"
+      class="menu-prefix"
+    >
       ファイル
-      <div class="menu-list-prefix main-menu-list-prefix">
+      <div appClickStopPropagation class="menu-list-prefix main-menu-list-prefix">
         <ul>
           <li>
             <span>新規デザイン</span>
@@ -22,7 +29,12 @@
             <span>Cloudから開く...</span>
             <span>Shift+Ctrl+O</span>
           </li>
-          <li class="sub-menu-list-wrapper">
+          <li
+            #fileOpenRecent
+            appMenu
+            (isHover)="onPointerHover('fileOpenRecent', 'menuList')"
+            class="sub-menu-list-wrapper"
+          >
             <span>最近のファイルを開く</span>
             <span><fa-icon [icon]="faCaretRight" [fixedWidth]="true" size="sm"></fa-icon></span>
             <div class="menu-list-prefix sub-menu-list-prefix">
@@ -43,7 +55,7 @@
           </li>
           <li><span>バージョン履歴を表示</span></li>
           <li class="separator-wrapper"><div class="separator"></div></li>
-          <li class="sub-menu-list-wrapper">
+          <li #fileInport appMenu (isHover)="onPointerHover('fileInport', 'menuList')" class="sub-menu-list-wrapper">
             <span>インポート</span>
             <span><fa-icon [icon]="faCaretRight" [fixedWidth]="true" size="sm"></fa-icon></span>
             <div class="menu-list-prefix sub-menu-list-prefix">
@@ -56,7 +68,7 @@
             </div>
           </li>
           <li class="separator-wrapper"><div class="separator"></div></li>
-          <li class="sub-menu-list-wrapper">
+          <li #fileExport appMenu (isHover)="onPointerHover('fileExport', 'menuList')" class="sub-menu-list-wrapper">
             <span>エクスポート</span>
             <span><fa-icon [icon]="faCaretRight" [fixedWidth]="true" size="sm"></fa-icon></span>
             <div class="menu-list-prefix sub-menu-list-prefix">
@@ -69,7 +81,12 @@
                 <li><span>PNG画像(.png)</span></li>
                 <li><span>JPEG画像(.jpg)</span></li>
                 <li><span>Scalable Vector Graphics(.svg)</span></li>
-                <li class="sub-sub-menu-list-wrapper">
+                <li
+                  #fileExportPDF
+                  appMenu
+                  (isHover)="onPointerHover('fileExportPDF', 'subMenuList')"
+                  class="sub-sub-menu-list-wrapper"
+                >
                   <span>PDFドキュメント(.pdf)</span>
                   <span><fa-icon [icon]="faCaretRight" [fixedWidth]="true" size="sm"></fa-icon></span>
                   <div class="menu-list-prefix sub-sub-menu-list-prefix">
@@ -94,9 +111,16 @@
         </ul>
       </div>
     </div>
-    <div #edit (click)="toggleActiveMenu()" appMenu (isHover)="onPointerHover('edit')" class="menu-prefix">
+    <div
+      #edit
+      (click)="toggleActiveMenu()"
+      [ngClass]="toggleActiveMenuFlg ? 'active' : ''"
+      appMenu
+      (isHover)="onPointerHover('edit', 'menu')"
+      class="menu-prefix"
+    >
       編集
-      <div class="menu-list-prefix main-menu-list-prefix">
+      <div appClickStopPropagation class="menu-list-prefix main-menu-list-prefix">
         <ul>
           <li>
             <span>元に戻す</span>
@@ -168,9 +192,16 @@
         </ul>
       </div>
     </div>
-    <div #modify (click)="toggleActiveMenu()" appMenu (isHover)="onPointerHover('modify')" class="menu-prefix">
+    <div
+      #modify
+      (click)="toggleActiveMenu()"
+      [ngClass]="toggleActiveMenuFlg ? 'active' : ''"
+      appMenu
+      (isHover)="onPointerHover('modify', 'menu')"
+      class="menu-prefix"
+    >
       変更
-      <div class="menu-list-prefix main-menu-list-prefix">
+      <div appClickStopPropagation class="menu-list-prefix main-menu-list-prefix">
         <ul>
           <li class="sub-menu-list-wrapper">
             <span>重ね順</span>
@@ -241,9 +272,16 @@
         </ul>
       </div>
     </div>
-    <div #show (click)="toggleActiveMenu()" appMenu (isHover)="onPointerHover('show')" class="menu-prefix">
+    <div
+      #show
+      (click)="toggleActiveMenu()"
+      [ngClass]="toggleActiveMenuFlg ? 'active' : ''"
+      appMenu
+      (isHover)="onPointerHover('show', 'menu')"
+      class="menu-prefix"
+    >
       表示
-      <div class="menu-list-prefix main-menu-list-prefix">
+      <div appClickStopPropagation class="menu-list-prefix main-menu-list-prefix">
         <ul>
           <li>
             <span>元のビュー</span>
@@ -347,9 +385,16 @@
         </ul>
       </div>
     </div>
-    <div #help (click)="toggleActiveMenu()" appMenu (isHover)="onPointerHover('help')" class="menu-prefix">
+    <div
+      #help
+      (click)="toggleActiveMenu()"
+      [ngClass]="toggleActiveMenuFlg ? 'active' : ''"
+      appMenu
+      (isHover)="onPointerHover('help', 'menu')"
+      class="menu-prefix"
+    >
       ヘルプ
-      <div class="menu-list-prefix main-menu-list-prefix">
+      <div appClickStopPropagation class="menu-list-prefix main-menu-list-prefix">
         <ul>
           <li class="sub-menu-list-wrapper">
             <span>サポート</span>

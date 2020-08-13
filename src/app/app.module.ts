@@ -11,6 +11,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { MenuComponent } from './menu/menu.component';
 import { ToolMenuComponent } from './tool-menu/tool-menu.component';
 import { MenuDirective } from './shared/directive/menu.directive';
+import { ClickStopPropagationDirective } from './shared/directive/click-stop-propagation.directive';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { MenuDirective } from './shared/directive/menu.directive';
     DashboardComponent,
     MenuComponent,
     ToolMenuComponent,
-    MenuDirective
+    MenuDirective,
+    ClickStopPropagationDirective
   ],
   imports: [BrowserModule, AppRoutingModule, FontAwesomeModule],
   providers: [],
