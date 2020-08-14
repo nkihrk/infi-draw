@@ -1,407 +1,150 @@
-<div appMenu (isPointerUp)="onPointerUp($event)" class="flex-space-between">
-  <div class="menu-wrapper">
-    <div #file (click)="toggleActiveMenu()" appMenu (isHover)="onPointerHover('file')" class="menu-prefix">
-      ファイル
-      <div class="menu-list-prefix main-menu-list-prefix">
-        <ul>
-          <li>
-            <span>新規デザイン</span>
-            <span>Alt+N</span>
-          </li>
-          <li><span>テンプレートから新規デザイン...</span></li>
-          <li>
-            <span>クリップボードから新規作成</span>
-            <span>Shift+Ctrl+Alt+N</span>
-          </li>
-          <li class="separator-wrapper"><div class="separator"></div></li>
-          <li>
-            <span>ローカルファイルを開く...</span>
-            <span>Ctrl+O</span>
-          </li>
-          <li>
-            <span>Cloudから開く...</span>
-            <span>Shift+Ctrl+O</span>
-          </li>
-          <li class="sub-menu-list-wrapper">
-            <span>最近のファイルを開く</span>
-            <span><fa-icon [icon]="faCaretRight" [fixedWidth]="true" size="sm"></fa-icon></span>
-            <div class="menu-list-prefix sub-menu-list-prefix">
-              <ul>
-                <li><span>最近開いたファイルはありません</span></li>
-              </ul>
-            </div>
-          </li>
-          <li class="separator-wrapper"><div class="separator"></div></li>
-          <li>
-            <span>保存</span>
-            <span>Ctrl+S</span>
-          </li>
-          <li><span>ファイルダウンロード</span></li>
-          <li>
-            <span>名前を付けてCloudに保存...</span>
-            <span>Shift+Ctrl+S</span>
-          </li>
-          <li><span>バージョン履歴を表示</span></li>
-          <li class="separator-wrapper"><div class="separator"></div></li>
-          <li class="sub-menu-list-wrapper">
-            <span>インポート</span>
-            <span><fa-icon [icon]="faCaretRight" [fixedWidth]="true" size="sm"></fa-icon></span>
-            <div class="menu-list-prefix sub-menu-list-prefix">
-              <ul>
-                <li><span>画像を挿入...</span></li>
-                <li><span>画像をリンク...</span></li>
-                <li class="separator-wrapper"><div class="separator"></div></li>
-                <li><span>フォントを追加...</span></li>
-              </ul>
-            </div>
-          </li>
-          <li class="separator-wrapper"><div class="separator"></div></li>
-          <li class="sub-menu-list-wrapper">
-            <span>エクスポート</span>
-            <span><fa-icon [icon]="faCaretRight" [fixedWidth]="true" size="sm"></fa-icon></span>
-            <div class="menu-list-prefix sub-menu-list-prefix">
-              <ul>
-                <li>
-                  <span>高度なエクスポート...</span>
-                  <span>Shift+Ctrl+E</span>
-                </li>
-                <li class="separator-wrapper"><div class="separator"></div></li>
-                <li><span>PNG画像(.png)</span></li>
-                <li><span>JPEG画像(.jpg)</span></li>
-                <li><span>Scalable Vector Graphics(.svg)</span></li>
-                <li class="sub-sub-menu-list-wrapper">
-                  <span>PDFドキュメント(.pdf)</span>
-                  <span><fa-icon [icon]="faCaretRight" [fixedWidth]="true" size="sm"></fa-icon></span>
-                  <div class="menu-list-prefix sub-sub-menu-list-prefix">
-                    <ul>
-                      <li><span>72 dpi</span></li>
-                      <li><span>96 dpi</span></li>
-                      <li><span>150 dpi</span></li>
-                      <li><span>300 dpi</span></li>
-                      <li><span>詳細オプション...</span></li>
-                    </ul>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </li>
-          <li>
-            <span>印刷...</span>
-            <span>Ctrl+P</span>
-          </li>
-          <li class="separator-wrapper"><div class="separator"></div></li>
-          <li><span>ホームに戻る</span></li>
-        </ul>
-      </div>
-    </div>
-    <div #edit (click)="toggleActiveMenu()" appMenu (isHover)="onPointerHover('edit')" class="menu-prefix">
-      編集
-      <div class="menu-list-prefix main-menu-list-prefix">
-        <ul>
-          <li>
-            <span>元に戻す</span>
-            <span>Ctrl+Z</span>
-          </li>
-          <li>
-            <span>やり直す</span>
-            <span>Shift+Ctrl+Z</span>
-          </li>
-          <li class="separator-wrapper"><div class="separator"></div></li>
-          <li>
-            <span>切り取り</span>
-            <span>Ctrl+X</span>
-          </li>
-          <li>
-            <span>コピー</span>
-            <span>Ctrl+C</span>
-          </li>
-          <li class="sub-menu-list-wrapper">
-            <span>貼り付け</span>
-            <span><fa-icon [icon]="faCaretRight" [fixedWidth]="true" size="sm"></fa-icon></span>
-            <div class="menu-list-prefix sub-menu-list-prefix">
-              <ul>
-                <li>
-                  <span>貼り付け</span>
-                  <span>Ctrl+V</span>
-                </li>
-                <li>
-                  <span>同じ位置に貼り付け</span>
-                  <span>Shift+Ctrl+V</span>
-                </li>
-                <li>
-                  <span>選択範囲内に貼り付け</span>
-                  <span>Alt+Shift+Ctrl+V</span>
-                </li>
-                <li>
-                  <span>貼り付けスタイル</span>
-                  <span>F4</span>
-                </li>
-              </ul>
-            </div>
-          </li>
-          <li>
-            <span>削除</span>
-            <span>Del</span>
-          </li>
-          <li>
-            <span>複製</span>
-            <span>Ctrl+D</span>
-          </li>
-          <li class="separator-wrapper"><div class="separator"></div></li>
-          <li><span>選択範囲の編集</span></li>
-          <li>
-            <span>すべての選択</span>
-            <span>Ctrl+A</span>
-          </li>
-          <li>
-            <span>すべて選択解除</span>
-            <span>Shift+Ctrl+A</span>
-          </li>
-          <li>
-            <span>選択範囲を反転</span>
-            <span>Shift+Ctrl+I</span>
-          </li>
-          <li class="separator-wrapper"><div class="separator"></div></li>
-          <li><span>フォントの種類で選択</span></li>
-          <li class="separator-wrapper"><div class="separator"></div></li>
-          <li><span>設定...</span></li>
-        </ul>
-      </div>
-    </div>
-    <div #modify (click)="toggleActiveMenu()" appMenu (isHover)="onPointerHover('modify')" class="menu-prefix">
-      変更
-      <div class="menu-list-prefix main-menu-list-prefix">
-        <ul>
-          <li class="sub-menu-list-wrapper">
-            <span>重ね順</span>
-            <span><fa-icon [icon]="faCaretRight" [fixedWidth]="true" size="sm"></fa-icon></span>
-            <div class="menu-list-prefix sub-menu-list-prefix">
-              <ul>
-                <li>
-                  <span>最前面へ</span>
-                  <span>Shift+Ctrl+上矢印</span>
-                </li>
-                <li>
-                  <span>一つ前面へ</span>
-                  <span>Ctrl+上矢印</span>
-                </li>
-                <li>
-                  <span>一つ背面へ</span>
-                  <span>Ctrl+下矢印</span>
-                </li>
-                <li>
-                  <span>最背面へ</span>
-                  <span>Shift+Ctrl+下矢印</span>
-                </li>
-              </ul>
-            </div>
-          </li>
-          <li class="sub-menu-list-wrapper">
-            <span>配置</span>
-            <span><fa-icon [icon]="faCaretRight" [fixedWidth]="true" size="sm"></fa-icon></span>
-            <div class="menu-list-prefix sub-menu-list-prefix">
-              <ul>
-                <li><span>左揃え</span></li>
-                <li><span>横の中央揃え</span></li>
-                <li><span>右揃え</span></li>
-                <li class="separator-wrapper"><div class="separator"></div></li>
-                <li><span>上揃え</span></li>
-                <li><span>縦の中央揃え</span></li>
-                <li><span>下揃え</span></li>
-                <li class="separator-wrapper"><div class="separator"></div></li>
-                <li><span>同じ幅</span></li>
-                <li><span>同じ長さ</span></li>
-                <li class="separator-wrapper"><div class="separator"></div></li>
-                <li><span>横方向に配置</span></li>
-                <li><span>縦方向に配置</span></li>
-                <li class="separator-wrapper"><div class="separator"></div></li>
-                <li><span>ユニット全体にスナップ</span></li>
-                <li><span>ユニット半分にスナップ</span></li>
-              </ul>
-            </div>
-          </li>
-          <li class="sub-menu-list-wrapper">
-            <span>移動</span>
-            <span><fa-icon [icon]="faCaretRight" [fixedWidth]="true" size="sm"></fa-icon></span>
-            <div class="menu-list-prefix sub-menu-list-prefix">
-              <ul>
-                <li><span>右に45°回転</span></li>
-                <li><span>左に90°回転</span></li>
-                <li><span>左に180°回転</span></li>
-                <li class="separator-wrapper"><div class="separator"></div></li>
-                <li><span>右に45°回転</span></li>
-                <li><span>右に90°回転</span></li>
-                <li><span>右に180°回転</span></li>
-                <li class="separator-wrapper"><div class="separator"></div></li>
-                <li><span>垂直方向にミラー化</span></li>
-                <li><span>水平方向にミラー化</span></li>
-              </ul>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </div>
-    <div #show (click)="toggleActiveMenu()" appMenu (isHover)="onPointerHover('show')" class="menu-prefix">
-      表示
-      <div class="menu-list-prefix main-menu-list-prefix">
-        <ul>
-          <li>
-            <span>元のビュー</span>
-            <span>Ctrl+O</span>
-          </li>
-          <li><span>選択範囲を画面に合わせる</span></li>
-          <li><span>レイヤーを画面に合わせる</span></li>
-          <li>
-            <span>全体を画面に合わせる</span>
-            <span>Alt+Ctrl+O</span>
-          </li>
-          <li class="sub-menu-list-wrapper">
-            <span>拡大 - 縮小</span>
-            <span><fa-icon [icon]="faCaretRight" [fixedWidth]="true" size="sm"></fa-icon></span>
-            <div class="menu-list-prefix sub-menu-list-prefix">
-              <ul>
-                <li><span>6%</span></li>
-                <li><span>12%</span></li>
-                <li><span>25%</span></li>
-                <li><span>50%</span></li>
-                <li><span>66%</span></li>
-                <li><span>100%</span></li>
-                <li><span>150%</span></li>
-                <li><span>200%</span></li>
-                <li><span>300%</span></li>
-                <li><span>400%</span></li>
-                <li><span>800%</span></li>
-                <li><span>1600%</span></li>
-                <li><span>3200%</span></li>
-                <li><span>6400%</span></li>
-                <li><span>12800%</span></li>
-                <li><span>25600%</span></li>
-                <li class="separator-wrapper"><div class="separator"></div></li>
-                <li>
-                  <span>拡大</span>
-                  <span>Ctrl++</span>
-                </li>
-                <li>
-                  <span>縮小</span>
-                  <span>Ctrl+-</span>
-                </li>
-              </ul>
-            </div>
-          </li>
-          <li class="separator-wrapper"><div class="separator"></div></li>
-          <li><span>輪郭の表示</span></li>
-          <li><span>ファーストビュー</span></li>
-          <li class="separator-wrapper"><div class="separator"></div></li>
-          <li class="sub-menu-list-wrapper">
-            <span>キャンバス</span>
-            <span><fa-icon [icon]="faCaretRight" [fixedWidth]="true" size="sm"></fa-icon></span>
-            <div class="menu-list-prefix sub-menu-list-prefix">
-              <ul>
-                <li>
-                  <span>ルーラーを表示</span>
-                  <span>Ctrl+Alt+R</span>
-                </li>
-                <li>
-                  <span>ガイドラインを表示</span>
-                  <span>Ctrl+,</span>
-                </li>
-                <li><span>シンボルラベルを表示</span></li>
-                <li>
-                  <span>グリッドを表示</span>
-                  <span>Ctrl+AltG</span>
-                </li>
-                <li><span>スライスを表示</span></li>
-                <li>
-                  <span>エフェクトを表示</span>
-                  <span>Ctrl+E</span>
-                </li>
-              </ul>
-            </div>
-          </li>
-          <li class="separator-wrapper"><div class="separator"></div></li>
-          <li class="sub-menu-list-wrapper">
-            <span>スナップ</span>
-            <span><fa-icon [icon]="faCaretRight" [fixedWidth]="true" size="sm"></fa-icon></span>
-            <div class="menu-list-prefix sub-menu-list-prefix">
-              <ul>
-                <li>
-                  <span>スナップを使用</span>
-                  <span>Shift+F10</span>
-                </li>
-                <li><span>スナップゾーンを使用</span></li>
-                <li class="separator-wrapper"><div class="separator"></div></li>
-                <li><span>グリッドにスナップ</span></li>
-                <li><span>ガイドラインにスナップ</span></li>
-                <li><span>フルピクセル</span></li>
-                <li><span>アンカーポイントにスナップ</span></li>
-                <li><span>図形にスナップ</span></li>
-                <li><span>ページにスナップ</span></li>
-              </ul>
-            </div>
-          </li>
-          <li class="separator-wrapper"><div class="separator"></div></li>
-          <li>
-            <span>フル画面に切り替え...</span>
-            <span>Alt+Enter</span>
-          </li>
-        </ul>
-      </div>
-    </div>
-    <div #help (click)="toggleActiveMenu()" appMenu (isHover)="onPointerHover('help')" class="menu-prefix">
-      ヘルプ
-      <div class="menu-list-prefix main-menu-list-prefix">
-        <ul>
-          <li class="sub-menu-list-wrapper">
-            <span>サポート</span>
-            <span><fa-icon [icon]="faCaretRight" [fixedWidth]="true" size="sm"></fa-icon></span>
-            <div class="menu-list-prefix sub-menu-list-prefix">
-              <ul>
-                <li><span>お問い合わせ</span></li>
-                <li><span>開発者に詳細を送信</span></li>
-              </ul>
-            </div>
-          </li>
-          <li class="sub-menu-list-wrapper">
-            <span>学習</span>
-            <span><fa-icon [icon]="faCaretRight" [fixedWidth]="true" size="sm"></fa-icon></span>
-            <div class="menu-list-prefix sub-menu-list-prefix">
-              <ul>
-                <li><span>ユーザーガイド</span></li>
-                <li><span>チュートリアル</span></li>
-                <li><span>ブログ</span></li>
-                <li><span>強化されたツールヒントの表示</span></li>
-              </ul>
-            </div>
-          </li>
-          <li><span>最新情報</span></li>
-          <li class="sub-menu-list-wrapper">
-            <span>言語</span>
-            <span><fa-icon [icon]="faCaretRight" [fixedWidth]="true" size="sm"></fa-icon></span>
-            <div class="menu-list-prefix sub-menu-list-prefix">
-              <ul>
-                <li><span>日本語</span></li>
-                <li><span>English</span></li>
-              </ul>
-            </div>
-          </li>
-          <li><span>Welcomeスクリーンを表示</span></li>
-          <li><span>更新をチェック</span></li>
-        </ul>
-      </div>
-    </div>
-  </div>
-
-  <a href="https://github.com/nkihrk/infi-draw" target="_blank">
-    <div class="menu-prefix" style="font-weight: bold;">
-      <fa-icon [icon]="faPenNib" [fixedWidth]="true" size="sm"></fa-icon>
-      InfiDraw v0.0.1
-    </div>
-  </a>
-
-  <div class="user-name">
-    <div class="menu-prefix">
-      <fa-icon [icon]="faUser" [fixedWidth]="true" size="sm"></fa-icon>
-      赤井はあと
-    </div>
-  </div>
+<div class="flex-space-between">
+	<div class="menu-wrapper">
+		<div class="menu">
+			<span class="menu-title active">ファイル</span>
+			<div class="menu-list main-menu-list active">
+				<ul>
+					<li>
+						<div class="sub-menu-title"><span>バージョン履歴を表示</span></div>
+					</li>
+					<li class="separator-wrapper"><div class="separator"></div></li>
+					<li class="sub-menu-list-wrapper">
+						<div class="sub-menu-title">
+							<span>インポート</span>
+							<span><fa-icon [icon]="faCaretRight" [fixedWidth]="true" size="sm"></fa-icon></span>
+						</div>
+						<div class="menu-list sub-menu-list">
+							<ul>
+								<li>
+									<div class="sub-menu-title"><span>画像を挿入...</span></div>
+								</li>
+								<li>
+									<div class="sub-menu-title"><span>画像をリンク...</span></div>
+								</li>
+								<li class="separator-wrapper"><div class="separator"></div></li>
+								<li>
+									<div class="sub-menu-title"><span>フォントを追加...</span></div>
+								</li>
+							</ul>
+						</div>
+					</li>
+					<li class="separator-wrapper"><div class="separator"></div></li>
+					<li class="sub-menu-list-wrapper active">
+						<div class="sub-menu-title">
+							<span>エクスポート</span>
+							<span><fa-icon [icon]="faCaretRight" [fixedWidth]="true" size="sm"></fa-icon></span>
+						</div>
+						<div class="menu-list sub-menu-list active">
+							<ul>
+								<li>
+									<div class="sub-menu-title">
+										<span>高度なエクスポート...</span>
+										<span>Shift+Ctrl+E</span>
+									</div>
+								</li>
+								<li class="separator-wrapper"><div class="separator"></div></li>
+								<li>
+									<div class="sub-menu-title"><span>PNG画像(.png)</span></div>
+								</li>
+								<li>
+									<div class="sub-menu-title"><span>JPEG画像(.jpg)</span></div>
+								</li>
+								<li>
+									<div class="sub-menu-title"><span>Scalable Vector Graphics(.svg)</span></div>
+								</li>
+								<li class="sub-menu-list-wrapper active">
+									<div class="sub-menu-title">
+										<span>PDFドキュメント(.pdf)</span>
+										<span><fa-icon [icon]="faCaretRight" [fixedWidth]="true" size="sm"></fa-icon></span>
+									</div>
+									<div class="menu-list sub-menu-list active">
+										<ul>
+											<li>
+												<div class="sub-menu-title"><span>72 dpi</span></div>
+											</li>
+											<li>
+												<div class="sub-menu-title"><span>96 dpi</span></div>
+											</li>
+											<li>
+												<div class="sub-menu-title"><span>150 dpi</span></div>
+											</li>
+											<li>
+												<div class="sub-menu-title"><span>300 dpi</span></div>
+											</li>
+											<li>
+												<div class="sub-menu-title"><span>詳細オプション...</span></div>
+											</li>
+										</ul>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</li>
+					<li>
+						<div class="sub-menu-title">
+							<span>印刷...</span>
+							<span>Ctrl+P</span>
+						</div>
+					</li>
+					<li class="separator-wrapper"><div class="separator"></div></li>
+					<li>
+						<div class="sub-menu-title"><span>ホームに戻る</span></div>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="menu">
+			<span class="menu-title">編集</span>
+			<div class="menu-list main-menu-list">
+				<ul>
+					<li>
+						<div class="sub-menu-title">
+							<span>コピー</span>
+							<span>Ctrl+C</span>
+						</div>
+					</li>
+					<li class="sub-menu-list-wrapper">
+						<div class="sub-menu-title">
+							<span>貼り付け</span>
+							<span><fa-icon [icon]="faCaretRight" [fixedWidth]="true" size="sm"></fa-icon></span>
+						</div>
+						<div class="menu-list sub-menu-list">
+							<ul>
+								<li>
+									<div class="sub-menu-title">
+										<span>貼り付け</span>
+										<span>Ctrl+V</span>
+									</div>
+								</li>
+								<li>
+									<div class="sub-menu-title">
+										<span>同じ位置に貼り付け</span>
+										<span>Shift+Ctrl+V</span>
+									</div>
+								</li>
+								<li>
+									<div class="sub-menu-title">
+										<span>選択範囲内に貼り付け</span>
+										<span>Alt+Shift+Ctrl+V</span>
+									</div>
+								</li>
+								<li>
+									<div class="sub-menu-title">
+										<span>貼り付けスタイル</span>
+										<span>F4</span>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</li>
+					<li>
+						<div class="sub-menu-title">
+							<span>削除</span>
+							<span>Del</span>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
 </div>

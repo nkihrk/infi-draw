@@ -1,134 +1,118 @@
 @import "../variables";
 
 .flex-space-between {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-
-  user-select: none;
-
-  .menu-wrapper {
-    display: flex;
-    flex-direction: row;
-    padding: 0 10px;
-  }
-
-  .user-name {
-    border-left: solid 1px $mid-white;
-    overflow: hidden;
-
-    pointer-events: none;
-    opacity: 0;
-  }
-}
-
-.menu-prefix {
-  position: relative;
-  color: $white;
-  font-size: 0.8rem;
-  padding: 1px 10px;
-  white-space: nowrap;
-
-  &:hover, &.active.active-stick {
-    background-color: rgba($white, 0.2);
-  }
-
-  &.active:hover, &.active.active-stick {
-    .main-menu-list-prefix {
-      opacity: 1;
-      pointer-events: initial;
-    }
-  }
-
-  .menu-list-prefix {
-    position: absolute;
-    z-index: 200;
-    background-color: $canvas-color;
-    border: solid 1px $mid-white;
-    border-radius: 0 0 2px 2px;
-    min-width: 200px;
-    font-size: 0.8rem;
-
-    &.active {
-      opacity: 1;
-    }
-
-    ul {
-      padding: 2px;
-
-      li {
 	display: flex;
+	flex-direction: row;
 	justify-content: space-between;
+	align-items: center;
+	width: 100%;
 
-	&:hover {
-	  border-radius: 2px;
-	  background-color: rgba($white, 0.1);
+	user-select: none;
+
+	.user-name {
+		border-left: solid 1px $mid-white;
+		overflow: hidden;
+
+		pointer-events: none;
+		opacity: 0;
 	}
 
-	span {
-	  margin: 4px 8px 4px 25px;
+	.menu-wrapper {
+		display: flex;
+		flex-direction: row;
+		padding: 0 10px;
 
-	  &:nth-child(2) {
-	    font-size: 0.7rem;
-	  }
+		.menu {
+			position: relative;
+			color: $white;
+			font-size: 0.8rem;
+			white-space: nowrap;
+
+			.menu-title {
+				padding: 1px 10px;
+
+				&:hover,
+				&.active {
+					background-color: rgba($white, 0.2);
+				}
+			}
+
+			.main-menu-list {
+				top: 100%;
+				left: 0;
+			}
+
+			.sub-menu-list-wrapper {
+				position: relative;
+
+				.sub-menu-list {
+					top: -3px;
+					left: calc(100% + 2px);
+
+					&.active {
+						opacity: 1;
+						pointer-events: initial;
+						trasition-delay: 500ms;
+					}
+				}
+			}
+
+			.menu-list {
+				position: absolute;
+				z-index: 200;
+				background-color: $canvas-color;
+				border: solid 1px $mid-white;
+				border-radius: 0 0 2px 2px;
+				min-width: 200px;
+				font-size: 0.8rem;
+
+				opacity: 0;
+				pointer-events: none;
+				transition: opacity $transition;
+
+				&.active {
+					opacity: 1;
+					pointer-events: initial;
+				}
+
+				ul {
+					padding: 2px;
+
+					li {
+						margin: 2px 0;
+
+						&:hover,
+						&.active {
+							border-radius: 2px;
+							background-color: rgba($white, 0.1);
+						}
+					}
+				}
+
+				.separator-wrapper {
+					pointer-events: none;
+
+					.separator {
+						width: 100%;
+						height: 1px;
+						background-color: rgba($mid-white, 0.5);
+						margin: 2px 0;
+					}
+				}
+
+				.sub-menu-title {
+					display: flex;
+					justify-content: space-between;
+
+					span {
+						margin: 4px 8px 4px 25px;
+
+						&:nth-child(2) {
+							font-size: 0.7rem;
+						}
+					}
+				}
+			}
+		}
 	}
-
-	&.separator-wrapper {
-	  pointer-events: none;
-
-	  .separator {
-	    width: 100%;
-	    height: 1px;
-	    background-color: rgba($mid-white, 0.5);
-	    margin: 5px 0;
-	  }
-	}
-      }
-    }
-  }
-
-  .sub-menu-list-wrapper {
-    position: relative;
-
-    &:hover {
-      .sub-menu-list-prefix {
-	transition-delay: 500ms;
-	opacity: 1;
-	pointer-events: initial;
-      }
-    }
-  }
-
-  .sub-sub-menu-list-wrapper {
-    position: relative;
-
-    &:hover {
-      .sub-sub-menu-list-prefix {
-	transition-delay: 500ms;
-	opacity: 1;
-	pointer-events: initial;
-      }
-    }
-  }
-
-  .main-menu-list-prefix {
-    top: 100%;
-    left: 0;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity $transition;
-  }
-
-  .sub-menu-list-prefix, .sub-sub-menu-list-prefix {
-    top: -3px;
-    left: calc(100% + 2px);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity $transition;
-  }
 }
-
-
-
