@@ -1,9 +1,9 @@
 <div class="flex-space-between">
 	<div class="menu-wrapper">
-		<div class="menu">
-			<ng-template ngFor let-menu="$implicit" [ngForOf]="menus" let-i="index">
-				<span #elReference class="menu-title active">{{ menu }}</span>
-				<div class="menu-list main-menu-list active">
+		<ng-template ngFor let-menuTitle="$implicit" [ngForOf]="menuTitles" let-i="index">
+			<div appActiveMenu class="menu">
+				<span #menuTitlesRef appActiveMenu class="menu-title">{{ menuTitle }}</span>
+				<div #menuListsRef appActiveMenu class="menu-list main-menu-list">
 					<ul>
 						<ng-template ngFor let-menuList="$implicit" [ngForOf]="menuLists[i]" let-i="index">
 							<div *ngIf="menuList.type === 2; then thenBlock; else elseBlock"></div>
@@ -11,8 +11,8 @@
 								<li class="separator-wrapper"><div class="separator"></div></li>
 							</ng-template>
 							<ng-template #elseBlock>
-								<li [ngClass]="{ 'sub-menu-list-wrapper': menuList.type === 1 }">
-									<div #elReference (click)="menuList.exec()" class="sub-menu-title">
+								<li appActiveMenu [ngClass]="{ 'sub-menu-list-wrapper': menuList.type === 1 }">
+									<div #subMenuTitlesRef (click)="menuList.exec()" class="sub-menu-title">
 										<span>{{ menuList.title }}</span>
 										<span *ngIf="menuList.type !== 1">{{ menuList.key }}</span>
 										<span *ngIf="menuList.type === 1"
@@ -20,7 +20,7 @@
 										></span>
 									</div>
 
-									<div #elReference class="menu-list sub-menu-list" *ngIf="menuList.type === 1">
+									<div #subMenuListsRef class="menu-list sub-menu-list" *ngIf="menuList.type === 1">
 										<ul>
 											<ng-template ngFor let-subMenuList="$implicit" [ngForOf]="menuList.subMenuList" let-i="index">
 												<div *ngIf="subMenuList.type === 2; then thenBlock; else elseBlock"></div>
@@ -28,8 +28,8 @@
 													<li class="separator-wrapper"><div class="separator"></div></li>
 												</ng-template>
 												<ng-template #elseBlock>
-													<li [ngClass]="{ 'sub-menu-list-wrapper': subMenuList.type === 1 }">
-														<div #elReference (click)="subMenuList.exec()" class="sub-menu-title">
+													<li appActiveMenu [ngClass]="{ 'sub-menu-list-wrapper': subMenuList.type === 1 }">
+														<div #subMenuTitlesRef appActiveMenu (click)="subMenuList.exec()" class="sub-menu-title">
 															<span>{{ subMenuList.title }}</span>
 															<span *ngIf="subMenuList.type !== 1">{{ subMenuList.key }}</span>
 															<span *ngIf="subMenuList.type === 1"
@@ -37,7 +37,7 @@
 															></span>
 														</div>
 
-														<div #elReference class="menu-list sub-menu-list" *ngIf="subMenuList.type === 1">
+														<div #subMenuListsRef class="menu-list sub-menu-list" *ngIf="subMenuList.type === 1">
 															<ul>
 																<ng-template
 																	ngFor
@@ -60,8 +60,8 @@
 																</ng-template>
 															</ul>
 														</div>
-													</li>
-												</ng-template>
+													</li></ng-template
+												>
 											</ng-template>
 										</ul>
 									</div>
@@ -70,7 +70,7 @@
 						</ng-template>
 					</ul>
 				</div>
-			</ng-template>
-		</div>
+			</div>
+		</ng-template>
 	</div>
 </div>

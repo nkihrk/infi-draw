@@ -9,10 +9,13 @@ import { faCaretRight } from '@fortawesome/free-solid-svg-icons';
 	styleUrls: ['./menu.component.scss']
 })
 export class MenuComponent implements OnInit, AfterViewInit {
-	@ViewChildren('elReference') elReference: QueryList<ElementRef>;
+	@ViewChildren('menuTitlesRef') menuTitlesRef: QueryList<ElementRef>;
+	@ViewChildren('menuListsRef') menuListsRef: QueryList<ElementRef>;
+	@ViewChildren('subMenuTitlesRef') subMenuTitlesRef: QueryList<ElementRef>;
+	@ViewChildren('subMenuListsRef') subMenuListsRef: QueryList<ElementRef>;
 
-	menus: string[];
-	menuLists: MenuList[][];
+	menuTitles: string[];
+	menuLists: MenuList[][] = [];
 	subMenuLists: MenuList[][];
 
 	faPenNib = faPenNib;
@@ -20,9 +23,17 @@ export class MenuComponent implements OnInit, AfterViewInit {
 	faCaretRight = faCaretRight;
 
 	constructor() {
-		this.menus = ['ファイル'];
-		this.menuLists = [];
+		this.menuTitles = ['ファイル', '編集', '変更', '表示', 'ヘルプ'];
+		this.menuLists.push(this._file());
+	}
 
+	ngOnInit(): void {}
+
+	ngAfterViewInit() {
+		console.log(this.menuTitlesRef.toArray()[0].nativeElement);
+	}
+
+	private _file(): MenuList[] {
 		const subMenuListInport: MenuList[] = [
 			{
 				title: '画像を挿入...',
@@ -199,13 +210,8 @@ export class MenuComponent implements OnInit, AfterViewInit {
 				subMenuList: []
 			}
 		];
-		this.menuLists.push(menuListFile);
-	}
 
-	ngOnInit(): void {}
-
-	ngAfterViewInit() {
-		console.log(this.elReference.toArray());
+		return menuListFile;
 	}
 }
 

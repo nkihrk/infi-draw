@@ -10,21 +10,21 @@ import { ToolBarComponent } from './tool-bar/tool-bar.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { MenuComponent } from './menu/menu.component';
 import { ToolMenuComponent } from './tool-menu/tool-menu.component';
-import { MenuDirective } from './shared/directive/menu.directive';
+import { ActiveMenuDirective } from './shared/directive/active-menu.directive';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    CanvasComponent,
-    EventDirective,
-    ToolBarComponent,
-    DashboardComponent,
-    MenuComponent,
-    ToolMenuComponent,
-    MenuDirective
-  ],
-  imports: [BrowserModule, AppRoutingModule, FontAwesomeModule],
-  providers: [],
-  bootstrap: [AppComponent]
+	declarations: [
+		AppComponent,
+		CanvasComponent,
+		EventDirective,
+		ToolBarComponent,
+		DashboardComponent,
+		MenuComponent,
+		ToolMenuComponent,
+		ActiveMenuDirective
+	],
+	imports: [BrowserModule, AppRoutingModule, FontAwesomeModule],
+	providers: [],
+	bootstrap: [AppComponent]
 })
 export class AppModule {}
