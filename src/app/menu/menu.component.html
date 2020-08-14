@@ -1,150 +1,76 @@
 <div class="flex-space-between">
 	<div class="menu-wrapper">
 		<div class="menu">
-			<span class="menu-title active">ファイル</span>
-			<div class="menu-list main-menu-list active">
-				<ul>
-					<li>
-						<div class="sub-menu-title"><span>バージョン履歴を表示</span></div>
-					</li>
-					<li class="separator-wrapper"><div class="separator"></div></li>
-					<li class="sub-menu-list-wrapper">
-						<div class="sub-menu-title">
-							<span>インポート</span>
-							<span><fa-icon [icon]="faCaretRight" [fixedWidth]="true" size="sm"></fa-icon></span>
-						</div>
-						<div class="menu-list sub-menu-list">
-							<ul>
-								<li>
-									<div class="sub-menu-title"><span>画像を挿入...</span></div>
-								</li>
-								<li>
-									<div class="sub-menu-title"><span>画像をリンク...</span></div>
-								</li>
+			<ng-template ngFor let-menu="$implicit" [ngForOf]="menus" let-i="index">
+				<span #elReference class="menu-title active">{{ menu }}</span>
+				<div class="menu-list main-menu-list active">
+					<ul>
+						<ng-template ngFor let-menuList="$implicit" [ngForOf]="menuLists[i]" let-i="index">
+							<div *ngIf="menuList.type === 2; then thenBlock; else elseBlock"></div>
+							<ng-template #thenBlock>
 								<li class="separator-wrapper"><div class="separator"></div></li>
-								<li>
-									<div class="sub-menu-title"><span>フォントを追加...</span></div>
-								</li>
-							</ul>
-						</div>
-					</li>
-					<li class="separator-wrapper"><div class="separator"></div></li>
-					<li class="sub-menu-list-wrapper">
-						<div class="sub-menu-title active">
-							<span>エクスポート</span>
-							<span><fa-icon [icon]="faCaretRight" [fixedWidth]="true" size="sm"></fa-icon></span>
-						</div>
-						<div class="menu-list sub-menu-list active">
-							<ul>
-								<li>
-									<div class="sub-menu-title">
-										<span>高度なエクスポート...</span>
-										<span>Shift+Ctrl+E</span>
+							</ng-template>
+							<ng-template #elseBlock>
+								<li [ngClass]="{ 'sub-menu-list-wrapper': menuList.type === 1 }">
+									<div #elReference (click)="menuList.exec()" class="sub-menu-title">
+										<span>{{ menuList.title }}</span>
+										<span *ngIf="menuList.type !== 1">{{ menuList.key }}</span>
+										<span *ngIf="menuList.type === 1"
+											><fa-icon [icon]="faCaretRight" [fixedWidth]="true" size="sm"></fa-icon
+										></span>
 									</div>
-								</li>
-								<li class="separator-wrapper"><div class="separator"></div></li>
-								<li>
-									<div class="sub-menu-title"><span>PNG画像(.png)</span></div>
-								</li>
-								<li>
-									<div class="sub-menu-title"><span>JPEG画像(.jpg)</span></div>
-								</li>
-								<li>
-									<div class="sub-menu-title"><span>Scalable Vector Graphics(.svg)</span></div>
-								</li>
-								<li class="sub-menu-list-wrapper">
-									<div class="sub-menu-title active">
-										<span>PDFドキュメント(.pdf)</span>
-										<span><fa-icon [icon]="faCaretRight" [fixedWidth]="true" size="sm"></fa-icon></span>
-									</div>
-									<div class="menu-list sub-menu-list active">
+
+									<div #elReference class="menu-list sub-menu-list" *ngIf="menuList.type === 1">
 										<ul>
-											<li>
-												<div class="sub-menu-title"><span>72 dpi</span></div>
-											</li>
-											<li>
-												<div class="sub-menu-title"><span>96 dpi</span></div>
-											</li>
-											<li>
-												<div class="sub-menu-title"><span>150 dpi</span></div>
-											</li>
-											<li>
-												<div class="sub-menu-title"><span>300 dpi</span></div>
-											</li>
-											<li>
-												<div class="sub-menu-title"><span>詳細オプション...</span></div>
-											</li>
+											<ng-template ngFor let-subMenuList="$implicit" [ngForOf]="menuList.subMenuList" let-i="index">
+												<div *ngIf="subMenuList.type === 2; then thenBlock; else elseBlock"></div>
+												<ng-template #thenBlock>
+													<li class="separator-wrapper"><div class="separator"></div></li>
+												</ng-template>
+												<ng-template #elseBlock>
+													<li [ngClass]="{ 'sub-menu-list-wrapper': subMenuList.type === 1 }">
+														<div #elReference (click)="subMenuList.exec()" class="sub-menu-title">
+															<span>{{ subMenuList.title }}</span>
+															<span *ngIf="subMenuList.type !== 1">{{ subMenuList.key }}</span>
+															<span *ngIf="subMenuList.type === 1"
+																><fa-icon [icon]="faCaretRight" [fixedWidth]="true" size="sm"></fa-icon
+															></span>
+														</div>
+
+														<div #elReference class="menu-list sub-menu-list" *ngIf="subMenuList.type === 1">
+															<ul>
+																<ng-template
+																	ngFor
+																	let-subMenuList="$implicit"
+																	[ngForOf]="subMenuList.subMenuList"
+																	let-i="index"
+																>
+																	<div *ngIf="subMenuList.type === 2; then thenBlock; else elseBlock"></div>
+																	<ng-template #thenBlock>
+																		<li class="separator-wrapper"><div class="separator"></div></li>
+																	</ng-template>
+																	<ng-template #elseBlock>
+																		<li>
+																			<div (click)="subMenuList.exec()" class="sub-menu-title">
+																				<span>{{ subMenuList.title }}</span>
+																				<span>{{ subMenuList.key }}</span>
+																			</div>
+																		</li>
+																	</ng-template>
+																</ng-template>
+															</ul>
+														</div>
+													</li>
+												</ng-template>
+											</ng-template>
 										</ul>
 									</div>
 								</li>
-							</ul>
-						</div>
-					</li>
-					<li>
-						<div class="sub-menu-title">
-							<span>印刷...</span>
-							<span>Ctrl+P</span>
-						</div>
-					</li>
-					<li class="separator-wrapper"><div class="separator"></div></li>
-					<li>
-						<div class="sub-menu-title"><span>ホームに戻る</span></div>
-					</li>
-				</ul>
-			</div>
-		</div>
-		<div class="menu">
-			<span class="menu-title">編集</span>
-			<div class="menu-list main-menu-list">
-				<ul>
-					<li>
-						<div class="sub-menu-title">
-							<span>コピー</span>
-							<span>Ctrl+C</span>
-						</div>
-					</li>
-					<li class="sub-menu-list-wrapper">
-						<div class="sub-menu-title">
-							<span>貼り付け</span>
-							<span><fa-icon [icon]="faCaretRight" [fixedWidth]="true" size="sm"></fa-icon></span>
-						</div>
-						<div class="menu-list sub-menu-list">
-							<ul>
-								<li>
-									<div class="sub-menu-title">
-										<span>貼り付け</span>
-										<span>Ctrl+V</span>
-									</div>
-								</li>
-								<li>
-									<div class="sub-menu-title">
-										<span>同じ位置に貼り付け</span>
-										<span>Shift+Ctrl+V</span>
-									</div>
-								</li>
-								<li>
-									<div class="sub-menu-title">
-										<span>選択範囲内に貼り付け</span>
-										<span>Alt+Shift+Ctrl+V</span>
-									</div>
-								</li>
-								<li>
-									<div class="sub-menu-title">
-										<span>貼り付けスタイル</span>
-										<span>F4</span>
-									</div>
-								</li>
-							</ul>
-						</div>
-					</li>
-					<li>
-						<div class="sub-menu-title">
-							<span>削除</span>
-							<span>Del</span>
-						</div>
-					</li>
-				</ul>
-			</div>
+							</ng-template>
+						</ng-template>
+					</ul>
+				</div>
+			</ng-template>
 		</div>
 	</div>
 </div>
