@@ -1,4 +1,7 @@
-import { Component, OnInit, AfterViewInit, ViewChildren, QueryList, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChildren, QueryList, ElementRef } from '@angular/core';
+import { MemoryService } from '../shared/service/core/memory.service';
+
+// Fontawesome
 import { faPenNib } from '@fortawesome/free-solid-svg-icons';
 import { faUser } from '@fortawesome/free-regular-svg-icons';
 import { faCaretRight } from '@fortawesome/free-solid-svg-icons';
@@ -8,7 +11,7 @@ import { faCaretRight } from '@fortawesome/free-solid-svg-icons';
 	templateUrl: './menu.component.html',
 	styleUrls: ['./menu.component.scss']
 })
-export class MenuComponent implements OnInit, AfterViewInit {
+export class MenuComponent implements OnInit {
 	@ViewChildren('menuTitlesRef') menuTitlesRef: QueryList<ElementRef>;
 	@ViewChildren('menuListsRef') menuListsRef: QueryList<ElementRef>;
 	@ViewChildren('menuListTitlesRef') menuListTitlesRef: QueryList<ElementRef>;
@@ -24,24 +27,32 @@ export class MenuComponent implements OnInit, AfterViewInit {
 	faUser = faUser;
 	faCaretRight = faCaretRight;
 
-	constructor() {
+	activeStickFlg = false;
+
+	constructor(private memory: MemoryService) {
 		this.menuTitles = ['ファイル', '編集', '変更', '表示', 'ヘルプ'];
 		this.menuLists.push(this._file());
 	}
 
 	ngOnInit(): void {}
 
-	ngAfterViewInit() {
-		//console.log(this.menuTitlesRef.toArray()[0].nativeElement);
+	initializeActiveStates(): void {
+		this.toggleActiveSticks();
+		this._removeAllActives();
+	}
+
+	toggleActiveSticks(): void {
+		// Sync with other modules
+		this.memory.states.isCanvasLocked = !this.memory.states.isCanvasLocked;
+		// Apply to the local state
+		this.activeStickFlg = this.memory.states.isCanvasLocked;
 	}
 
 	removeActives($type: string, $event: any): void {
 		if ($type === 'menu') {
 			const classList: any = $event.target.classList;
 			if (classList.contains('menu-title')) {
-				this._removeActiveFromMenus();
-				this._removeActiveFromMenuLists();
-				this._removeActiveFromSubMenuLists();
+				this._removeAllActives();
 			}
 		} else if ($type === 'menuList') {
 			const classList: any = $event.target.classList;
@@ -55,6 +66,12 @@ export class MenuComponent implements OnInit, AfterViewInit {
 				this._removeActiveFromSubMenuLists();
 			}
 		}
+	}
+
+	private _removeAllActives(): void {
+		this._removeActiveFromMenus();
+		this._removeActiveFromMenuLists();
+		this._removeActiveFromSubMenuLists();
 	}
 
 	private _removeActiveFromMenus(): void {
@@ -105,14 +122,18 @@ export class MenuComponent implements OnInit, AfterViewInit {
 				title: '画像を挿入...',
 				key: '',
 				type: 0,
-				exec: () => {},
+				exec: () => {
+					this.initializeActiveStates();
+				},
 				subMenuList: []
 			},
 			{
 				title: '画像をリンク...',
 				key: '',
 				type: 0,
-				exec: () => {},
+				exec: () => {
+					this.initializeActiveStates();
+				},
 				subMenuList: []
 			},
 			{
@@ -126,7 +147,9 @@ export class MenuComponent implements OnInit, AfterViewInit {
 				title: 'フォントを追加...',
 				key: '',
 				type: 0,
-				exec: () => {},
+				exec: () => {
+					this.initializeActiveStates();
+				},
 				subMenuList: []
 			}
 		];
@@ -136,35 +159,45 @@ export class MenuComponent implements OnInit, AfterViewInit {
 				title: '72 dpi',
 				key: '',
 				type: 0,
-				exec: () => {},
+				exec: () => {
+					this.initializeActiveStates();
+				},
 				subMenuList: []
 			},
 			{
 				title: '96 dpi',
 				key: '',
 				type: 0,
-				exec: () => {},
+				exec: () => {
+					this.initializeActiveStates();
+				},
 				subMenuList: []
 			},
 			{
 				title: '150 dpi',
 				key: '',
 				type: 0,
-				exec: () => {},
+				exec: () => {
+					this.initializeActiveStates();
+				},
 				subMenuList: []
 			},
 			{
 				title: '300 dpi',
 				key: '',
 				type: 0,
-				exec: () => {},
+				exec: () => {
+					this.initializeActiveStates();
+				},
 				subMenuList: []
 			},
 			{
 				title: '詳細オプション...',
 				key: '',
 				type: 0,
-				exec: () => {},
+				exec: () => {
+					this.initializeActiveStates();
+				},
 				subMenuList: []
 			}
 		];
@@ -174,7 +207,9 @@ export class MenuComponent implements OnInit, AfterViewInit {
 				title: '高度なエクスポート...',
 				key: 'Shift+Ctrl+E',
 				type: 0,
-				exec: () => {},
+				exec: () => {
+					this.initializeActiveStates();
+				},
 				subMenuList: []
 			},
 			{
@@ -188,28 +223,36 @@ export class MenuComponent implements OnInit, AfterViewInit {
 				title: 'PNG画像(.png)',
 				key: '',
 				type: 0,
-				exec: () => {},
+				exec: () => {
+					this.initializeActiveStates();
+				},
 				subMenuList: []
 			},
 			{
 				title: 'JPEG画像(.jpg)',
 				key: '',
 				type: 0,
-				exec: () => {},
+				exec: () => {
+					this.initializeActiveStates();
+				},
 				subMenuList: []
 			},
 			{
 				title: 'Scalable Vector Graphics(.svg)',
 				key: '',
 				type: 0,
-				exec: () => {},
+				exec: () => {
+					this.initializeActiveStates();
+				},
 				subMenuList: []
 			},
 			{
 				title: 'PDFドキュメント(.pdf)',
 				key: '',
 				type: 1,
-				exec: () => {},
+				exec: () => {
+					this.initializeActiveStates();
+				},
 				subMenuList: subMenuListExportPDF
 			}
 		];
@@ -221,6 +264,8 @@ export class MenuComponent implements OnInit, AfterViewInit {
 				type: 0,
 				exec: () => {
 					console.log('hi');
+
+					this.initializeActiveStates();
 				},
 				subMenuList: []
 			},
@@ -237,6 +282,8 @@ export class MenuComponent implements OnInit, AfterViewInit {
 				type: 1,
 				exec: () => {
 					console.log('hi');
+
+					this.initializeActiveStates();
 				},
 				subMenuList: subMenuListInport
 			},
@@ -251,14 +298,18 @@ export class MenuComponent implements OnInit, AfterViewInit {
 				title: 'エクスポート',
 				key: '',
 				type: 1,
-				exec: () => {},
+				exec: () => {
+					this.initializeActiveStates();
+				},
 				subMenuList: subMenuListExport
 			},
 			{
 				title: '印刷...',
 				key: 'Ctrl+P',
 				type: 0,
-				exec: () => {},
+				exec: () => {
+					this.initializeActiveStates();
+				},
 				subMenuList: []
 			},
 			{
@@ -272,7 +323,9 @@ export class MenuComponent implements OnInit, AfterViewInit {
 				title: 'ホームに戻る',
 				key: '',
 				type: 0,
-				exec: () => {},
+				exec: () => {
+					this.initializeActiveStates();
+				},
 				subMenuList: []
 			}
 		];

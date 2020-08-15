@@ -8,11 +8,11 @@
 	padding-left: $ruler-thickness;
 	overflow: hidden;
 
-	&.no-cursor {
-		cursor: none;
+	&.initial-cursor {
+		cursor: initial;
 	}
 
-	&.hand-cursor {
+	&.grab-cursor {
 		cursor: grab;
 
 		&:active {

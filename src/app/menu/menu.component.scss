@@ -16,7 +16,7 @@
 		left: 0;
 		width: 100vw;
 		height: 100vh;
-		background-color: rgba(black, 0.5);
+		//background-color: rgba(black, 0.5);
 	}
 
 	.user-name {
@@ -85,6 +85,11 @@
 			.main-menu-list {
 				top: 100%;
 				left: 0;
+
+				&.active-stick.active {
+					opacity: 1;
+					pointer-events: initial;
+				}
 			}
 
 			.sub-menu-list-wrapper {
@@ -110,17 +115,10 @@
 				border-radius: 0 0 2px 2px;
 				min-width: 200px;
 				font-size: 0.8rem;
-
 				padding: 2px;
-
 				opacity: 0;
 				pointer-events: none;
 				transition: opacity $transition;
-
-				&.active {
-					opacity: 1;
-					pointer-events: initial;
-				}
 			}
 		}
 	}
