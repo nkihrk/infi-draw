@@ -1,10 +1,16 @@
 <div class="flex-space-between">
 	<div class="menu-wrapper">
-		<div class="prevent-prefix prevent-pointer-leave"></div>
+		<div *ngIf="activeStickFlg" (click)="initializeActiveStates()" class="prevent-prefix prevent-pointer-leave"></div>
 		<ng-template ngFor let-menuTitle="$implicit" [ngForOf]="menuTitles" let-i="index">
-			<div (pointerover)="removeActives('menu', $event); $event.stopPropagation()" appActiveMenu class="menu">
+			<div (click)="toggleActiveSticks()" (pointerover)="removeActives('menu', $event)" appActiveMenu class="menu">
 				<span #menuTitlesRef class="menu-title">{{ menuTitle }}</span>
-				<div #menuListsRef appActiveMenu class="menu-list main-menu-list prevent-pointer-leave">
+				<div
+					#menuListsRef
+					(click)="$event.stopPropagation()"
+					[ngClass]="{ 'active-stick': activeStickFlg }"
+					appActiveMenu
+					class="menu-list main-menu-list prevent-pointer-leave"
+				>
 					<ul>
 						<ng-template ngFor let-menuList="$implicit" [ngForOf]="menuLists[i]" let-i="index">
 							<div *ngIf="menuList.type === 2; then thenBlock; else elseBlock"></div>

@@ -26,7 +26,9 @@ export class ActiveMenuDirective {
 
 	// Pointerleave listener
 	@HostListener('pointerleave', ['$event']) onPointerLeave($e): void {
-		const isAllowedToRemoveActive = !$e.relatedTarget.classList.contains('prevent-pointer-leave');
+		const isAllowedToRemoveActive = !!$e.relatedTarget
+			? !$e.relatedTarget.classList.contains('prevent-pointer-leave')
+			: false;
 
 		if (isAllowedToRemoveActive) {
 			const children: HTMLCollection = this.target.children;
