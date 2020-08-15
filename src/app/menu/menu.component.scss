@@ -1,135 +1,125 @@
 @import "../variables";
 
 .flex-space-between {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
 
-  user-select: none;
+	user-select: none;
 
-  .menu-wrapper {
-    display: flex;
-    flex-direction: row;
-    padding: 0 10px;
-  }
+	.prevent-prefix {
+		position: absolute;
+		z-index: 0;
+		top: 0;
+		left: 0;
+		width: 100vw;
+		height: 100vh;
+		//background-color: rgba(black, 0.5);
+	}
 
-  .user-name {
-    border-left: solid 1px $mid-white;
-    overflow: hidden;
+	.user-name {
+		border-left: solid 1px $mid-white;
+		overflow: hidden;
 
-    pointer-events: none;
-    opacity: 0;
-  }
-}
+		pointer-events: none;
+		opacity: 0;
+	}
 
-.menu-prefix {
-  position: relative;
-  color: $white;
-  font-size: 0.8rem;
-  padding: 1px 10px;
-  white-space: nowrap;
+	.menu-wrapper {
+		display: flex;
+		flex-direction: row;
+		padding: 0 10px;
+		height: 100%;
 
-  &.active-hover,
-  &.active.active-stick {
-    background-color: rgba($white, 0.2);
-  }
+		.menu {
+			position: relative;
+			color: $white;
+			font-size: 0.8rem;
+			white-space: nowrap;
 
-  &.active:hover,
-  &.active.active-stick {
-    .main-menu-list-prefix {
-      opacity: 1;
-      pointer-events: initial;
-    }
-  }
+			.menu-title {
+				padding: 2.5px 10px; // Since .menu height is 19px and .menu-title height is 14px
 
-  .main-menu-list-prefix {
-    top: 100%;
-    left: 0;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity $transition;
-  }
+				&:hover,
+				&.active {
+					background-color: rgba($white, 0.2);
+				}
+			}
 
-  .sub-menu-list-prefix,
-  .sub-sub-menu-list-prefix {
-    top: -3px;
-    left: calc(100% + 2px);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity $transition;
-  }
+			.menu-list-title {
+				display: flex;
+				justify-content: space-between;
 
-  .menu-list-prefix {
-    position: absolute;
-    z-index: 200;
-    background-color: $canvas-color;
-    border: solid 1px $mid-white;
-    border-radius: 0 0 2px 2px;
-    min-width: 200px;
-    font-size: 0.8rem;
+				span {
+					margin: 4px 8px 4px 25px;
 
-    &.active {
-      opacity: 1;
-    }
+					&:nth-child(2) {
+						font-size: 0.7rem;
+					}
+				}
 
-    ul {
-      padding: 2px;
+				&:hover,
+				&.active {
+					border-radius: 2px;
+					background-color: rgba($white, 0.1);
+				}
 
-      li {
-        display: flex;
-        justify-content: space-between;
+				& > * {
+					pointer-events: none;
+				}
+			}
 
-        &:hover,
-        &.active-stick {
-          border-radius: 2px;
-          background-color: rgba($white, 0.1);
-        }
+			.separator-wrapper {
+				pointer-events: none;
 
-        span {
-          margin: 4px 8px 4px 25px;
+				.separator {
+					width: 100%;
+					height: 1px;
+					background-color: rgba($mid-white, 0.5);
+					margin: 2px 0;
+				}
+			}
 
-          &:nth-child(2) {
-            font-size: 0.7rem;
-          }
-        }
+			.main-menu-list {
+				top: 100%;
+				left: 0;
 
-        &.separator-wrapper {
-          pointer-events: none;
+				&.active-stick.active {
+					opacity: 1;
+					pointer-events: initial;
+				}
+			}
 
-          .separator {
-            width: 100%;
-            height: 1px;
-            background-color: rgba($mid-white, 0.5);
-            margin: 5px 0;
-          }
-        }
-      }
-    }
-  }
+			.sub-menu-list-wrapper {
+				position: relative;
 
-  .sub-menu-list-wrapper {
-    position: relative;
+				.sub-menu-list {
+					top: -3px;
+					left: calc(100% + 2px);
 
-    &.active-stick {
-      .sub-menu-list-prefix {
-        transition-delay: 500ms;
-        opacity: 1;
-        pointer-events: initial;
-      }
-    }
-  }
+					&.active {
+						opacity: 1;
+						pointer-events: initial;
+						transition-delay: 500ms;
+					}
+				}
+			}
 
-  .sub-sub-menu-list-wrapper {
-    position: relative;
-
-    &.active-stick {
-      .sub-sub-menu-list-prefix {
-        transition-delay: 500ms;
-        opacity: 1;
-        pointer-events: initial;
-      }
-    }
-  }
+			.menu-list {
+				position: absolute;
+				z-index: 200;
+				background-color: $canvas-color;
+				border: solid 1px $mid-white;
+				border-radius: 0 0 2px 2px;
+				min-width: 200px;
+				font-size: 0.8rem;
+				padding: 2px;
+				opacity: 0;
+				pointer-events: none;
+				transition: opacity $transition;
+			}
+		}
+	}
 }

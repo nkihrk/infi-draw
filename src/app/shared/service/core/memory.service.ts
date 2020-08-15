@@ -8,306 +8,307 @@ import { Erase } from '../../model/erase.model';
 import { Point } from '../../model/point.model';
 
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root'
 })
 export class MemoryService {
-  // oekakiOrder
-  private orderId = -1;
-  // draw
-  private drawId = -1;
-  // erase
-  private eraseId = -1;
+	// oekakiOrder
+	private orderId = -1;
+	// draw
+	private drawId = -1;
+	// erase
+	private eraseId = -1;
 
-  public canvasOffset: CanvasOffset = {
-    zoomRatio: 1,
-    prevOffsetX: 0,
-    prevOffsetY: 0,
-    newOffsetX: 0,
-    newOffsetY: 0
-  };
+	public canvasOffset: CanvasOffset = {
+		zoomRatio: 1,
+		prevOffsetX: 0,
+		prevOffsetY: 0,
+		newOffsetX: 0,
+		newOffsetY: 0
+	};
 
-  public trailList: Trail[] = [];
-  public eraseList: Erase[] = [];
-  public oekakiOrder: number[] = [];
+	public trailList: Trail[] = [];
+	public eraseList: Erase[] = [];
+	public oekakiOrder: number[] = [];
 
-  public flgs: Flgs = {
-    dblClickFlg: false,
-    downFlg: false,
-    // - Similarly to mousedown events
-    leftDownFlg: false,
-    middleDownFlg: false,
-    rightDownFlg: false,
-    // - Similarly to mouseup events
-    leftUpFlg: false,
-    middleUpFlg: false,
-    rightUpFlg: false,
-    // - Similarly to mousedown + mousemove events
-    leftDownMoveFlg: false,
-    middleDownMoveFlg: false,
-    rightDownMoveFlg: false,
-    // - Similarly to wheel event
-    wheelFlg: false
-  };
+	public flgs: Flgs = {
+		dblClickFlg: false,
+		downFlg: false,
+		// - Similarly to mousedown events
+		leftDownFlg: false,
+		middleDownFlg: false,
+		rightDownFlg: false,
+		// - Similarly to mouseup events
+		leftUpFlg: false,
+		middleUpFlg: false,
+		rightUpFlg: false,
+		// - Similarly to mousedown + mousemove events
+		leftDownMoveFlg: false,
+		middleDownMoveFlg: false,
+		rightDownMoveFlg: false,
+		// - Similarly to wheel event
+		wheelFlg: false
+	};
 
-  public states = {
-    isPreventSelect: false,
-    isPreventWheel: false,
-    isPreventWholeTrans: false,
-    isNeededToUpdateHistory: false,
-    isChangedStates: false
-  };
+	public states = {
+		isPreventSelect: false,
+		isPreventWheel: false,
+		isPreventWholeTrans: false,
+		isNeededToUpdateHistory: false,
+		isChangedStates: false,
+		isCanvasLocked: false
+	};
 
-  public mouseOffset = {
-    x: -Infinity,
-    y: -Infinity,
-    rawX: -Infinity,
-    rawY: -Infinity,
-    prevX: -Infinity,
-    prevY: -Infinity
-  };
+	public mouseOffset = {
+		x: -Infinity,
+		y: -Infinity,
+		rawX: -Infinity,
+		rawY: -Infinity,
+		prevX: -Infinity,
+		prevY: -Infinity
+	};
 
-  public reservedByFunc = {
-    name: 'draw',
-    type: 'oekaki',
-    flgs: ['']
-  };
+	public reservedByFunc = {
+		name: 'draw',
+		type: 'oekaki',
+		flgs: ['']
+	};
 
-  public readonly constant = {
-    ZOOM_SPEED: 0.2, // Zoom speed of canvas
-    GRID_COLOR: '#373543',
-    GRID_SCALE: 50,
-    RULER_COLOR: '#606060',
-    NUM_COLOR: '#9e9e9e',
-    FONT_TYPE: 'bold sans-serif',
-    STROKE_STYLE: '#ffffff',
-    LINE_WIDTH: 2,
-    ERASER_LINE_WIDTH: 50
-  };
+	public readonly constant = {
+		ZOOM_SPEED: 0.2, // Zoom speed of canvas
+		GRID_COLOR: '#373543',
+		GRID_SCALE: 50,
+		RULER_COLOR: '#606060',
+		NUM_COLOR: '#9e9e9e',
+		FONT_TYPE: 'bold sans-serif',
+		STROKE_STYLE: '#ffffff',
+		LINE_WIDTH: 2,
+		ERASER_LINE_WIDTH: 50
+	};
 
-  public renderer: Renderer = { ctx: {} as Ctx } as Renderer;
+	public renderer: Renderer = { ctx: {} as Ctx } as Renderer;
 
-  constructor() {}
+	constructor() {}
 
-  init(
-    $appWrapperElem: ElementRef<HTMLDivElement>,
-    $canvasWrapperElem: ElementRef<HTMLDivElement>,
-    $rulerWrapperElem: ElementRef,
-    $mainElem: ElementRef<HTMLCanvasElement>,
-    $uiElem: ElementRef<HTMLCanvasElement>,
-    $lElem: ElementRef<HTMLCanvasElement>,
-    $cElem: ElementRef<HTMLCanvasElement>
-  ): void {
-    // Wrapper
-    this.renderer.appWrapper = $appWrapperElem.nativeElement;
-    this.renderer.canvasWrapper = $canvasWrapperElem.nativeElement;
-    this.renderer.rulerWrapper = $rulerWrapperElem.nativeElement;
+	init(
+		$appWrapperElem: ElementRef<HTMLDivElement>,
+		$canvasWrapperElem: ElementRef<HTMLDivElement>,
+		$rulerWrapperElem: ElementRef,
+		$mainElem: ElementRef<HTMLCanvasElement>,
+		$uiElem: ElementRef<HTMLCanvasElement>,
+		$lElem: ElementRef<HTMLCanvasElement>,
+		$cElem: ElementRef<HTMLCanvasElement>
+	): void {
+		// Wrapper
+		this.renderer.appWrapper = $appWrapperElem.nativeElement;
+		this.renderer.canvasWrapper = $canvasWrapperElem.nativeElement;
+		this.renderer.rulerWrapper = $rulerWrapperElem.nativeElement;
 
-    // Renderer
-    this.renderer.main = $mainElem.nativeElement;
-    this.renderer.ui = $uiElem.nativeElement;
-    this.renderer.rulerL = $lElem.nativeElement;
-    this.renderer.rulerC = $cElem.nativeElement;
+		// Renderer
+		this.renderer.main = $mainElem.nativeElement;
+		this.renderer.ui = $uiElem.nativeElement;
+		this.renderer.rulerL = $lElem.nativeElement;
+		this.renderer.rulerC = $cElem.nativeElement;
 
-    // Buffer
-    this.renderer.uiBuffer = document.createElement('canvas');
-    this.renderer.gridBuffer = document.createElement('canvas');
-    this.renderer.oekakiBuffer = document.createElement('canvas');
-    this.renderer.rulerLbuffer = document.createElement('canvas');
-    this.renderer.rulerCbuffer = document.createElement('canvas');
+		// Buffer
+		this.renderer.uiBuffer = document.createElement('canvas');
+		this.renderer.gridBuffer = document.createElement('canvas');
+		this.renderer.oekakiBuffer = document.createElement('canvas');
+		this.renderer.rulerLbuffer = document.createElement('canvas');
+		this.renderer.rulerCbuffer = document.createElement('canvas');
 
-    // ctx - Renderer
-    this.renderer.ctx.main = this.renderer.main.getContext('2d');
-    this.renderer.ctx.ui = this.renderer.ui.getContext('2d');
-    this.renderer.ctx.rulerL = this.renderer.rulerL.getContext('2d');
-    this.renderer.ctx.rulerC = this.renderer.rulerC.getContext('2d');
+		// ctx - Renderer
+		this.renderer.ctx.main = this.renderer.main.getContext('2d');
+		this.renderer.ctx.ui = this.renderer.ui.getContext('2d');
+		this.renderer.ctx.rulerL = this.renderer.rulerL.getContext('2d');
+		this.renderer.ctx.rulerC = this.renderer.rulerC.getContext('2d');
 
-    // ctx - Buffer
-    this.renderer.ctx.uiBuffer = this.renderer.uiBuffer.getContext('2d');
-    this.renderer.ctx.gridBuffer = this.renderer.gridBuffer.getContext('2d');
-    this.renderer.ctx.oekakiBuffer = this.renderer.oekakiBuffer.getContext('2d');
-    this.renderer.ctx.rulerLbuffer = this.renderer.rulerLbuffer.getContext('2d');
-    this.renderer.ctx.rulerCbuffer = this.renderer.rulerCbuffer.getContext('2d');
+		// ctx - Buffer
+		this.renderer.ctx.uiBuffer = this.renderer.uiBuffer.getContext('2d');
+		this.renderer.ctx.gridBuffer = this.renderer.gridBuffer.getContext('2d');
+		this.renderer.ctx.oekakiBuffer = this.renderer.oekakiBuffer.getContext('2d');
+		this.renderer.ctx.rulerLbuffer = this.renderer.rulerLbuffer.getContext('2d');
+		this.renderer.ctx.rulerCbuffer = this.renderer.rulerCbuffer.getContext('2d');
 
-    // Debugger
-    this.renderer.debugger = document.createElement('canvas');
-    this.renderer.ctx.debugger = this.renderer.debugger.getContext('2d');
+		// Debugger
+		this.renderer.debugger = document.createElement('canvas');
+		this.renderer.ctx.debugger = this.renderer.debugger.getContext('2d');
 
-    //setInterval(() => {
-    //console.log(this.oekakiOrder, this.trailList, this.eraseList);
-    //}, 1000);
-  }
+		//setInterval(() => {
+		//console.log(this.oekakiOrder, this.trailList, this.eraseList);
+		//}, 1000);
+	}
 
-  undo(): void {
-    const drawOrErase: number = this.oekakiOrder[this.orderId];
+	undo(): void {
+		const drawOrErase: number = this.oekakiOrder[this.orderId];
 
-    if (drawOrErase !== undefined) {
-      if (drawOrErase === 1 && this.drawId > -1) {
-        // draw
-        this._updateDraw(this.drawId, false);
+		if (drawOrErase !== undefined) {
+			if (drawOrErase === 1 && this.drawId > -1) {
+				// draw
+				this._updateDraw(this.drawId, false);
 
-        let dId: number = this.drawId;
-        dId -= dId > -1 ? 1 : 0;
-        this.drawId = dId;
-      } else if (drawOrErase === 0 && this.eraseId > -1) {
-        // erase
-        this._updateErase(this.eraseId);
+				let dId: number = this.drawId;
+				dId -= dId > -1 ? 1 : 0;
+				this.drawId = dId;
+			} else if (drawOrErase === 0 && this.eraseId > -1) {
+				// erase
+				this._updateErase(this.eraseId);
 
-        let eId: number = this.eraseId;
-        eId -= eId > -1 ? 1 : 0;
-        this.eraseId = eId;
-      }
+				let eId: number = this.eraseId;
+				eId -= eId > -1 ? 1 : 0;
+				this.eraseId = eId;
+			}
 
-      let oId: number = this.orderId;
-      oId -= oId > -1 ? 1 : 0;
-      this.orderId = oId;
-    }
-  }
+			let oId: number = this.orderId;
+			oId -= oId > -1 ? 1 : 0;
+			this.orderId = oId;
+		}
+	}
 
-  redo(): void {
-    let oId: number = this.orderId;
-    oId += oId < this.oekakiOrder.length - 1 ? 1 : 0;
+	redo(): void {
+		let oId: number = this.orderId;
+		oId += oId < this.oekakiOrder.length - 1 ? 1 : 0;
 
-    const drawOrErase: number = this.oekakiOrder[oId];
-    if (drawOrErase !== undefined) {
-      if (drawOrErase === 1 && this.drawId < this.trailList.length - 1) {
-        // draw
-        let dId: number = this.drawId;
-        dId += dId < this.trailList.length - 1 ? 1 : 0;
+		const drawOrErase: number = this.oekakiOrder[oId];
+		if (drawOrErase !== undefined) {
+			if (drawOrErase === 1 && this.drawId < this.trailList.length - 1) {
+				// draw
+				let dId: number = this.drawId;
+				dId += dId < this.trailList.length - 1 ? 1 : 0;
 
-        this._updateDraw(dId, true);
-        this.drawId = dId;
-      } else if (drawOrErase === 0 && this.eraseId < this.eraseList.length - 1) {
-        // erase
-        let eId: number = this.eraseId;
-        eId += eId < this.eraseList.length - 1 ? 1 : 0;
+				this._updateDraw(dId, true);
+				this.drawId = dId;
+			} else if (drawOrErase === 0 && this.eraseId < this.eraseList.length - 1) {
+				// erase
+				let eId: number = this.eraseId;
+				eId += eId < this.eraseList.length - 1 ? 1 : 0;
 
-        this._updateErase(eId);
-        this.eraseId = eId;
-      }
+				this._updateErase(eId);
+				this.eraseId = eId;
+			}
 
-      this.orderId = oId;
-    }
-  }
+			this.orderId = oId;
+		}
+	}
 
-  private _updateDraw($dId: number, $flg: boolean): void {
-    const trail: Trail = this.trailList[$dId];
-    trail.visibility = $flg;
-  }
+	private _updateDraw($dId: number, $flg: boolean): void {
+		const trail: Trail = this.trailList[$dId];
+		trail.visibility = $flg;
+	}
 
-  private _updateErase($eId: number): void {
-    const erase: Erase = this.eraseList[$eId];
-    const trailList: { trailId: number; pointIdList: number[] }[] = erase.trailList;
+	private _updateErase($eId: number): void {
+		const erase: Erase = this.eraseList[$eId];
+		const trailList: { trailId: number; pointIdList: number[] }[] = erase.trailList;
 
-    for (let i = 0; i < trailList.length; i++) {
-      if (trailList[i]) {
-        const pointList: number[] = trailList[i].pointIdList;
+		for (let i = 0; i < trailList.length; i++) {
+			if (trailList[i]) {
+				const pointList: number[] = trailList[i].pointIdList;
 
-        for (let j = 0; j < pointList.length; j++) {
-          const tId: number = trailList[i].trailId;
-          const pId: number = pointList[j];
-          const trail: Trail = this.trailList[tId];
+				for (let j = 0; j < pointList.length; j++) {
+					const tId: number = trailList[i].trailId;
+					const pId: number = pointList[j];
+					const trail: Trail = this.trailList[tId];
 
-          if (trail && trail.points[pId]) trail.points[pId].visibility = !trail.points[pId].visibility;
-        }
-      }
-    }
-  }
+					if (trail && trail.points[pId]) trail.points[pId].visibility = !trail.points[pId].visibility;
+				}
+			}
+		}
+	}
 
-  pileNewHistory(): void {
-    // Remove unnecessary event ids
-    this.oekakiOrder = _.take(this.oekakiOrder, this.orderId + 1);
+	pileNewHistory(): void {
+		// Remove unnecessary event ids
+		this.oekakiOrder = _.take(this.oekakiOrder, this.orderId + 1);
 
-    if (this.reservedByFunc.name === 'draw') {
-      this.trailList = _.take(this.trailList, this.drawId + 1);
+		if (this.reservedByFunc.name === 'draw') {
+			this.trailList = _.take(this.trailList, this.drawId + 1);
 
-      const trail: Trail = {
-        id: this.trailList.length,
-        visibility: true,
-        min: {
-          prevOffsetX: Infinity,
-          prevOffsetY: Infinity,
-          newOffsetX: Infinity,
-          newOffsetY: Infinity
-        },
-        max: {
-          prevOffsetX: -Infinity,
-          prevOffsetY: -Infinity,
-          newOffsetX: -Infinity,
-          newOffsetY: -Infinity
-        },
-        points: [] as Point[]
-      };
-      this.trailList.push(trail);
+			const trail: Trail = {
+				id: this.trailList.length,
+				visibility: true,
+				min: {
+					prevOffsetX: Infinity,
+					prevOffsetY: Infinity,
+					newOffsetX: Infinity,
+					newOffsetY: Infinity
+				},
+				max: {
+					prevOffsetX: -Infinity,
+					prevOffsetY: -Infinity,
+					newOffsetX: -Infinity,
+					newOffsetY: -Infinity
+				},
+				points: [] as Point[]
+			};
+			this.trailList.push(trail);
 
-      // To tell 'draw'
-      this.oekakiOrder.push(1);
-      this.drawId++;
-    } else if (this.reservedByFunc.name === 'erase') {
-      this.eraseList = _.take(this.eraseList, this.eraseId + 1);
+			// To tell 'draw'
+			this.oekakiOrder.push(1);
+			this.drawId++;
+		} else if (this.reservedByFunc.name === 'erase') {
+			this.eraseList = _.take(this.eraseList, this.eraseId + 1);
 
-      const erase: Erase = {
-        id: this.eraseList.length,
-        trailList: []
-      };
-      this.eraseList.push(erase);
+			const erase: Erase = {
+				id: this.eraseList.length,
+				trailList: []
+			};
+			this.eraseList.push(erase);
 
-      // To tell 'erase'
-      this.oekakiOrder.push(0);
-      this.eraseId++;
-    }
+			// To tell 'erase'
+			this.oekakiOrder.push(0);
+			this.eraseId++;
+		}
 
-    this.orderId++;
-    this.states.isChangedStates = true;
-  }
+		this.orderId++;
+		this.states.isChangedStates = true;
+	}
 }
 
 export interface Renderer {
-  // Wrapper
-  appWrapper: HTMLDivElement;
-  canvasWrapper: HTMLDivElement;
-  rulerWrapper: HTMLDivElement;
-  // Debugger
-  debugger: HTMLCanvasElement;
-  // Renderer
-  main: HTMLCanvasElement;
-  ui: HTMLCanvasElement;
-  rulerL: HTMLCanvasElement;
-  rulerC: HTMLCanvasElement;
-  // Buffer
-  uiBuffer: HTMLCanvasElement;
-  gridBuffer: HTMLCanvasElement;
-  oekakiBuffer: HTMLCanvasElement;
-  rulerLbuffer: HTMLCanvasElement;
-  rulerCbuffer: HTMLCanvasElement;
-  ctx: {
-    // Debugger
-    debugger: CanvasRenderingContext2D;
-    // Renderer
-    main: CanvasRenderingContext2D;
-    ui: CanvasRenderingContext2D;
-    rulerL: CanvasRenderingContext2D;
-    rulerC: CanvasRenderingContext2D;
-    // Buffer
-    uiBuffer: CanvasRenderingContext2D;
-    gridBuffer: CanvasRenderingContext2D;
-    oekakiBuffer: CanvasRenderingContext2D;
-    rulerLbuffer: CanvasRenderingContext2D;
-    rulerCbuffer: CanvasRenderingContext2D;
-  };
+	// Wrapper
+	appWrapper: HTMLDivElement;
+	canvasWrapper: HTMLDivElement;
+	rulerWrapper: HTMLDivElement;
+	// Debugger
+	debugger: HTMLCanvasElement;
+	// Renderer
+	main: HTMLCanvasElement;
+	ui: HTMLCanvasElement;
+	rulerL: HTMLCanvasElement;
+	rulerC: HTMLCanvasElement;
+	// Buffer
+	uiBuffer: HTMLCanvasElement;
+	gridBuffer: HTMLCanvasElement;
+	oekakiBuffer: HTMLCanvasElement;
+	rulerLbuffer: HTMLCanvasElement;
+	rulerCbuffer: HTMLCanvasElement;
+	ctx: {
+		// Debugger
+		debugger: CanvasRenderingContext2D;
+		// Renderer
+		main: CanvasRenderingContext2D;
+		ui: CanvasRenderingContext2D;
+		rulerL: CanvasRenderingContext2D;
+		rulerC: CanvasRenderingContext2D;
+		// Buffer
+		uiBuffer: CanvasRenderingContext2D;
+		gridBuffer: CanvasRenderingContext2D;
+		oekakiBuffer: CanvasRenderingContext2D;
+		rulerLbuffer: CanvasRenderingContext2D;
+		rulerCbuffer: CanvasRenderingContext2D;
+	};
 }
 
 export interface Ctx {
-  // Debugger
-  debugger: CanvasRenderingContext2D;
-  // Renderer
-  main: CanvasRenderingContext2D;
-  ui: CanvasRenderingContext2D;
-  rulerL: CanvasRenderingContext2D;
-  rulerC: CanvasRenderingContext2D;
-  // Buffer
-  uiBuffer: CanvasRenderingContext2D;
-  gridBuffer: CanvasRenderingContext2D;
-  oekakiBuffer: CanvasRenderingContext2D;
-  rulerLbuffer: CanvasRenderingContext2D;
-  rulerCbuffer: CanvasRenderingContext2D;
+	// Debugger
+	debugger: CanvasRenderingContext2D;
+	// Renderer
+	main: CanvasRenderingContext2D;
+	ui: CanvasRenderingContext2D;
+	rulerL: CanvasRenderingContext2D;
+	rulerC: CanvasRenderingContext2D;
+	// Buffer
+	uiBuffer: CanvasRenderingContext2D;
+	gridBuffer: CanvasRenderingContext2D;
+	oekakiBuffer: CanvasRenderingContext2D;
+	rulerLbuffer: CanvasRenderingContext2D;
+	rulerCbuffer: CanvasRenderingContext2D;
 }
