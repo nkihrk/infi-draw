@@ -11,8 +11,10 @@ import { faCaretRight } from '@fortawesome/free-solid-svg-icons';
 export class MenuComponent implements OnInit, AfterViewInit {
 	@ViewChildren('menuTitlesRef') menuTitlesRef: QueryList<ElementRef>;
 	@ViewChildren('menuListsRef') menuListsRef: QueryList<ElementRef>;
-	@ViewChildren('subMenuTitlesRef') subMenuTitlesRef: QueryList<ElementRef>;
+	@ViewChildren('menuListTitlesRef') menuListTitlesRef: QueryList<ElementRef>;
 	@ViewChildren('subMenuListsRef') subMenuListsRef: QueryList<ElementRef>;
+	@ViewChildren('subMenuListTitlesRef') subMenuListTitlesRef: QueryList<ElementRef>;
+	@ViewChildren('subSubMenuListsRef') subSubMenuListsRef: QueryList<ElementRef>;
 
 	menuTitles: string[];
 	menuLists: MenuList[][] = [];
@@ -30,7 +32,71 @@ export class MenuComponent implements OnInit, AfterViewInit {
 	ngOnInit(): void {}
 
 	ngAfterViewInit() {
-		console.log(this.menuTitlesRef.toArray()[0].nativeElement);
+		//console.log(this.menuTitlesRef.toArray()[0].nativeElement);
+	}
+
+	removeActives($type: string, $event: any): void {
+		if ($type === 'menu') {
+			const classList: any = $event.target.classList;
+			if (classList.contains('menu-title')) {
+				this._removeActiveFromMenus();
+				this._removeActiveFromMenuLists();
+				this._removeActiveFromSubMenuLists();
+			}
+		} else if ($type === 'menuList') {
+			const classList: any = $event.target.classList;
+			if (classList.contains('menu-list-title')) {
+				this._removeActiveFromMenuLists();
+				this._removeActiveFromSubMenuLists();
+			}
+		} else if ($type === 'subMenuList') {
+			const classList: any = $event.target.classList;
+			if (classList.contains('menu-list-title')) {
+				this._removeActiveFromSubMenuLists();
+			}
+		}
+	}
+
+	private _removeActiveFromMenus(): void {
+		const menuTitles: ElementRef<any>[] = this.menuTitlesRef.toArray();
+		for (let i = 0; i < menuTitles.length; i++) {
+			const menuTitle: HTMLElement = menuTitles[i].nativeElement;
+			if (menuTitle.classList.contains('active')) menuTitle.classList.remove('active');
+		}
+
+		const menuLists: ElementRef<any>[] = this.menuListsRef.toArray();
+		for (let i = 0; i < menuLists.length; i++) {
+			const menuList: HTMLElement = menuLists[i].nativeElement;
+			if (menuList.classList.contains('active')) menuList.classList.remove('active');
+		}
+	}
+
+	private _removeActiveFromMenuLists(): void {
+		const menuListTitles: ElementRef<any>[] = this.menuListTitlesRef.toArray();
+		for (let i = 0; i < menuListTitles.length; i++) {
+			const menuListTitle: HTMLElement = menuListTitles[i].nativeElement;
+			if (menuListTitle.classList.contains('active')) menuListTitle.classList.remove('active');
+		}
+
+		const subMenuLists: ElementRef<any>[] = this.subMenuListsRef.toArray();
+		for (let i = 0; i < subMenuLists.length; i++) {
+			const subMenuList: HTMLElement = subMenuLists[i].nativeElement;
+			if (subMenuList.classList.contains('active')) subMenuList.classList.remove('active');
+		}
+	}
+
+	private _removeActiveFromSubMenuLists(): void {
+		const subMenuListTitles: ElementRef<any>[] = this.subMenuListTitlesRef.toArray();
+		for (let i = 0; i < subMenuListTitles.length; i++) {
+			const subMenuListTitle: HTMLElement = subMenuListTitles[i].nativeElement;
+			if (subMenuListTitle.classList.contains('active')) subMenuListTitle.classList.remove('active');
+		}
+
+		const subSubMenuLists: ElementRef<any>[] = this.subSubMenuListsRef.toArray();
+		for (let i = 0; i < subSubMenuLists.length; i++) {
+			const subSubMenuList: HTMLElement = subSubMenuLists[i].nativeElement;
+			if (subSubMenuList.classList.contains('active')) subSubMenuList.classList.remove('active');
+		}
 	}
 
 	private _file(): MenuList[] {

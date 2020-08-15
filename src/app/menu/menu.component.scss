@@ -9,6 +9,16 @@
 
 	user-select: none;
 
+	.prevent-prefix {
+		position: absolute;
+		z-index: 0;
+		top: 0;
+		left: 0;
+		width: 100vw;
+		height: 100vh;
+		background-color: rgba(black, 0.5);
+	}
+
 	.user-name {
 		border-left: solid 1px $mid-white;
 		overflow: hidden;
@@ -38,7 +48,7 @@
 				}
 			}
 
-			.sub-menu-title {
+			.menu-list-title {
 				display: flex;
 				justify-content: space-between;
 
@@ -54,6 +64,10 @@
 				&.active {
 					border-radius: 2px;
 					background-color: rgba($white, 0.1);
+				}
+
+				& > * {
+					pointer-events: none;
 				}
 			}
 
@@ -97,6 +111,8 @@
 				min-width: 200px;
 				font-size: 0.8rem;
 
+				padding: 2px;
+
 				opacity: 0;
 				pointer-events: none;
 				transition: opacity $transition;
@@ -104,10 +120,6 @@
 				&.active {
 					opacity: 1;
 					pointer-events: initial;
-				}
-
-				ul {
-					padding: 2px;
 				}
 			}
 		}
