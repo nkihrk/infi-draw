@@ -14,23 +14,31 @@ export class ActiveMenuDirective {
 	@HostListener('pointerenter', ['$event']) onPointerEnter($e): void {
 		const children: HTMLCollection = this.target.children;
 
-		if (children.length === 2) {
-			if (!children[0].classList.contains('active') && !children[1].classList.contains('active')) {
-				children[0].classList.add('active');
-				children[1].classList.add('active');
-			}
+		if (
+			children.length === 2 &&
+			!children[0].classList.contains('active') &&
+			!children[1].classList.contains('active')
+		) {
+			children[0].classList.add('active');
+			children[1].classList.add('active');
 		}
 	}
 
 	// Pointerleave listener
 	@HostListener('pointerleave', ['$event']) onPointerLeave($e): void {
-		const children: HTMLCollection = this.target.children;
+		const isAllowedToRemoveActive = !$e.relatedTarget.classList.contains('prevent-pointer-leave');
 
-		if (!!children[0] && children[0].classList.contains('active')) {
-			children[0].classList.remove('active');
-		}
-		if (!!children[1] && children[1].classList.contains('active')) {
-			children[1].classList.remove('active');
+		if (isAllowedToRemoveActive) {
+			const children: HTMLCollection = this.target.children;
+
+			if (children.length === 2) {
+				if (children[0].classList.contains('active')) {
+					children[0].classList.remove('active');
+				}
+				if (children[1].classList.contains('active')) {
+					children[1].classList.remove('active');
+				}
+			}
 		}
 	}
 }
