@@ -10,26 +10,6 @@ import { ToolBarComponent } from './tool-bar/tool-bar.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { MenuComponent } from './menu/menu.component';
 import { ToolMenuComponent } from './tool-menu/tool-menu.component';
-<<<<<<< HEAD
-import { MenuDirective } from './shared/directive/menu.directive';
-import { ClickStopPropagationDirective } from './shared/directive/click-stop-propagation.directive';
-
-@NgModule({
-  declarations: [
-    AppComponent,
-    CanvasComponent,
-    EventDirective,
-    ToolBarComponent,
-    DashboardComponent,
-    MenuComponent,
-    ToolMenuComponent,
-    MenuDirective,
-    ClickStopPropagationDirective
-  ],
-  imports: [BrowserModule, AppRoutingModule, FontAwesomeModule],
-  providers: [],
-  bootstrap: [AppComponent]
-=======
 import { ActiveMenuDirective } from './shared/directive/active-menu.directive';
 
 @NgModule({
@@ -46,6 +26,5 @@ import { ActiveMenuDirective } from './shared/directive/active-menu.directive';
 	imports: [BrowserModule, AppRoutingModule, FontAwesomeModule],
 	providers: [],
 	bootstrap: [AppComponent]
->>>>>>> dev_menu
 })
 export class AppModule {}
