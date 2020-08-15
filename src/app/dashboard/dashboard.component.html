@@ -1,14 +1,12 @@
 <div class="flex-wrapper">
-  <app-menu></app-menu>
+	<app-menu style="position: relative; z-index: 1;"></app-menu>
 
-  <div class="flex-left-right">
-    <app-tool-bar></app-tool-bar>
+	<div class="flex-left-right" style="position: relative; z-index: 0;">
+		<app-tool-bar></app-tool-bar>
 
-    <div class="flex-top-bottom">
-      <app-tool-menu></app-tool-menu>
-      <app-canvas></app-canvas>
-    </div>
-  </div>
+		<div class="flex-top-bottom">
+			<app-tool-menu></app-tool-menu>
+			<app-canvas></app-canvas>
+		</div>
+	</div>
 </div>
-
-
