@@ -340,5 +340,4 @@ interface MenuList {
 	type: number; // 0: menu-list, 1: sub-menu-list, 2: separator
 	exec: Function;
 	subMenuList: MenuList[];
->>>>>>> dev_menu
 }
