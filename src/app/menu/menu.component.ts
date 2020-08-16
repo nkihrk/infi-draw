@@ -66,7 +66,7 @@ export class MenuComponent implements OnInit {
 				children[1].classList.add('active');
 			}
 		} else if ($type === 'menuList') {
-			const classList: any = $event.currentTarget.classList;
+			const classList: any = $event.target.classList;
 			if (classList.contains('menu-list-title')) {
 				this._removeActiveFromMenuLists();
 				this._removeActiveFromSubMenuLists();
@@ -326,7 +326,15 @@ export class MenuComponent implements OnInit {
 				key: 'Ctrl+O',
 				type: 1,
 				exec: () => {},
-				subMenuList: []
+				subMenuList: [
+					{
+						title: '最近開いたファイルはありません',
+						key: '',
+						type: 0,
+						exec: () => {},
+						subMenuList: []
+					}
+				]
 			},
 			{
 				title: '',
