@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChildren, QueryList, ElementRef } from '@angular/core';
 import { MemoryService } from '../shared/service/core/memory.service';
+import { FuncService } from '../shared/service/core/func.service';
 
 // Fontawesome
 import { faPenNib } from '@fortawesome/free-solid-svg-icons';
@@ -29,7 +30,7 @@ export class MenuComponent implements OnInit {
 
 	activeStickFlg = false;
 
-	constructor(private memory: MemoryService) {
+	constructor(private memory: MemoryService, private func: FuncService) {
 		this.menuTitles = ['ファイル', '編集', '変更', '表示', 'ヘルプ'];
 		this.menuLists.push(this._file());
 		this.menuLists.push(this._edit());
@@ -476,6 +477,7 @@ export class MenuComponent implements OnInit {
 				key: 'Ctrl+Z',
 				type: 0,
 				exec: () => {
+					this.func.undo();
 					this.initializeActiveStates();
 				},
 				subMenuList: []
@@ -485,6 +487,7 @@ export class MenuComponent implements OnInit {
 				key: 'Shift+Ctrl+Z',
 				type: 0,
 				exec: () => {
+					this.func.redo();
 					this.initializeActiveStates();
 				},
 				subMenuList: []

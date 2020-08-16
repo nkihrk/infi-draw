@@ -197,7 +197,7 @@ export class MemoryService {
 
 	private _updateErase($eId: number): void {
 		const erase: Erase = this.eraseList[$eId];
-		const trailList: { trailId: number; pointIdList: number[] }[] = erase.trailList;
+		const trailList: Erase['trailList'] = erase.trailList;
 
 		for (let i = 0; i < trailList.length; i++) {
 			if (trailList[i]) {
@@ -280,21 +280,7 @@ export interface Renderer {
 	oekakiBuffer: HTMLCanvasElement;
 	rulerLbuffer: HTMLCanvasElement;
 	rulerCbuffer: HTMLCanvasElement;
-	ctx: {
-		// Debugger
-		debugger: CanvasRenderingContext2D;
-		// Renderer
-		main: CanvasRenderingContext2D;
-		ui: CanvasRenderingContext2D;
-		rulerL: CanvasRenderingContext2D;
-		rulerC: CanvasRenderingContext2D;
-		// Buffer
-		uiBuffer: CanvasRenderingContext2D;
-		gridBuffer: CanvasRenderingContext2D;
-		oekakiBuffer: CanvasRenderingContext2D;
-		rulerLbuffer: CanvasRenderingContext2D;
-		rulerCbuffer: CanvasRenderingContext2D;
-	};
+	ctx: Ctx;
 }
 
 export interface Ctx {
