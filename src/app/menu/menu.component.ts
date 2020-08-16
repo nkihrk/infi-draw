@@ -54,8 +54,19 @@ export class MenuComponent implements OnInit {
 			if (classList.contains('menu-title')) {
 				this._removeAllActives();
 			}
+
+			// To set actives to currentTarget after initializtions
+			const children: HTMLCollection = $event.currentTarget.children;
+			if (
+				children.length === 2 &&
+				!children[0].classList.contains('active') &&
+				!children[1].classList.contains('active')
+			) {
+				children[0].classList.add('active');
+				children[1].classList.add('active');
+			}
 		} else if ($type === 'menuList') {
-			const classList: any = $event.target.classList;
+			const classList: any = $event.currentTarget.classList;
 			if (classList.contains('menu-list-title')) {
 				this._removeActiveFromMenuLists();
 				this._removeActiveFromSubMenuLists();
@@ -259,12 +270,103 @@ export class MenuComponent implements OnInit {
 
 		const menuListFile: MenuList[] = [
 			{
+				title: '新規デザイン...',
+				key: 'Alt+N',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: 'テンプレートから新規デザイン...',
+				key: '',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: 'クリップボードから新規作成',
+				key: 'Shift+Ctrl+Alt+N',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: '',
+				key: '',
+				type: 2,
+				exec: () => {},
+				subMenuList: []
+			},
+			{
+				title: 'ローカルファイルを開く...',
+				key: 'Ctrl+O',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: 'Cloudから開く...',
+				key: 'Shift+Ctrl+O',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: '最近のファイルを開く',
+				key: 'Ctrl+O',
+				type: 1,
+				exec: () => {},
+				subMenuList: []
+			},
+			{
+				title: '',
+				key: '',
+				type: 2,
+				exec: () => {},
+				subMenuList: []
+			},
+			{
+				title: '保存',
+				key: 'Ctrl+S',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: 'ファイルをダウンロード',
+				key: '',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: '名前を付けてCloudに保存...',
+				key: 'Shift+Ctrl+S',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
 				title: 'バージョン履歴',
 				key: '',
 				type: 0,
 				exec: () => {
-					console.log('hi');
-
 					this.initializeActiveStates();
 				},
 				subMenuList: []
@@ -280,11 +382,7 @@ export class MenuComponent implements OnInit {
 				title: 'インポート',
 				key: '',
 				type: 1,
-				exec: () => {
-					console.log('hi');
-
-					this.initializeActiveStates();
-				},
+				exec: () => {},
 				subMenuList: subMenuListInport
 			},
 			{
@@ -298,9 +396,7 @@ export class MenuComponent implements OnInit {
 				title: 'エクスポート',
 				key: '',
 				type: 1,
-				exec: () => {
-					this.initializeActiveStates();
-				},
+				exec: () => {},
 				subMenuList: subMenuListExport
 			},
 			{
