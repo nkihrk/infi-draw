@@ -32,6 +32,10 @@ export class MenuComponent implements OnInit {
 	constructor(private memory: MemoryService) {
 		this.menuTitles = ['ファイル', '編集', '変更', '表示', 'ヘルプ'];
 		this.menuLists.push(this._file());
+		this.menuLists.push(this._edit());
+		this.menuLists.push(this._modify());
+		this.menuLists.push(this._show());
+		this.menuLists.push(this._help());
 	}
 
 	ngOnInit(): void {}
@@ -261,14 +265,12 @@ export class MenuComponent implements OnInit {
 				title: 'PDFドキュメント(.pdf)',
 				key: '',
 				type: 1,
-				exec: () => {
-					this.initializeActiveStates();
-				},
+				exec: () => {},
 				subMenuList: subMenuListExportPDF
 			}
 		];
 
-		const menuListFile: MenuList[] = [
+		const menuList: MenuList[] = [
 			{
 				title: '新規デザイン...',
 				key: 'Alt+N',
@@ -434,7 +436,737 @@ export class MenuComponent implements OnInit {
 			}
 		];
 
-		return menuListFile;
+		return menuList;
+	}
+
+	private _edit(): MenuList[] {
+		const subMenuListPaste: MenuList[] = [
+			{
+				title: '貼り付け',
+				key: 'Ctrl+V',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: '同じ位置に貼り付け',
+				key: 'Shift+Ctrl+V',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: '選択範囲内に貼り付け',
+				key: 'Alt+Shift+Ctrl+V',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			}
+		];
+
+		const menuList: MenuList[] = [
+			{
+				title: '元に戻す',
+				key: 'Ctrl+Z',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: 'やり直す',
+				key: 'Shift+Ctrl+Z',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: '',
+				key: '',
+				type: 2,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: '切り取り',
+				key: 'Ctrl+X',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: 'コピー',
+				key: 'Ctrl+C',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: '貼り付け',
+				key: 'Shift+Ctrl+O',
+				type: 1,
+				exec: () => {},
+				subMenuList: subMenuListPaste
+			},
+			{
+				title: '削除',
+				key: 'Del',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: '複製',
+				key: 'Ctrl+D',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: '',
+				key: '',
+				type: 2,
+				exec: () => {},
+				subMenuList: []
+			},
+			{
+				title: '選択範囲の編集',
+				key: '',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: 'すべて選択',
+				key: 'Ctrl+A',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: 'すべて選択解除',
+				key: 'Shift+Ctrl+A',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: '選択範囲を反転',
+				key: 'Shift+Ctrl+I',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: '',
+				key: '',
+				type: 2,
+				exec: () => {},
+				subMenuList: []
+			},
+			{
+				title: '設定...',
+				key: '',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			}
+		];
+
+		return menuList;
+	}
+
+	private _modify(): MenuList[] {
+		const subMenuListOrder: MenuList[] = [
+			{
+				title: '最前面へ',
+				key: 'Shift+Ctrl+上矢印',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: '一つ前面へ',
+				key: 'Ctrl+上矢印',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: '一つ背面へ',
+				key: 'Ctrl+下矢印',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: '最背面へ',
+				key: 'Shift+Ctrl+下矢印',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			}
+		];
+
+		const subMenuListAlign: MenuList[] = [
+			{
+				title: '左揃え',
+				key: '',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: '横の中央揃え',
+				key: '',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: '右揃え',
+				key: '',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: '',
+				key: '',
+				type: 2,
+				exec: () => {},
+				subMenuList: []
+			},
+			{
+				title: '上揃え',
+				key: '',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: '縦の中央揃え',
+				key: '',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: '下揃え',
+				key: '',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: '',
+				key: '',
+				type: 2,
+				exec: () => {},
+				subMenuList: []
+			},
+			{
+				title: '同じ幅',
+				key: '',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: '同じ長さ',
+				key: '',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: '',
+				key: '',
+				type: 2,
+				exec: () => {},
+				subMenuList: []
+			},
+			{
+				title: '横方向に配置',
+				key: '',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: '縦方向に配置',
+				key: '',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			}
+		];
+
+		const subMenuListTransform: MenuList[] = [
+			{
+				title: '左に45°回転',
+				key: '',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: '左に90°回転',
+				key: '',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: '左に180°回転',
+				key: '',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: '',
+				key: '',
+				type: 2,
+				exec: () => {},
+				subMenuList: []
+			},
+			{
+				title: '右に45°回転',
+				key: '',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: '右に90°回転',
+				key: '',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: '右に180°回転',
+				key: '',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: '',
+				key: '',
+				type: 2,
+				exec: () => {},
+				subMenuList: []
+			},
+			{
+				title: '垂直方向にミラー化',
+				key: '',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: '水平方向にミラー化',
+				key: '',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			}
+		];
+
+		const menuList: MenuList[] = [
+			{
+				title: '重ね順',
+				key: '',
+				type: 1,
+				exec: () => {},
+				subMenuList: subMenuListOrder
+			},
+			{
+				title: '配置',
+				key: '',
+				type: 1,
+				exec: () => {},
+				subMenuList: subMenuListAlign
+			},
+			{
+				title: '移動',
+				key: '',
+				type: 1,
+				exec: () => {},
+				subMenuList: subMenuListTransform
+			}
+		];
+
+		return menuList;
+	}
+
+	private _show(): MenuList[] {
+		const subMenuListZoom: MenuList[] = [
+			{
+				title: '6%',
+				key: '',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: '12%',
+				key: '',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: '25%',
+				key: '',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: '50%',
+				key: '',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: '66%',
+				key: '',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: '100%',
+				key: '',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: '150%',
+				key: '',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: '200%',
+				key: '',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: '300%',
+				key: '',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: '400%',
+				key: '',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: '800%',
+				key: '',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: '1600%',
+				key: '',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: '3200%',
+				key: '',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: '6400%',
+				key: '',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: '12800%',
+				key: '',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: '25600%',
+				key: '',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: '',
+				key: '',
+				type: 2,
+				exec: () => {},
+				subMenuList: []
+			},
+			{
+				title: '拡大',
+				key: 'Ctrl++',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: '縮小',
+				key: 'Ctrl+-',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			}
+		];
+
+		const menuList: MenuList[] = [
+			{
+				title: '元のビュー',
+				key: 'Ctrl+O',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: '選択範囲を画面に合わせる',
+				key: '',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: 'レイヤーを画面に合わせる',
+				key: '',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: '全体を画面に合わせる',
+				key: 'Alt+Ctrl+O',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: '拡大 - 縮小',
+				key: '',
+				type: 1,
+				exec: () => {},
+				subMenuList: subMenuListZoom
+			}
+		];
+
+		return menuList;
+	}
+
+	private _help(): MenuList[] {
+		const subMenuListSupport: MenuList[] = [
+			{
+				title: 'お問い合わせ',
+				key: '',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: '開発者に詳細を送信',
+				key: '',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			}
+		];
+
+		const subMenuListLang: MenuList[] = [
+			{
+				title: '日本語',
+				key: '',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: 'English',
+				key: '',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			}
+		];
+
+		const menuList: MenuList[] = [
+			{
+				title: 'サポート',
+				key: '',
+				type: 1,
+				exec: () => {},
+				subMenuList: subMenuListSupport
+			},
+			{
+				title: '言語',
+				key: '',
+				type: 1,
+				exec: () => {},
+				subMenuList: subMenuListLang
+			},
+			{
+				title: '更新情報',
+				key: '',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			}
+		];
+
+		return menuList;
 	}
 }
 
