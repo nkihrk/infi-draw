@@ -33,13 +33,18 @@ export class CleanupService {
 		const trailLists: Trail[] = this.memory.trailList;
 
 		for (let i = 0; i < trailLists.length; i++) {
-			const trail: Trail = trailLists[i];
-			const erase: Erase = this.memory.eraseList[this.memory.eraseList.length - 1];
+			const points: Point[] = trailLists[i].points;
+			for (let j = 0; j < points.length; j++) {
+				const p: Point = points[j];
 
-			if (!erase.trailList[i]) erase.trailList[i] = { trailId: -1, pointIdList: [] };
-			erase.trailList[i].trailId = i;
-
-			trail.visibility = false;
+				if (p.visibility) {
+					const erase: Erase = this.memory.eraseList[this.memory.eraseList.length - 1];
+					if (!erase.trailList[i]) erase.trailList[i] = { trailId: -1, pointIdList: [] };
+					erase.trailList[i].trailId = i;
+					erase.trailList[i].pointIdList.push(j);
+					p.visibility = false;
+				}
+			}
 		}
 	}
 }

@@ -37,9 +37,9 @@ export class EraseService {
 					if (!erase.trailList[tId]) erase.trailList[tId] = { trailId: -1, pointIdList: [] };
 					erase.trailList[tId].trailId = tId;
 					erase.trailList[tId].pointIdList.push(pId);
-				}
 
-				p.visibility = false;
+					p.visibility = false;
+				}
 			}
 		}
 	}
