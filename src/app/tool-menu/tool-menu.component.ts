@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FuncService } from '../shared/service/core/func.service';
 
 // Fontawesome
@@ -13,10 +13,16 @@ import { faQuidditch } from '@fortawesome/free-solid-svg-icons';
 	styleUrls: ['./tool-menu.component.scss']
 })
 export class ToolMenuComponent implements OnInit {
+	@ViewChild('brushSizeMeter', { static: true }) brushSizeMeterRef: ElementRef<HTMLDivElement>;
+
+	// Fontawesome
 	faSave = faSave;
 	faUndo = faUndo;
 	faRedo = faRedo;
 	faQuidditch = faQuidditch;
+
+	// Brush size
+	brushSize = 1;
 
 	constructor(private func: FuncService) {}
 
@@ -36,5 +42,9 @@ export class ToolMenuComponent implements OnInit {
 
 	cleanUp(): void {
 		this.func.cleanUp();
+	}
+
+	slideBrushSize(): void {
+		this.func.slideBrushSize();
 	}
 }

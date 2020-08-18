@@ -55,8 +55,7 @@ export class DrawService {
 	activate(): void {
 		this.memory.reservedByFunc = {
 			name: 'draw',
-			type: 'oekaki',
-			flgs: ['']
+			group: 'brush'
 		};
 	}
 
@@ -122,7 +121,7 @@ export class DrawService {
 				ctxOekakiBuffer.beginPath();
 				ctxOekakiBuffer.lineCap = 'round';
 				ctxOekakiBuffer.lineJoin = 'round';
-				ctxOekakiBuffer.lineWidth = this.memory.constant.LINE_WIDTH * this.memory.canvasOffset.zoomRatio;
+				ctxOekakiBuffer.lineWidth = this.memory.brushSize.lineWidth * this.memory.canvasOffset.zoomRatio;
 
 				for (let j = 0; j < trailList[i].points.length; j++) {
 					const prevP: Point = trailList[i].points[j - 1];

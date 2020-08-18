@@ -18,7 +18,7 @@ export class MemoryService {
 	// erase
 	private eraseId = -1;
 
-	public canvasOffset: CanvasOffset = {
+	canvasOffset: CanvasOffset = {
 		zoomRatio: 1,
 		prevOffsetX: 0,
 		prevOffsetY: 0,
@@ -26,11 +26,16 @@ export class MemoryService {
 		newOffsetY: 0
 	};
 
-	public trailList: Trail[] = [];
-	public eraseList: Erase[] = [];
-	public oekakiOrder: number[] = [];
+	trailList: Trail[] = [];
+	eraseList: Erase[] = [];
+	oekakiOrder: number[] = [];
 
-	public flgs: Flgs = {
+	brushSize = {
+		lineWidth: 2,
+		eraserLineWidth: 50
+	};
+
+	flgs: Flgs = {
 		dblClickFlg: false,
 		downFlg: false,
 		// - Similarly to mousedown events
@@ -49,7 +54,7 @@ export class MemoryService {
 		wheelFlg: false
 	};
 
-	public states = {
+	states = {
 		isPreventSelect: false,
 		isPreventWheel: false,
 		isPreventWholeTrans: false,
@@ -58,7 +63,7 @@ export class MemoryService {
 		isCanvasLocked: false
 	};
 
-	public mouseOffset = {
+	mouseOffset = {
 		x: -Infinity,
 		y: -Infinity,
 		rawX: -Infinity,
@@ -67,25 +72,22 @@ export class MemoryService {
 		prevY: -Infinity
 	};
 
-	public reservedByFunc = {
+	reservedByFunc = {
 		name: 'draw',
-		type: 'oekaki',
-		flgs: ['']
+		group: 'brush'
 	};
 
-	public readonly constant = {
+	readonly constant = {
 		ZOOM_SPEED: 0.2, // Zoom speed of canvas
 		GRID_COLOR: '#373543',
 		GRID_SCALE: 50,
 		RULER_COLOR: '#606060',
 		NUM_COLOR: '#9e9e9e',
 		FONT_TYPE: 'bold sans-serif',
-		STROKE_STYLE: '#ffffff',
-		LINE_WIDTH: 2,
-		ERASER_LINE_WIDTH: 50
+		STROKE_STYLE: '#ffffff'
 	};
 
-	public renderer: Renderer = { ctx: {} as Ctx } as Renderer;
+	renderer: Renderer = { ctx: {} as Ctx } as Renderer;
 
 	constructor() {}
 
@@ -262,7 +264,7 @@ export class MemoryService {
 	}
 }
 
-export interface Renderer {
+interface Renderer {
 	// Wrapper
 	appWrapper: HTMLDivElement;
 	canvasWrapper: HTMLDivElement;
@@ -283,7 +285,7 @@ export interface Renderer {
 	ctx: Ctx;
 }
 
-export interface Ctx {
+interface Ctx {
 	// Debugger
 	debugger: CanvasRenderingContext2D;
 	// Renderer
