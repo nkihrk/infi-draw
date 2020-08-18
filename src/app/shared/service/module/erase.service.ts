@@ -16,8 +16,7 @@ export class EraseService {
 	activate(): void {
 		this.memory.reservedByFunc = {
 			name: 'erase',
-			type: 'oekaki',
-			flgs: ['']
+			group: 'brush'
 		};
 	}
 
@@ -54,7 +53,7 @@ export class EraseService {
 			const mouseOffset: MouseOffset = this.memory.mouseOffset;
 			const x: number = min.newOffsetX;
 			const y: number = min.newOffsetY;
-			const r: number = this.memory.constant.ERASER_LINE_WIDTH;
+			const r: number = this.memory.brushSize.eraserLineWidth;
 
 			// diff
 			const diffX0: number = x - mouseOffset.x;
@@ -88,7 +87,7 @@ export class EraseService {
 			const pointX: number = points[i].offset.newOffsetX;
 			const pointY: number = points[i].offset.newOffsetY;
 			const mouseOffset: MouseOffset = this.memory.mouseOffset;
-			const r: number = this.memory.constant.ERASER_LINE_WIDTH;
+			const r: number = this.memory.brushSize.eraserLineWidth;
 
 			const diffX: number = pointX - mouseOffset.x;
 			const diffY: number = pointY - mouseOffset.y;

@@ -17,8 +17,7 @@ export class CleanupService {
 		// To tell pipeline that this function is a part of the erase module
 		this.memory.reservedByFunc = {
 			name: 'erase',
-			type: 'oekaki',
-			flgs: ['']
+			group: 'brush'
 		};
 		this.memory.pileNewHistory();
 

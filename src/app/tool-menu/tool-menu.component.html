@@ -24,9 +24,9 @@
 		<div class="name-info-row">カラーピッカー</div>
 	</div>
 	<div class="name-info-wrapper">
-		<div class="brush-size-wrapper tool-menu-prefix">
-			<div class="brush-size-meter"></div>
-			<div class="brush-size-info">70px</div>
+		<div (click)="slideBrushSize()" class="brush-size-wrapper tool-menu-prefix">
+			<div #brushSizeMeter class="brush-size-meter"></div>
+			<div class="brush-size-info">{{ brushSize }}px</div>
 		</div>
 		<div class="name-info-row">ブラシのサイズ</div>
 	</div>
