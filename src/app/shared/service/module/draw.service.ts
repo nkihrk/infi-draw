@@ -72,7 +72,8 @@ export class DrawService {
 				newOffsetX: this.memory.mouseOffset.x,
 				newOffsetY: this.memory.mouseOffset.y
 			},
-			pressure: 1
+			pressure: 1,
+			lineWidth: this.memory.brushSize.lineWidth.draw
 		};
 
 		if (this._ignoreDuplication(point.offset.prevOffsetX, point.offset.prevOffsetY)) {
@@ -121,12 +122,13 @@ export class DrawService {
 				ctxOekakiBuffer.beginPath();
 				ctxOekakiBuffer.lineCap = 'round';
 				ctxOekakiBuffer.lineJoin = 'round';
-				ctxOekakiBuffer.lineWidth = this.memory.brushSize.lineWidth * this.memory.canvasOffset.zoomRatio;
 
 				for (let j = 0; j < trailList[i].points.length; j++) {
 					const prevP: Point = trailList[i].points[j - 1];
 					const currentP: Point = trailList[i].points[j];
 					const nextP: Point = trailList[i].points[j + 1];
+
+					ctxOekakiBuffer.lineWidth = currentP.lineWidth * currentP.pressure * this.memory.canvasOffset.zoomRatio;
 
 					if (currentP.visibility) {
 						ctxOekakiBuffer.strokeStyle = currentP.color;

@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { MemoryService } from '../shared/service/core/memory.service';
 import { FuncService } from '../shared/service/core/func.service';
 
 // Fontawesome
@@ -13,6 +14,7 @@ import { faQuidditch } from '@fortawesome/free-solid-svg-icons';
 	styleUrls: ['./tool-menu.component.scss']
 })
 export class ToolMenuComponent implements OnInit {
+	@ViewChild('brushSizeWrapper', { static: true }) brushSizeWrapperRef: ElementRef<HTMLDivElement>;
 	@ViewChild('brushSizeMeter', { static: true }) brushSizeMeterRef: ElementRef<HTMLDivElement>;
 
 	// Fontawesome
@@ -22,11 +24,41 @@ export class ToolMenuComponent implements OnInit {
 	faQuidditch = faQuidditch;
 
 	// Brush size
-	brushSize = 1;
+	previousBrushState = 'draw';
+	drawBrushSize = this.memory.brushSize.lineWidth.draw;
+	eraseBrushSize = this.memory.brushSize.lineWidth.erase;
 
-	constructor(private func: FuncService) {}
+	constructor(private memory: MemoryService, private func: FuncService) {}
 
-	ngOnInit(): void {}
+	ngOnInit(): void {
+		// Initialize brushSizeSlider
+		this.memory.initBrushSizeSlider(this.brushSizeWrapperRef, this.brushSizeMeterRef);
+
+		this.render();
+	}
+
+	render(): void {
+		const r: FrameRequestCallback = () => {
+			this._render();
+
+			requestAnimationFrame(r);
+		};
+		requestAnimationFrame(r);
+	}
+
+	private _render(): void {
+		const isDrawBrush = this.memory.reservedByFunc.name === 'draw';
+		const isEraseBrush = this.memory.reservedByFunc.name === 'erase';
+		if (isDrawBrush) {
+			this.previousBrushState = 'draw';
+			this.drawBrushSize = this.memory.brushSize.lineWidth.draw;
+			this.memory.brushSizeSlider.meter.style.width = this.memory.brushSize.meterWidth.draw + '%';
+		} else if (isEraseBrush) {
+			this.previousBrushState = 'erase';
+			this.eraseBrushSize = this.memory.brushSize.lineWidth.erase;
+			this.memory.brushSizeSlider.meter.style.width = this.memory.brushSize.meterWidth.erase + '%';
+		}
+	}
 
 	save(): void {
 		this.func.save();
@@ -42,9 +74,5 @@ export class ToolMenuComponent implements OnInit {
 
 	cleanUp(): void {
 		this.func.cleanUp();
-	}
-
-	slideBrushSize(): void {
-		this.func.slideBrushSize();
 	}
 }

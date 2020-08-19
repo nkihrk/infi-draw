@@ -11,6 +11,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { MenuComponent } from './menu/menu.component';
 import { ToolMenuComponent } from './tool-menu/tool-menu.component';
 import { ActiveMenuDirective } from './shared/directive/active-menu.directive';
+import { SlideBrushSizeDirective } from './shared/directive/slide-brush-size.directive';
 
 @NgModule({
 	declarations: [
@@ -21,7 +22,8 @@ import { ActiveMenuDirective } from './shared/directive/active-menu.directive';
 		DashboardComponent,
 		MenuComponent,
 		ToolMenuComponent,
-		ActiveMenuDirective
+		ActiveMenuDirective,
+		SlideBrushSizeDirective
 	],
 	imports: [BrowserModule, AppRoutingModule, FontAwesomeModule],
 	providers: [],
