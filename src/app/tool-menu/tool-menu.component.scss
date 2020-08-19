@@ -73,6 +73,10 @@
 			border: 6px solid transparent;
 			border-bottom: 6px solid black;
 		}
+
+		&.in-active {
+			display: none;
+		}
 	}
 }
 
@@ -93,14 +97,6 @@
 
 .tool-menu-prefix {
 	margin: 0 6px;
-}
-
-.color-picker {
-	border: solid 2px rgba($white, 0.6);
-	border-radius: 50%;
-	width: 18px;
-	height: 18px;
-	background-color: $red;
 }
 
 .brush-size-wrapper {

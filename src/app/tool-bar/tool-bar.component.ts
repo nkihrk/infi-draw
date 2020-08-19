@@ -148,8 +148,6 @@ export class ToolBarComponent implements OnInit {
 	}
 
 	private _resetToolBarClass($targetElem: HTMLDivElement): void {
-		$targetElem.className = '';
-		$targetElem.classList.add('icon-prefix');
-		$targetElem.classList.add('name-info-wrapper');
+		$targetElem.classList.remove('active');
 	}
 }
