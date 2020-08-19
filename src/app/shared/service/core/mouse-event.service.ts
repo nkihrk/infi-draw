@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { PointerEvent } from '../../model/pointer-event.model';
 import { Flgs } from '../../model/flgs.model';
-import { MemoryService } from './memory.service';
+import { CanvasService } from './canvas.service';
 
 // Modules
-import { CanvasService } from './canvas.service';
 import { DrawService } from '../module/draw.service';
 import { EraseService } from '../module/erase.service';
 
@@ -46,7 +45,7 @@ export class MouseEventService {
 				break;
 
 			case 'hand':
-				this._updateCanvasModifications($newOffsetX, $newOffsetY, $event);
+				this._updateCanvases($newOffsetX, $newOffsetY, $event);
 				break;
 
 			default:
@@ -57,7 +56,7 @@ export class MouseEventService {
 	rightDownMove($name: string, $newOffsetX: number, $newOffsetY: number, $event: PointerEvent): void {}
 
 	middleDownMove($newOffsetX: number, $newOffsetY: number, $event: PointerEvent): void {
-		this._updateCanvasModifications($newOffsetX, $newOffsetY, $event);
+		this._updateCanvases($newOffsetX, $newOffsetY, $event);
 	}
 
 	//////////////////////////////////////////////////////////
@@ -66,7 +65,7 @@ export class MouseEventService {
 	//
 	//////////////////////////////////////////////////////////
 
-	private _updateCanvasModifications($newOffsetX: number, $newOffsetY: number, $event: PointerEvent): void {
+	private _updateCanvases($newOffsetX: number, $newOffsetY: number, $event: PointerEvent): void {
 		// Update canvas coordinates
 		this.canvas.registerOnMouseMiddleMove($newOffsetX, $newOffsetY, $event);
 		// Update trail point coordinates

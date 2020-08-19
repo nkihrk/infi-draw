@@ -42,7 +42,15 @@ export class CanvasComponent implements OnInit {
 	) {}
 
 	ngOnInit(): void {
-		this.memory.init(this.appWrapper, this.canvasWrapper, this.rulerWrapper, this.main, this.ui, this.l, this.c);
+		this.memory.initRenderer(
+			this.appWrapper,
+			this.canvasWrapper,
+			this.rulerWrapper,
+			this.main,
+			this.ui,
+			this.l,
+			this.c
+		);
 		this.render();
 	}
 
@@ -59,7 +67,7 @@ export class CanvasComponent implements OnInit {
 		this.func.unload($event);
 	}
 
-	render(): void {
+	private render(): void {
 		const r: FrameRequestCallback = () => {
 			this._render();
 
@@ -68,7 +76,7 @@ export class CanvasComponent implements OnInit {
 		requestAnimationFrame(r);
 	}
 
-	_render(): void {
+	private _render(): void {
 		// Module renderer
 		this.ruler.render();
 		this.grid.render();

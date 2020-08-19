@@ -15,7 +15,7 @@ export class CursorService {
 		const name: string = this.memory.reservedByFunc.name;
 
 		if (name === 'draw' || name === 'erase') {
-			this._oekaki(name, ctxUiBuffer);
+			this._brush(name, ctxUiBuffer);
 		} else if (name === 'hand') {
 			this._hand();
 		}
@@ -36,7 +36,7 @@ export class CursorService {
 		}
 	}
 
-	private _oekaki($name: string, $ctxUiBuffer: CanvasRenderingContext2D): void {
+	private _brush($name: string, $ctxUiBuffer: CanvasRenderingContext2D): void {
 		const rawX: number = this.memory.mouseOffset.rawX;
 		const rawY: number = this.memory.mouseOffset.rawY;
 		const canvasX: number = this.memory.renderer.main.getBoundingClientRect().x;
@@ -54,9 +54,9 @@ export class CursorService {
 
 			let r = 0;
 			if ($name === 'draw') {
-				r = (this.memory.brushSize.lineWidth * this.memory.canvasOffset.zoomRatio) / 2;
+				r = (this.memory.brushSize.lineWidth.draw * this.memory.canvasOffset.zoomRatio) / 2;
 			} else if ($name === 'erase') {
-				r = this.memory.brushSize.eraserLineWidth;
+				r = this.memory.brushSize.lineWidth.erase / 2;
 			}
 
 			if (r > 0) {

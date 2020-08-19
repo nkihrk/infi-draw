@@ -31,8 +31,14 @@ export class MemoryService {
 	oekakiOrder: number[] = [];
 
 	brushSize = {
-		lineWidth: 2,
-		eraserLineWidth: 50
+		lineWidth: {
+			draw: 10, // px
+			erase: 50 // px
+		},
+		meterWidth: {
+			draw: 1, // %
+			erase: 1 // %
+		}
 	};
 
 	flgs: Flgs = {
@@ -84,17 +90,31 @@ export class MemoryService {
 		RULER_COLOR: '#606060',
 		NUM_COLOR: '#9e9e9e',
 		FONT_TYPE: 'bold sans-serif',
-		STROKE_STYLE: '#ffffff'
+		STROKE_STYLE: '#ffffff',
+		MAX_BRUSH_SIZE: 200
 	};
 
+	brushSizeSlider: BrushSizeSlider = {} as BrushSizeSlider;
 	renderer: Renderer = { ctx: {} as Ctx } as Renderer;
 
 	constructor() {}
 
-	init(
+	initBrushSizeSlider(
+		$brushSizeWrapper: ElementRef<HTMLDivElement>,
+		$brushSizeMeter: ElementRef<HTMLDivElement>
+	): void {
+		this.brushSizeSlider.wrapper = $brushSizeWrapper.nativeElement;
+		this.brushSizeSlider.meter = $brushSizeMeter.nativeElement;
+
+		// Initialize brushSizeMeter width
+		this.brushSize.meterWidth.draw = (this.brushSize.lineWidth.draw / this.constant.MAX_BRUSH_SIZE) * 100;
+		this.brushSize.meterWidth.erase = (this.brushSize.lineWidth.erase / this.constant.MAX_BRUSH_SIZE) * 100;
+	}
+
+	initRenderer(
 		$appWrapperElem: ElementRef<HTMLDivElement>,
 		$canvasWrapperElem: ElementRef<HTMLDivElement>,
-		$rulerWrapperElem: ElementRef,
+		$rulerWrapperElem: ElementRef<HTMLDivElement>,
 		$mainElem: ElementRef<HTMLCanvasElement>,
 		$uiElem: ElementRef<HTMLCanvasElement>,
 		$lElem: ElementRef<HTMLCanvasElement>,
@@ -262,6 +282,12 @@ export class MemoryService {
 		this.orderId++;
 		this.states.isChangedStates = true;
 	}
+}
+
+interface BrushSizeSlider {
+	// Wrapper
+	wrapper: HTMLDivElement;
+	meter: HTMLDivElement;
 }
 
 interface Renderer {

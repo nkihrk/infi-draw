@@ -24,9 +24,10 @@
 		<div class="name-info-row">カラーピッカー</div>
 	</div>
 	<div class="name-info-wrapper">
-		<div (click)="slideBrushSize()" class="brush-size-wrapper tool-menu-prefix">
+		<div #brushSizeWrapper appSlideBrushSize class="brush-size-wrapper tool-menu-prefix">
 			<div #brushSizeMeter class="brush-size-meter"></div>
-			<div class="brush-size-info">{{ brushSize }}px</div>
+			<div *ngIf="previousBrushState === 'draw'" class="brush-size-info">{{ drawBrushSize }}px</div>
+			<div *ngIf="previousBrushState === 'erase'" class="brush-size-info">{{ eraseBrushSize }}px</div>
 		</div>
 		<div class="name-info-row">ブラシのサイズ</div>
 	</div>
