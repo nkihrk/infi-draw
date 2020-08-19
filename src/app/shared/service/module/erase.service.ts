@@ -53,7 +53,7 @@ export class EraseService {
 			const mouseOffset: MouseOffset = this.memory.mouseOffset;
 			const x: number = min.newOffsetX;
 			const y: number = min.newOffsetY;
-			const r: number = this.memory.brushSize.lineWidth.erase / 2;
+			const r: number = this.memory.brush.lineWidth.erase / 2;
 
 			// diff
 			const diffX0: number = x - mouseOffset.x;
@@ -87,7 +87,7 @@ export class EraseService {
 			const pointX: number = points[i].offset.newOffsetX;
 			const pointY: number = points[i].offset.newOffsetY;
 			const mouseOffset: MouseOffset = this.memory.mouseOffset;
-			const r: number = this.memory.brushSize.lineWidth.erase / 2;
+			const r: number = this.memory.brush.lineWidth.erase / 2;
 
 			const diffX: number = pointX - mouseOffset.x;
 			const diffY: number = pointY - mouseOffset.y;

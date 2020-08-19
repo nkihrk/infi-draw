@@ -16,6 +16,7 @@ import { faQuidditch } from '@fortawesome/free-solid-svg-icons';
 	styleUrls: ['./tool-menu.component.scss']
 })
 export class ToolMenuComponent implements OnInit {
+	@ViewChild('pickrInfo', { static: true }) pickrInfoRef: ElementRef<HTMLDivElement>;
 	@ViewChild('brushSizeWrapper', { static: true }) brushSizeWrapperRef: ElementRef<HTMLDivElement>;
 	@ViewChild('brushSizeMeter', { static: true }) brushSizeMeterRef: ElementRef<HTMLDivElement>;
 
@@ -27,8 +28,8 @@ export class ToolMenuComponent implements OnInit {
 
 	// Brush size
 	previousBrushState = 'draw';
-	drawBrushSize = this.memory.brushSize.lineWidth.draw;
-	eraseBrushSize = this.memory.brushSize.lineWidth.erase;
+	drawBrushSize = this.memory.brush.lineWidth.draw;
+	eraseBrushSize = this.memory.brush.lineWidth.erase;
 
 	constructor(private memory: MemoryService, private func: FuncService) {}
 
@@ -44,12 +45,14 @@ export class ToolMenuComponent implements OnInit {
 	}
 
 	private _createPickr(): void {
-		const pickr = Pickr.create({
+		const pickr: any = Pickr.create({
 			el: '#pickr',
 			container: '#pickr-wrapper',
 			theme: 'monolith',
 			appClass: 'custom-pickr',
 			padding: 20,
+			default: this.memory.brush.color,
+
 			autoReposition: true,
 
 			swatches: [
@@ -86,11 +89,60 @@ export class ToolMenuComponent implements OnInit {
 					clear: false,
 					save: true
 				}
+			},
+
+			i18n: {
+				// Strings visible in the UI
+				'ui:dialog': 'color picker dialog',
+				'btn:toggle': 'toggle color picker dialog',
+				'btn:swatch': 'color swatch',
+				'btn:last-color': 'use previous color',
+				'btn:save': '適用',
+				'btn:cancel': 'Cancel',
+				'btn:clear': 'Clear',
+
+				// Strings used for aria-labels
+				'aria:btn:save': 'save and close',
+				'aria:btn:cancel': 'cancel and close',
+				'aria:btn:clear': 'clear and close',
+				'aria:input': 'color input field',
+				'aria:palette': 'color selection area',
+				'aria:hue': 'hue selection slider',
+				'aria:opacity': 'selection slider'
 			}
 		});
+
+		this._pickrEvents(pickr);
 	}
 
-	render(): void {
+	private _pickrEvents($pickr: any): void {
+		$pickr
+			.on('init', (instance) => {})
+			.on('hide', (instance) => {
+				setTimeout(() => {
+					// Remove in-active after after completelly hided pickr
+					this.pickrInfoRef.nativeElement.classList.remove('in-active');
+				}, 1000);
+			})
+			.on('show', (color, instance) => {
+				this.pickrInfoRef.nativeElement.classList.add('in-active');
+			})
+			.on('save', (color, instance) => {
+				// Set brush color
+				const rgba: string = color.toRGBA().toString();
+				this.memory.brush.color = rgba;
+
+				// Hide pickr
+				$pickr.hide();
+			})
+			.on('clear', (instance) => {})
+			.on('change', (color, instance) => {})
+			.on('changestop', (instance) => {})
+			.on('cancel', (instance) => {})
+			.on('swatchselect', (color, instance) => {});
+	}
+
+	private render(): void {
 		const r: FrameRequestCallback = () => {
 			this._render();
 
@@ -104,12 +156,12 @@ export class ToolMenuComponent implements OnInit {
 		const isEraseBrush = this.memory.reservedByFunc.name === 'erase';
 		if (isDrawBrush) {
 			this.previousBrushState = 'draw';
-			this.drawBrushSize = this.memory.brushSize.lineWidth.draw;
-			this.memory.brushSizeSlider.meter.style.width = this.memory.brushSize.meterWidth.draw + '%';
+			this.drawBrushSize = this.memory.brush.lineWidth.draw;
+			this.memory.brushSizeSlider.meter.style.width = this.memory.brush.meterWidth.draw + '%';
 		} else if (isEraseBrush) {
 			this.previousBrushState = 'erase';
-			this.eraseBrushSize = this.memory.brushSize.lineWidth.erase;
-			this.memory.brushSizeSlider.meter.style.width = this.memory.brushSize.meterWidth.erase + '%';
+			this.eraseBrushSize = this.memory.brush.lineWidth.erase;
+			this.memory.brushSizeSlider.meter.style.width = this.memory.brush.meterWidth.erase + '%';
 		}
 	}
 

@@ -30,11 +30,11 @@ export class SlideBrushSizeService {
 
 			// update memory
 			if (this.memory.reservedByFunc.name === 'draw') {
-				this.memory.brushSize.meterWidth.draw = w;
-				this.memory.brushSize.lineWidth.draw = Math.floor((w / 100) * this.memory.constant.MAX_BRUSH_SIZE);
+				this.memory.brush.meterWidth.draw = w;
+				this.memory.brush.lineWidth.draw = Math.floor((w / 100) * this.memory.constant.MAX_BRUSH_SIZE);
 			} else if (this.memory.reservedByFunc.name === 'erase') {
-				this.memory.brushSize.meterWidth.erase = w;
-				this.memory.brushSize.lineWidth.erase = Math.floor((w / 100) * this.memory.constant.MAX_BRUSH_SIZE);
+				this.memory.brush.meterWidth.erase = w;
+				this.memory.brush.lineWidth.erase = Math.floor((w / 100) * this.memory.constant.MAX_BRUSH_SIZE);
 			}
 		}
 	}

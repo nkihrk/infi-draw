@@ -30,7 +30,8 @@ export class MemoryService {
 	eraseList: Erase[] = [];
 	oekakiOrder: number[] = [];
 
-	brushSize = {
+	brush = {
+		color: 'rgba(233, 30, 99, 0.95)',
 		lineWidth: {
 			draw: 10, // px
 			erase: 50 // px
@@ -107,8 +108,8 @@ export class MemoryService {
 		this.brushSizeSlider.meter = $brushSizeMeter.nativeElement;
 
 		// Initialize brushSizeMeter width
-		this.brushSize.meterWidth.draw = (this.brushSize.lineWidth.draw / this.constant.MAX_BRUSH_SIZE) * 100;
-		this.brushSize.meterWidth.erase = (this.brushSize.lineWidth.erase / this.constant.MAX_BRUSH_SIZE) * 100;
+		this.brush.meterWidth.draw = (this.brush.lineWidth.draw / this.constant.MAX_BRUSH_SIZE) * 100;
+		this.brush.meterWidth.erase = (this.brush.lineWidth.erase / this.constant.MAX_BRUSH_SIZE) * 100;
 	}
 
 	initRenderer(

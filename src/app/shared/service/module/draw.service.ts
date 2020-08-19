@@ -64,7 +64,7 @@ export class DrawService {
 		const trail: Trail = this.memory.trailList[trailId];
 		const point: Point = {
 			id: trail.points.length,
-			color: '#ffffff',
+			color: this.memory.brush.color,
 			visibility: true,
 			offset: {
 				prevOffsetX: this.memory.mouseOffset.x,
@@ -73,7 +73,7 @@ export class DrawService {
 				newOffsetY: this.memory.mouseOffset.y
 			},
 			pressure: 1,
-			lineWidth: this.memory.brushSize.lineWidth.draw
+			lineWidth: this.memory.brush.lineWidth.draw
 		};
 
 		if (this._ignoreDuplication(point.offset.prevOffsetX, point.offset.prevOffsetY)) {
@@ -128,9 +128,8 @@ export class DrawService {
 					const currentP: Point = trailList[i].points[j];
 					const nextP: Point = trailList[i].points[j + 1];
 
-					ctxOekakiBuffer.lineWidth = currentP.lineWidth * currentP.pressure * this.memory.canvasOffset.zoomRatio;
-
 					if (currentP.visibility) {
+						ctxOekakiBuffer.lineWidth = currentP.lineWidth * currentP.pressure * this.memory.canvasOffset.zoomRatio;
 						ctxOekakiBuffer.strokeStyle = currentP.color;
 						ctxOekakiBuffer.moveTo(currentP.offset.newOffsetX, currentP.offset.newOffsetY);
 

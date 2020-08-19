@@ -54,9 +54,9 @@ export class CursorService {
 
 			let r = 0;
 			if ($name === 'draw') {
-				r = (this.memory.brushSize.lineWidth.draw * this.memory.canvasOffset.zoomRatio) / 2;
+				r = (this.memory.brush.lineWidth.draw * this.memory.canvasOffset.zoomRatio) / 2;
 			} else if ($name === 'erase') {
-				r = this.memory.brushSize.lineWidth.erase / 2;
+				r = this.memory.brush.lineWidth.erase / 2;
 			}
 
 			if (r > 0) {
