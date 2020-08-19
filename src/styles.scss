@@ -1,7 +1,13 @@
-/* You can add global styles to this file, and also import other style files */
 @import "./reset";
+@import "./app/variables";
+// For pickr
+@import "@simonwep/pickr/dist/themes/monolith.min.css";
 
 html {
 	background-color: #32303f;
 }
 
+.custom-pickr {
+	background-color: #32303f;
+	border: solid 1px $mid-white;
+}
