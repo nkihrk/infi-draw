@@ -15,7 +15,8 @@ export class EraseService {
 
 	activate(): void {
 		this.memory.reservedByFunc = {
-			name: 'erase',
+			name: 'eraser',
+			type: 'erase',
 			group: 'brush'
 		};
 	}

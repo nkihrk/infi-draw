@@ -4,12 +4,32 @@ import { Point } from '../../model/point.model';
 import { Trail } from '../../model/trail.model';
 import { CoordService } from '../util/coord.service';
 import { PointerEvent } from '../../model/pointer-event.model';
+import { Square } from '../../model/square.model';
+
+// Draw modules
+import { PenService } from '../module/pen.service';
+import { CreateSquareService } from '../module/create-square.service';
 
 @Injectable({
 	providedIn: 'root'
 })
 export class DrawService {
-	constructor(private memory: MemoryService, private coord: CoordService) {}
+	constructor(
+		private memory: MemoryService,
+		private coord: CoordService,
+		private pen: PenService,
+		private createSquare: CreateSquareService
+	) {}
+
+	registerDrawFuncs($newOffsetX: number, $newOffsetY: number): void {
+		const name: string = this.memory.reservedByFunc.name;
+
+		if (name === 'pen') {
+			this.pen.recordTrail();
+		} else if (name === 'square') {
+			this.createSquare.recordTrail($newOffsetX, $newOffsetY);
+		}
+	}
 
 	registerOnMouseDown(): void {
 		const trailList: Trail[] = this.memory.trailList;
@@ -21,23 +41,29 @@ export class DrawService {
 			t.max.prevOffsetX = t.max.newOffsetX;
 			t.max.prevOffsetY = t.max.newOffsetY;
 
-			for (let j = 0; j < t.points.length; j++) {
-				const p: Point = t.points[j];
-				p.offset.prevOffsetX = p.offset.newOffsetX;
-				p.offset.prevOffsetY = p.offset.newOffsetY;
+			if (t.type === 'pen') {
+				for (let j = 0; j < t.points.length; j++) {
+					const p: Point = t.points[j];
+					p.offset.prevOffsetX = p.offset.newOffsetX;
+					p.offset.prevOffsetY = p.offset.newOffsetY;
+				}
+			} else if (t.type === 'square') {
+				const s: Square = t.square;
+				s.offset.prevOffsetX = s.offset.newOffsetX;
+				s.offset.prevOffsetY = s.offset.newOffsetY;
 			}
 		}
 	}
 
 	registerOnNoMouseDown($event: PointerEvent): void {
-		this.updateOffsets(0, 0, $event);
+		this._updateOffsets(0, 0, $event);
 	}
 
 	registerOnMouseMiddleMove($newOffsetX: number, $newOffsetY: number, $event: PointerEvent): void {
-		this.updateOffsets($newOffsetX, $newOffsetY, $event);
+		this._updateOffsets($newOffsetX, $newOffsetY, $event);
 	}
 
-	updateOffsets($newOffsetX: number, $newOffsetY: number, $event?: PointerEvent): void {
+	private _updateOffsets($newOffsetX: number, $newOffsetY: number, $event?: PointerEvent): void {
 		const trailList: Trail[] = this.memory.trailList;
 
 		for (let i = 0; i < trailList.length; i++) {
@@ -45,66 +71,16 @@ export class DrawService {
 			this.coord.updateOffsets($newOffsetX, $newOffsetY, t.min, $event);
 			this.coord.updateOffsets($newOffsetX, $newOffsetY, t.max, $event);
 
-			for (let j = 0; j < t.points.length; j++) {
-				const p: Point = t.points[j];
-				this.coord.updateOffsets($newOffsetX, $newOffsetY, p.offset, $event);
+			if (t.type === 'pen') {
+				for (let j = 0; j < t.points.length; j++) {
+					const p: Point = t.points[j];
+					this.coord.updateOffsets($newOffsetX, $newOffsetY, p.offset, $event);
+				}
+			} else if (t.type === 'square') {
+				const s: Square = t.square;
+				this.coord.updateOffsets($newOffsetX, $newOffsetY, s.offset, $event);
 			}
 		}
-	}
-
-	activate(): void {
-		this.memory.reservedByFunc = {
-			name: 'draw',
-			group: 'brush'
-		};
-	}
-
-	recordTrail(): void {
-		const trailId: number = this.memory.trailList.length > 0 ? this.memory.trailList.length - 1 : 0;
-		const trail: Trail = this.memory.trailList[trailId];
-		const point: Point = {
-			id: trail.points.length,
-			color: this.memory.brush.color,
-			visibility: true,
-			offset: {
-				prevOffsetX: this.memory.mouseOffset.x,
-				prevOffsetY: this.memory.mouseOffset.y,
-				newOffsetX: this.memory.mouseOffset.x,
-				newOffsetY: this.memory.mouseOffset.y
-			},
-			pressure: 1,
-			lineWidth: this.memory.brush.lineWidth.draw
-		};
-
-		if (this._ignoreDuplication(point.offset.prevOffsetX, point.offset.prevOffsetY)) {
-			this._validateMinMax(trail, point.offset.newOffsetX, point.offset.newOffsetY);
-			trail.points.push(point);
-		}
-	}
-
-	_validateMinMax($trail: Trail, $x: number, $y: number): void {
-		$trail.min.newOffsetX = Math.min($trail.min.newOffsetX, $x);
-		$trail.min.newOffsetY = Math.min($trail.min.newOffsetY, $y);
-
-		$trail.max.newOffsetX = Math.max($trail.max.newOffsetX, $x);
-		$trail.max.newOffsetY = Math.max($trail.max.newOffsetY, $y);
-	}
-
-	_ignoreDuplication($x: number, $y: number): boolean {
-		const trailId: number = this.memory.trailList.length > 0 ? this.memory.trailList.length - 1 : 0;
-		const trail: Trail = this.memory.trailList[trailId];
-		const points: Point[] = trail.points;
-
-		if (points.length > 1) {
-			const pointId: number = points.length - 1;
-			const prevPoint: Point = points[pointId - 1];
-
-			if (prevPoint.offset.newOffsetX === $x && prevPoint.offset.newOffsetY === $y) {
-				return false;
-			}
-		}
-
-		return true;
 	}
 
 	render(): void {
@@ -118,37 +94,47 @@ export class DrawService {
 		ctxOekakiBuffer.translate(0.5, 0.5);
 
 		for (let i = 0; i < trailList.length; i++) {
-			if (trailList[i].visibility) {
+			const trail: Trail = trailList[i];
+
+			if (trail.visibility) {
 				ctxOekakiBuffer.beginPath();
 				ctxOekakiBuffer.lineCap = 'round';
 				ctxOekakiBuffer.lineJoin = 'round';
 
-				for (let j = 0; j < trailList[i].points.length; j++) {
-					const prevP: Point = trailList[i].points[j - 1];
-					const currentP: Point = trailList[i].points[j];
-					const nextP: Point = trailList[i].points[j + 1];
-
-					if (currentP.visibility) {
-						ctxOekakiBuffer.lineWidth = currentP.lineWidth * currentP.pressure * this.memory.canvasOffset.zoomRatio;
-						ctxOekakiBuffer.strokeStyle = currentP.color;
-						ctxOekakiBuffer.moveTo(currentP.offset.newOffsetX, currentP.offset.newOffsetY);
-
-						if (nextP && nextP.visibility) {
-							// ctxOekakiBuffer.lineTo(nextP.offset.newOffsetX, nextP.offset.newOffsetY);
-							this._createBezierCurve(ctxOekakiBuffer, currentP, nextP);
-						} else if (prevP && prevP.visibility) {
-							// ctxOekakiBuffer.lineTo(prevP.offset.newOffsetX, prevP.offset.newOffsetY);
-							this._createBezierCurve(ctxOekakiBuffer, currentP, prevP);
-						}
-					}
+				if (trail.type === 'pen') {
+					this.renderPen(ctxOekakiBuffer, trail);
+				} else if (trail.type === 'square') {
+					this.renderSquare(ctxOekakiBuffer, trail);
 				}
-			}
 
-			ctxOekakiBuffer.stroke();
+				ctxOekakiBuffer.stroke();
+			}
 		}
 	}
 
-	_createBezierCurve($ctxOekakiBuffer: CanvasRenderingContext2D, $currentP, $newP): void {
+	private renderPen($ctxOekakiBuffer: CanvasRenderingContext2D, $trail: Trail): void {
+		for (let j = 0; j < $trail.points.length; j++) {
+			const prevP: Point = $trail.points[j - 1];
+			const currentP: Point = $trail.points[j];
+			const nextP: Point = $trail.points[j + 1];
+
+			if (currentP.visibility) {
+				$ctxOekakiBuffer.lineWidth = currentP.lineWidth * currentP.pressure * this.memory.canvasOffset.zoomRatio;
+				$ctxOekakiBuffer.strokeStyle = currentP.color;
+				$ctxOekakiBuffer.moveTo(currentP.offset.newOffsetX, currentP.offset.newOffsetY);
+
+				if (nextP && nextP.visibility) {
+					// $ctxOekakiBuffer.lineTo(nextP.offset.newOffsetX, nextP.offset.newOffsetY);
+					this._createBezierCurve($ctxOekakiBuffer, currentP, nextP);
+				} else if (prevP && prevP.visibility) {
+					// $ctxOekakiBuffer.lineTo(prevP.offset.newOffsetX, prevP.offset.newOffsetY);
+					this._createBezierCurve($ctxOekakiBuffer, currentP, prevP);
+				}
+			}
+		}
+	}
+
+	private _createBezierCurve($ctxOekakiBuffer: CanvasRenderingContext2D, $currentP, $newP): void {
 		const currentP = {
 			x: $currentP.offset.newOffsetX,
 			y: $currentP.offset.newOffsetY
@@ -163,10 +149,24 @@ export class DrawService {
 		$ctxOekakiBuffer.lineTo($newP.offset.newOffsetX, $newP.offset.newOffsetY);
 	}
 
-	_midPointBetween(p1: { x: number; y: number }, p2: { x: number; y: number }): { x: number; y: number } {
+	private _midPointBetween(p1: { x: number; y: number }, p2: { x: number; y: number }): { x: number; y: number } {
 		return {
 			x: p1.x + (p2.x - p1.x) / 2,
 			y: p1.y + (p2.y - p1.y) / 2
 		};
+	}
+
+	private renderSquare($ctxOekakiBuffer: CanvasRenderingContext2D, $trail: Trail): void {
+		const square: Square = $trail.square;
+
+		if (square.visibility) {
+			const w: number = square.width * this.memory.canvasOffset.zoomRatio;
+			const h: number = square.height * this.memory.canvasOffset.zoomRatio;
+			const lineWidth: number = square.lineWidth * this.memory.canvasOffset.zoomRatio;
+
+			$ctxOekakiBuffer.lineWidth = lineWidth;
+			$ctxOekakiBuffer.strokeStyle = square.color;
+			$ctxOekakiBuffer.rect(square.offset.newOffsetX, square.offset.newOffsetY, w, h);
+		}
 	}
 }

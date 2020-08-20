@@ -12,12 +12,16 @@ export class CursorService {
 		const c: HTMLCanvasElement = ctxUiBuffer.canvas;
 		c.width = this.memory.renderer.canvasWrapper.clientWidth;
 		c.height = this.memory.renderer.canvasWrapper.clientHeight;
-		const name: string = this.memory.reservedByFunc.name;
+		const group: string = this.memory.reservedByFunc.group;
 
-		if (name === 'draw' || name === 'erase') {
-			this._brush(name, ctxUiBuffer);
-		} else if (name === 'hand') {
-			this._hand();
+		if (group === 'brush') {
+			this._brush(ctxUiBuffer);
+		} else {
+			const name: string = this.memory.reservedByFunc.name;
+
+			if (name === 'hand') {
+				this._hand();
+			}
 		}
 	}
 
@@ -36,7 +40,7 @@ export class CursorService {
 		}
 	}
 
-	private _brush($name: string, $ctxUiBuffer: CanvasRenderingContext2D): void {
+	private _brush($ctxUiBuffer: CanvasRenderingContext2D): void {
 		const rawX: number = this.memory.mouseOffset.rawX;
 		const rawY: number = this.memory.mouseOffset.rawY;
 		const canvasX: number = this.memory.renderer.main.getBoundingClientRect().x;
@@ -49,13 +53,14 @@ export class CursorService {
 		}
 
 		if (isCanvas && !this.memory.states.isCanvasLocked) {
+			const type: string = this.memory.reservedByFunc.type;
 			const x: number = this.memory.mouseOffset.x;
 			const y: number = this.memory.mouseOffset.y;
 
 			let r = 0;
-			if ($name === 'draw') {
+			if (type === 'draw') {
 				r = (this.memory.brush.lineWidth.draw * this.memory.canvasOffset.zoomRatio) / 2;
-			} else if ($name === 'erase') {
+			} else if (type === 'erase') {
 				r = this.memory.brush.lineWidth.erase / 2;
 			}
 
