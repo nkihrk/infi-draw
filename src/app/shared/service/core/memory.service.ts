@@ -6,6 +6,7 @@ import { CanvasOffset } from '../../model/canvas-offset.model';
 import { Trail } from '../../model/trail.model';
 import { Erase } from '../../model/erase.model';
 import { Point } from '../../model/point.model';
+import { Square } from '../../model/square.model';
 
 @Injectable({
 	providedIn: 'root'
@@ -80,7 +81,8 @@ export class MemoryService {
 	};
 
 	reservedByFunc = {
-		name: 'draw',
+		name: 'pen',
+		type: 'draw',
 		group: 'brush'
 	};
 
@@ -241,11 +243,12 @@ export class MemoryService {
 		// Remove unnecessary event ids
 		this.oekakiOrder = _.take(this.oekakiOrder, this.orderId + 1);
 
-		if (this.reservedByFunc.name === 'draw') {
+		if (this.reservedByFunc.type === 'draw') {
 			this.trailList = _.take(this.trailList, this.drawId + 1);
 
 			const trail: Trail = {
 				id: this.trailList.length,
+				type: this.reservedByFunc.name, // This must be pen, eraser, square, circle or line
 				visibility: true,
 				min: {
 					prevOffsetX: Infinity,
@@ -259,14 +262,15 @@ export class MemoryService {
 					newOffsetX: -Infinity,
 					newOffsetY: -Infinity
 				},
-				points: [] as Point[]
+				points: [] as Point[],
+				square: {} as Square
 			};
 			this.trailList.push(trail);
 
 			// To tell 'draw'
 			this.oekakiOrder.push(1);
 			this.drawId++;
-		} else if (this.reservedByFunc.name === 'erase') {
+		} else if (this.reservedByFunc.type === 'erase') {
 			this.eraseList = _.take(this.eraseList, this.eraseId + 1);
 
 			const erase: Erase = {

@@ -34,26 +34,25 @@ export class MouseEventService {
 
 	middleUp(): void {}
 
-	leftDownMove($name: string, $newOffsetX: number, $newOffsetY: number, $event: PointerEvent): void {
-		switch ($name) {
+	leftDownMove($type: string, $name: string, $newOffsetX: number, $newOffsetY: number, $event: PointerEvent): void {
+		switch ($type) {
 			case 'draw':
-				this.drawFunc.recordTrail();
+				this.drawFunc.registerDrawFuncs($newOffsetX, $newOffsetY);
 				break;
 
 			case 'erase':
 				this.eraseFunc.setVisibility();
 				break;
 
-			case 'hand':
-				this._updateCanvases($newOffsetX, $newOffsetY, $event);
-				break;
-
 			default:
+				if ($name === 'hand') {
+					this._updateCanvases($newOffsetX, $newOffsetY, $event);
+				}
 				break;
 		}
 	}
 
-	rightDownMove($name: string, $newOffsetX: number, $newOffsetY: number, $event: PointerEvent): void {}
+	rightDownMove($type: string, $newOffsetX: number, $newOffsetY: number, $event: PointerEvent): void {}
 
 	middleDownMove($newOffsetX: number, $newOffsetY: number, $event: PointerEvent): void {
 		this._updateCanvases($newOffsetX, $newOffsetY, $event);

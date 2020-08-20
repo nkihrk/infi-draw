@@ -152,8 +152,8 @@ export class ToolMenuComponent implements OnInit {
 	}
 
 	private _render(): void {
-		const isDrawBrush = this.memory.reservedByFunc.name === 'draw';
-		const isEraseBrush = this.memory.reservedByFunc.name === 'erase';
+		const isDrawBrush = this.memory.reservedByFunc.type === 'draw';
+		const isEraseBrush = this.memory.reservedByFunc.type === 'erase';
 		if (isDrawBrush) {
 			this.previousBrushState = 'draw';
 			this.drawBrushSize = this.memory.brush.lineWidth.draw;

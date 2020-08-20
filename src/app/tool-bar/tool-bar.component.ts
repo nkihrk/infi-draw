@@ -21,12 +21,20 @@ import { faSearchMinus } from '@fortawesome/free-solid-svg-icons';
 export class ToolBarComponent implements OnInit {
 	@ViewChild('select', { static: true }) select: ElementRef<HTMLDivElement>;
 	@ViewChild('hand', { static: true }) hand: ElementRef<HTMLDivElement>;
-	@ViewChild('draw', { static: true }) draw: ElementRef<HTMLDivElement>;
-	@ViewChild('erase', { static: true }) erase: ElementRef<HTMLDivElement>;
-	@ViewChild('createSquare', { static: true }) createSquare: ElementRef<HTMLDivElement>;
-	@ViewChild('createCircle', { static: true }) createCircle: ElementRef<HTMLDivElement>;
-	@ViewChild('createLine', { static: true }) createLine: ElementRef<HTMLDivElement>;
-	@ViewChild('colorPicker', { static: true }) colorPicker: ElementRef<HTMLDivElement>;
+	@ViewChild('pen', { static: true }) pen: ElementRef<HTMLDivElement>;
+	@ViewChild('eraser', { static: true }) eraser: ElementRef<HTMLDivElement>;
+	@ViewChild('createSquare', { static: true }) createSquare: ElementRef<
+		HTMLDivElement
+	>;
+	@ViewChild('createCircle', { static: true }) createCircle: ElementRef<
+		HTMLDivElement
+	>;
+	@ViewChild('createLine', { static: true }) createLine: ElementRef<
+		HTMLDivElement
+	>;
+	@ViewChild('colorPicker', { static: true }) colorPicker: ElementRef<
+		HTMLDivElement
+	>;
 	@ViewChild('zoomIn', { static: true }) zoomIn: ElementRef<HTMLDivElement>;
 	@ViewChild('zoomOut', { static: true }) zoomOut: ElementRef<HTMLDivElement>;
 
@@ -52,12 +60,16 @@ export class ToolBarComponent implements OnInit {
 				this.func.hand();
 				break;
 
-			case 'draw':
-				this.func.draw();
+			case 'pen':
+				this.func.pen();
 				break;
 
-			case 'erase':
-				this.func.erase();
+			case 'eraser':
+				this.func.eraser();
+				break;
+
+			case 'square':
+				this.func.createSquare();
 				break;
 
 			default:
@@ -88,29 +100,30 @@ export class ToolBarComponent implements OnInit {
 				this._toggleActive(t);
 				break;
 
-			case 'draw':
-				t = this.draw.nativeElement;
+			case 'pen':
+				t = this.pen.nativeElement;
 				this._toggleActive(t);
 				break;
 
-			case 'erase':
-				t = this.erase.nativeElement;
+			case 'eraser':
+				t = this.eraser.nativeElement;
 				this._toggleActive(t);
 				break;
 
-			case 'createSquare':
+			case 'square':
 				t = this.createSquare.nativeElement;
+				this._toggleActive(t);
 				break;
 
-			case 'createCircle':
+			case 'circle':
 				t = this.createCircle.nativeElement;
 				break;
 
-			case 'createLine':
+			case 'line':
 				t = this.createLine.nativeElement;
 				break;
 
-			case 'colorPicker':
+			case 'spuit':
 				t = this.colorPicker.nativeElement;
 				break;
 
@@ -137,8 +150,8 @@ export class ToolBarComponent implements OnInit {
 	private _resetToolBarClassAll(): void {
 		this._resetToolBarClass(this.select.nativeElement);
 		this._resetToolBarClass(this.hand.nativeElement);
-		this._resetToolBarClass(this.draw.nativeElement);
-		this._resetToolBarClass(this.erase.nativeElement);
+		this._resetToolBarClass(this.pen.nativeElement);
+		this._resetToolBarClass(this.eraser.nativeElement);
 		this._resetToolBarClass(this.createSquare.nativeElement);
 		this._resetToolBarClass(this.createCircle.nativeElement);
 		this._resetToolBarClass(this.createLine.nativeElement);

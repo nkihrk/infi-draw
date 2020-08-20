@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { MemoryService } from './memory.service';
 import { CleanupService } from '../module/cleanup.service';
+import { CreateSquareService } from '../module/create-square.service';
 import { DrawService } from '../module/draw.service';
 import { EraseService } from '../module/erase.service';
+import { PenService } from '../module/pen.service';
 
 @Injectable({
 	providedIn: 'root'
@@ -10,9 +12,11 @@ import { EraseService } from '../module/erase.service';
 export class FuncService {
 	constructor(
 		private memory: MemoryService,
+		private createSquareFunc: CreateSquareService,
 		private cleanupFunc: CleanupService,
 		private drawFunc: DrawService,
-		private eraseFunc: EraseService
+		private eraseFunc: EraseService,
+		private penFunc: PenService
 	) {}
 
 	//////////////////////////////////////////////////////////
@@ -27,21 +31,31 @@ export class FuncService {
 
 	//////////////////////////////////////////////////////////
 	//
-	// Draw
+	// Create square
 	//
 	//////////////////////////////////////////////////////////
 
-	draw(): void {
-		this.drawFunc.activate();
+	createSquare(): void {
+		this.createSquareFunc.activate();
 	}
 
 	//////////////////////////////////////////////////////////
 	//
-	// Erase
+	// Pen
 	//
 	//////////////////////////////////////////////////////////
 
-	erase(): void {
+	pen(): void {
+		this.penFunc.activate();
+	}
+
+	//////////////////////////////////////////////////////////
+	//
+	// Eraser
+	//
+	//////////////////////////////////////////////////////////
+
+	eraser(): void {
 		this.eraseFunc.activate();
 	}
 
@@ -68,6 +82,7 @@ export class FuncService {
 	hand(): void {
 		this.memory.reservedByFunc = {
 			name: 'hand',
+			type: '',
 			group: ''
 		};
 	}
