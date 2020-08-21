@@ -4,7 +4,6 @@ import { Point } from '../../model/point.model';
 import { Trail } from '../../model/trail.model';
 import { CoordService } from '../util/coord.service';
 import { PointerEvent } from '../../model/pointer-event.model';
-import { Square } from '../../model/square.model';
 
 // Draw modules
 import { PenService } from '../module/pen.service';
