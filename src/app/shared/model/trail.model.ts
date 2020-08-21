@@ -3,6 +3,7 @@ import { Offset } from './offset.model';
 
 export interface Trail {
 	id: number;
+	name: string;
 	type: string;
 	visibility: boolean;
 	min: Offset;

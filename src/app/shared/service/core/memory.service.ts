@@ -252,6 +252,7 @@ export class MemoryService {
 
 			const trail: Trail = {
 				id: this.trailList.length,
+				name: this.reservedByFunc.name,
 				type: this.reservedByFunc.name === 'circle' ? 'arc' : 'line', // This must be line or arc
 				visibility: true,
 				min: {
