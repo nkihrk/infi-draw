@@ -9,5 +9,4 @@ export interface Trail {
 	min: Offset;
 	max: Offset;
 	points: Point[];
-	square: Square;
 }

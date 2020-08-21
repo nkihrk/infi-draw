@@ -26,25 +26,30 @@ export class EraseService {
 
 		for (let i = 0; i < trailIndexes.length; i++) {
 			const tId: number = trailIndexes[i];
-			const pointIndexes: number[] = this._validatePoints(tId);
+			const trail: Trail = this.memory.trailList[tId];
 
-			for (let j = 0; j < pointIndexes.length; j++) {
-				const pId: number = pointIndexes[j];
-				const p: Point = this.memory.trailList[tId].points[pId];
+			if (trail.type === 'line') {
+				const pointIndexes: number[] = this._validatePoints(tId);
 
-				if (p.visibility) {
-					const erase: Erase = this.memory.eraseList[this.memory.eraseList.length - 1];
-					if (!erase.trailList[tId]) erase.trailList[tId] = { trailId: -1, pointIdList: [] };
-					erase.trailList[tId].trailId = tId;
-					erase.trailList[tId].pointIdList.push(pId);
+				for (let j = 0; j < pointIndexes.length; j++) {
+					const pId: number = pointIndexes[j];
+					const p: Point = this.memory.trailList[tId].points[pId];
 
-					p.visibility = false;
+					if (p.visibility) {
+						const erase: Erase = this.memory.eraseList[this.memory.eraseList.length - 1];
+						if (!erase.trailList[tId]) erase.trailList[tId] = { trailId: -1, pointIdList: [] };
+						erase.trailList[tId].trailId = tId;
+						erase.trailList[tId].pointIdList.push(pId);
+
+						p.visibility = false;
+					}
 				}
+			} else if (trail.type === 'arc') {
 			}
 		}
 	}
 
-	_validateTrails(): number[] {
+	private _validateTrails(): number[] {
 		const validList: number[] = [];
 
 		const trailList: Trail[] = this.memory.trailList;
@@ -80,7 +85,7 @@ export class EraseService {
 		return validList;
 	}
 
-	_validatePoints($trailId: number): number[] {
+	private _validatePoints($trailId: number): number[] {
 		const validList: number[] = [];
 
 		const points: Point[] = this.memory.trailList[$trailId].points;

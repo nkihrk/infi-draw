@@ -41,16 +41,13 @@ export class DrawService {
 			t.max.prevOffsetX = t.max.newOffsetX;
 			t.max.prevOffsetY = t.max.newOffsetY;
 
-			if (t.type === 'pen') {
+			if (t.type === 'line') {
 				for (let j = 0; j < t.points.length; j++) {
 					const p: Point = t.points[j];
 					p.offset.prevOffsetX = p.offset.newOffsetX;
 					p.offset.prevOffsetY = p.offset.newOffsetY;
 				}
-			} else if (t.type === 'square') {
-				const s: Square = t.square;
-				s.offset.prevOffsetX = s.offset.newOffsetX;
-				s.offset.prevOffsetY = s.offset.newOffsetY;
+			} else if (t.type === 'arc') {
 			}
 		}
 	}
@@ -71,14 +68,12 @@ export class DrawService {
 			this.coord.updateOffsets($newOffsetX, $newOffsetY, t.min, $event);
 			this.coord.updateOffsets($newOffsetX, $newOffsetY, t.max, $event);
 
-			if (t.type === 'pen') {
+			if (t.type === 'line') {
 				for (let j = 0; j < t.points.length; j++) {
 					const p: Point = t.points[j];
 					this.coord.updateOffsets($newOffsetX, $newOffsetY, p.offset, $event);
 				}
-			} else if (t.type === 'square') {
-				const s: Square = t.square;
-				this.coord.updateOffsets($newOffsetX, $newOffsetY, s.offset, $event);
+			} else if (t.type === 'arc') {
 			}
 		}
 	}
@@ -101,10 +96,9 @@ export class DrawService {
 				ctxOekakiBuffer.lineCap = 'round';
 				ctxOekakiBuffer.lineJoin = 'round';
 
-				if (trail.type === 'pen') {
+				if (trail.type === 'line') {
 					this.renderPen(ctxOekakiBuffer, trail);
-				} else if (trail.type === 'square') {
-					this.renderSquare(ctxOekakiBuffer, trail);
+				} else if (trail.type === 'arc') {
 				}
 
 				ctxOekakiBuffer.stroke();
@@ -154,19 +148,5 @@ export class DrawService {
 			x: p1.x + (p2.x - p1.x) / 2,
 			y: p1.y + (p2.y - p1.y) / 2
 		};
-	}
-
-	private renderSquare($ctxOekakiBuffer: CanvasRenderingContext2D, $trail: Trail): void {
-		const square: Square = $trail.square;
-
-		if (square.visibility) {
-			const w: number = square.width * this.memory.canvasOffset.zoomRatio;
-			const h: number = square.height * this.memory.canvasOffset.zoomRatio;
-			const lineWidth: number = square.lineWidth * this.memory.canvasOffset.zoomRatio;
-
-			$ctxOekakiBuffer.lineWidth = lineWidth;
-			$ctxOekakiBuffer.strokeStyle = square.color;
-			$ctxOekakiBuffer.rect(square.offset.newOffsetX, square.offset.newOffsetY, w, h);
-		}
 	}
 }

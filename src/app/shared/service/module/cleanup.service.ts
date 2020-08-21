@@ -33,17 +33,25 @@ export class CleanupService {
 		const trailLists: Trail[] = this.memory.trailList;
 
 		for (let i = 0; i < trailLists.length; i++) {
-			const points: Point[] = trailLists[i].points;
-			for (let j = 0; j < points.length; j++) {
-				const p: Point = points[j];
+			const trail: Trail = trailLists[i];
 
-				if (p.visibility) {
-					const erase: Erase = this.memory.eraseList[this.memory.eraseList.length - 1];
-					if (!erase.trailList[i]) erase.trailList[i] = { trailId: -1, pointIdList: [] };
-					erase.trailList[i].trailId = i;
-					erase.trailList[i].pointIdList.push(j);
-					p.visibility = false;
+			if (trail.type === 'line') {
+				const points: Point[] = trailLists[i].points;
+
+				for (let j = 0; j < points.length; j++) {
+					const p: Point = points[j];
+
+					if (p.visibility) {
+						const erase: Erase = this.memory.eraseList[this.memory.eraseList.length - 1];
+
+						if (!erase.trailList[i]) erase.trailList[i] = { trailId: -1, pointIdList: [] };
+
+						erase.trailList[i].trailId = i;
+						erase.trailList[i].pointIdList.push(j);
+						p.visibility = false;
+					}
 				}
+			} else if (trail.type === 'arc') {
 			}
 		}
 	}
