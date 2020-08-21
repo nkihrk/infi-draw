@@ -6,7 +6,6 @@ import { CanvasOffset } from '../../model/canvas-offset.model';
 import { Trail } from '../../model/trail.model';
 import { Erase } from '../../model/erase.model';
 import { Point } from '../../model/point.model';
-import { Square } from '../../model/square.model';
 
 @Injectable({
 	providedIn: 'root'
@@ -226,14 +225,19 @@ export class MemoryService {
 
 		for (let i = 0; i < trailList.length; i++) {
 			if (trailList[i]) {
-				const pointList: number[] = trailList[i].pointIdList;
+				const tId: number = trailList[i].trailId;
+				const trail: Trail = this.trailList[tId];
 
-				for (let j = 0; j < pointList.length; j++) {
-					const tId: number = trailList[i].trailId;
-					const pId: number = pointList[j];
-					const trail: Trail = this.trailList[tId];
+				if (trail.type === 'line') {
+					const pointList: number[] = trailList[i].pointIdList;
 
-					if (trail && trail.points[pId]) trail.points[pId].visibility = !trail.points[pId].visibility;
+					for (let j = 0; j < pointList.length; j++) {
+						const pId: number = pointList[j];
+						const point: Point = trail.points[pId];
+
+						if (trail && trail.points[pId]) point.visibility = !point.visibility;
+					}
+				} else if (trail.type === 'arc') {
 				}
 			}
 		}
@@ -248,7 +252,7 @@ export class MemoryService {
 
 			const trail: Trail = {
 				id: this.trailList.length,
-				type: this.reservedByFunc.name, // This must be pen, eraser, square, circle or line
+				type: this.reservedByFunc.name === 'circle' ? 'arc' : 'line', // This must be line or arc
 				visibility: true,
 				min: {
 					prevOffsetX: Infinity,
@@ -262,8 +266,7 @@ export class MemoryService {
 					newOffsetX: -Infinity,
 					newOffsetY: -Infinity
 				},
-				points: [] as Point[],
-				square: {} as Square
+				points: [] as Point[]
 			};
 			this.trailList.push(trail);
 
