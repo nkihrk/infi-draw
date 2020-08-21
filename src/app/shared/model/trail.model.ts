@@ -1,6 +1,5 @@
 import { Point } from './point.model';
 import { Offset } from './offset.model';
-import { Square } from './square.model';
 
 export interface Trail {
 	id: number;
