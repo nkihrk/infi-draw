@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { MemoryService } from './memory.service';
 import { CleanupService } from '../module/cleanup.service';
-import { CreateSquareService } from '../module/create-square.service';
-import { DrawService } from '../module/draw.service';
-import { EraseService } from '../module/erase.service';
 import { PenService } from '../module/pen.service';
+import { EraseService } from '../module/erase.service';
+import { CreateSquareService } from '../module/create-square.service';
+import { CreateLineService } from '../module/create-line.service';
 
 @Injectable({
 	providedIn: 'root'
@@ -12,12 +12,46 @@ import { PenService } from '../module/pen.service';
 export class FuncService {
 	constructor(
 		private memory: MemoryService,
-		private createSquareFunc: CreateSquareService,
 		private cleanupFunc: CleanupService,
-		private drawFunc: DrawService,
+		private penFunc: PenService,
 		private eraseFunc: EraseService,
-		private penFunc: PenService
+		private createSquareFunc: CreateSquareService,
+		private createLineFunc: CreateLineService
 	) {}
+
+	//////////////////////////////////////////////////////////
+	//
+	// Save
+	//
+	//////////////////////////////////////////////////////////
+
+	save(): void {}
+
+	//////////////////////////////////////////////////////////
+	//
+	// Undo / redo
+	//
+	//////////////////////////////////////////////////////////
+
+	undo(): void {
+		this.memory.undo();
+	}
+
+	redo(): void {
+		this.memory.redo();
+	}
+
+	//////////////////////////////////////////////////////////
+	//
+	// Unload
+	//
+	//////////////////////////////////////////////////////////
+
+	unload($e: any): void {
+		if (this.memory.states.isChangedStates) {
+			$e.returnValue = true;
+		}
+	}
 
 	//////////////////////////////////////////////////////////
 	//
@@ -31,12 +65,16 @@ export class FuncService {
 
 	//////////////////////////////////////////////////////////
 	//
-	// Create square
+	// Hand
 	//
 	//////////////////////////////////////////////////////////
 
-	createSquare(): void {
-		this.createSquareFunc.activate();
+	hand(): void {
+		this.memory.reservedByFunc = {
+			name: 'hand',
+			type: '',
+			group: ''
+		};
 	}
 
 	//////////////////////////////////////////////////////////
@@ -61,49 +99,21 @@ export class FuncService {
 
 	//////////////////////////////////////////////////////////
 	//
-	// Undo / redo
+	// Create square
 	//
 	//////////////////////////////////////////////////////////
 
-	undo(): void {
-		this.memory.undo();
-	}
-
-	redo(): void {
-		this.memory.redo();
+	createSquare(): void {
+		this.createSquareFunc.activate();
 	}
 
 	//////////////////////////////////////////////////////////
 	//
-	// Hand
+	// Create line
 	//
 	//////////////////////////////////////////////////////////
 
-	hand(): void {
-		this.memory.reservedByFunc = {
-			name: 'hand',
-			type: '',
-			group: ''
-		};
-	}
-
-	//////////////////////////////////////////////////////////
-	//
-	// Save
-	//
-	//////////////////////////////////////////////////////////
-
-	save(): void {}
-
-	//////////////////////////////////////////////////////////
-	//
-	// Unload
-	//
-	//////////////////////////////////////////////////////////
-
-	unload($e: any): void {
-		if (this.memory.states.isChangedStates) {
-			$e.returnValue = true;
-		}
+	createLine(): void {
+		this.createLineFunc.activate();
 	}
 }

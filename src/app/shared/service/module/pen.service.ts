@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { MemoryService } from '../core/memory.service';
-
 import { Point } from '../../model/point.model';
 import { Trail } from '../../model/trail.model';
+
 @Injectable({
 	providedIn: 'root'
 })

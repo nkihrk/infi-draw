@@ -8,6 +8,7 @@ import { PointerEvent } from '../../model/pointer-event.model';
 // Draw modules
 import { PenService } from '../module/pen.service';
 import { CreateSquareService } from '../module/create-square.service';
+import { CreateLineService } from '../module/create-line.service';
 
 @Injectable({
 	providedIn: 'root'
@@ -17,7 +18,8 @@ export class DrawService {
 		private memory: MemoryService,
 		private coord: CoordService,
 		private pen: PenService,
-		private square: CreateSquareService
+		private square: CreateSquareService,
+		private line: CreateLineService
 	) {}
 
 	registerDrawFuncs($newOffsetX: number, $newOffsetY: number): void {
@@ -27,6 +29,8 @@ export class DrawService {
 			this.pen.recordTrail();
 		} else if (name === 'square') {
 			this.square.recordTrail($newOffsetX, $newOffsetY);
+		} else if (name === 'line') {
+			this.line.recordTrail($newOffsetX, $newOffsetY);
 		}
 	}
 
