@@ -17,7 +17,7 @@ export class DrawService {
 		private memory: MemoryService,
 		private coord: CoordService,
 		private pen: PenService,
-		private createSquare: CreateSquareService
+		private square: CreateSquareService
 	) {}
 
 	registerDrawFuncs($newOffsetX: number, $newOffsetY: number): void {
@@ -26,7 +26,7 @@ export class DrawService {
 		if (name === 'pen') {
 			this.pen.recordTrail();
 		} else if (name === 'square') {
-			this.createSquare.recordTrail($newOffsetX, $newOffsetY);
+			this.square.recordTrail($newOffsetX, $newOffsetY);
 		}
 	}
 
@@ -96,7 +96,7 @@ export class DrawService {
 				ctxOekakiBuffer.lineJoin = 'round';
 
 				if (trail.type === 'line') {
-					this.renderPen(ctxOekakiBuffer, trail);
+					this.renderLine(ctxOekakiBuffer, trail);
 				} else if (trail.type === 'arc') {
 				}
 
@@ -105,7 +105,7 @@ export class DrawService {
 		}
 	}
 
-	private renderPen($ctxOekakiBuffer: CanvasRenderingContext2D, $trail: Trail): void {
+	renderLine($ctxOekakiBuffer: CanvasRenderingContext2D, $trail: Trail): void {
 		for (let j = 0; j < $trail.points.length; j++) {
 			const prevP: Point = $trail.points[j - 1];
 			const currentP: Point = $trail.points[j];
@@ -117,11 +117,11 @@ export class DrawService {
 				$ctxOekakiBuffer.moveTo(currentP.offset.newOffsetX, currentP.offset.newOffsetY);
 
 				if (nextP && nextP.visibility) {
-					// $ctxOekakiBuffer.lineTo(nextP.offset.newOffsetX, nextP.offset.newOffsetY);
-					this._createBezierCurve($ctxOekakiBuffer, currentP, nextP);
+					$ctxOekakiBuffer.lineTo(nextP.offset.newOffsetX, nextP.offset.newOffsetY);
+					//this._createBezierCurve($ctxOekakiBuffer, currentP, nextP);
 				} else if (prevP && prevP.visibility) {
-					// $ctxOekakiBuffer.lineTo(prevP.offset.newOffsetX, prevP.offset.newOffsetY);
-					this._createBezierCurve($ctxOekakiBuffer, currentP, prevP);
+					$ctxOekakiBuffer.lineTo(prevP.offset.newOffsetX, prevP.offset.newOffsetY);
+					//this._createBezierCurve($ctxOekakiBuffer, currentP, prevP);
 				}
 			}
 		}
