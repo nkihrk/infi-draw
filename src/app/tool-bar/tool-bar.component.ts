@@ -23,18 +23,10 @@ export class ToolBarComponent implements OnInit {
 	@ViewChild('hand', { static: true }) hand: ElementRef<HTMLDivElement>;
 	@ViewChild('pen', { static: true }) pen: ElementRef<HTMLDivElement>;
 	@ViewChild('eraser', { static: true }) eraser: ElementRef<HTMLDivElement>;
-	@ViewChild('createSquare', { static: true }) createSquare: ElementRef<
-		HTMLDivElement
-	>;
-	@ViewChild('createCircle', { static: true }) createCircle: ElementRef<
-		HTMLDivElement
-	>;
-	@ViewChild('createLine', { static: true }) createLine: ElementRef<
-		HTMLDivElement
-	>;
-	@ViewChild('colorPicker', { static: true }) colorPicker: ElementRef<
-		HTMLDivElement
-	>;
+	@ViewChild('createSquare', { static: true }) createSquare: ElementRef<HTMLDivElement>;
+	@ViewChild('createCircle', { static: true }) createCircle: ElementRef<HTMLDivElement>;
+	@ViewChild('createLine', { static: true }) createLine: ElementRef<HTMLDivElement>;
+	@ViewChild('colorPicker', { static: true }) colorPicker: ElementRef<HTMLDivElement>;
 	@ViewChild('zoomIn', { static: true }) zoomIn: ElementRef<HTMLDivElement>;
 	@ViewChild('zoomOut', { static: true }) zoomOut: ElementRef<HTMLDivElement>;
 
@@ -70,6 +62,10 @@ export class ToolBarComponent implements OnInit {
 
 			case 'square':
 				this.func.createSquare();
+				break;
+
+			case 'line':
+				this.func.createLine();
 				break;
 
 			default:
@@ -121,6 +117,7 @@ export class ToolBarComponent implements OnInit {
 
 			case 'line':
 				t = this.createLine.nativeElement;
+				this._toggleActive(t);
 				break;
 
 			case 'spuit':
