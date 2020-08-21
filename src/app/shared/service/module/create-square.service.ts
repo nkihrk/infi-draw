@@ -63,7 +63,6 @@ export class CreateSquareService {
 			}
 		}
 
-		// I'm not sure why this code is OK. No else block?
 		// ↓
 		if ($newOffsetY > 0) {
 			for (let i = 0; i < $newOffsetY; i++) {
@@ -76,6 +75,24 @@ export class CreateSquareService {
 						prevOffsetY: this.memory.mouseOffset.prevY + i,
 						newOffsetX: this.memory.mouseOffset.prevX + $newOffsetX,
 						newOffsetY: this.memory.mouseOffset.prevY + i
+					},
+					pressure: 1,
+					lineWidth: this.memory.brush.lineWidth.draw
+				};
+
+				trail.points.push(point);
+			}
+		} else {
+			for (let i = 0; i < -$newOffsetY; i++) {
+				const point: Point = {
+					id: trail.points.length,
+					color: this.memory.brush.color,
+					visibility: true,
+					offset: {
+						prevOffsetX: this.memory.mouseOffset.prevX + $newOffsetX,
+						prevOffsetY: this.memory.mouseOffset.prevY - i,
+						newOffsetX: this.memory.mouseOffset.prevX + $newOffsetX,
+						newOffsetY: this.memory.mouseOffset.prevY - i
 					},
 					pressure: 1,
 					lineWidth: this.memory.brush.lineWidth.draw
