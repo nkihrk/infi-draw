@@ -7,6 +7,8 @@ import { Point } from '../../model/point.model';
 	providedIn: 'root'
 })
 export class CreateSquareService {
+	private cutoff = 100;
+
 	constructor(private memory: MemoryService) {}
 
 	activate(): void {
@@ -24,40 +26,23 @@ export class CreateSquareService {
 		// Initialize points until mouseup event occured
 		trail.points = [];
 
+		const totalLengthX: number = Math.abs($newOffsetX) * this.cutoff;
+		const totalLengthY: number = Math.abs($newOffsetY) * this.cutoff;
+		const cutoffX: number = totalLengthX / this.cutoff;
+		const cutoffY: number = totalLengthY / this.cutoff;
+
 		// →
 		if ($newOffsetX > 0) {
-			for (let i = 0; i < $newOffsetX; i++) {
-				const point: Point = {
-					id: trail.points.length,
-					color: this.memory.brush.color,
-					visibility: true,
-					offset: {
-						prevOffsetX: this.memory.mouseOffset.prevX + i,
-						prevOffsetY: this.memory.mouseOffset.prevY,
-						newOffsetX: this.memory.mouseOffset.prevX + i,
-						newOffsetY: this.memory.mouseOffset.prevY
-					},
-					pressure: 1,
-					lineWidth: this.memory.brush.lineWidth.draw
-				};
+			for (let i = 0; i <= totalLengthX; i += cutoffX) {
+				const fixedI: number = i / this.cutoff;
+				const point: Point = this._creatPoint(trail, fixedI, 0);
 
 				trail.points.push(point);
 			}
-		} else {
-			for (let i = 0; i < -$newOffsetX; i++) {
-				const point: Point = {
-					id: trail.points.length,
-					color: this.memory.brush.color,
-					visibility: true,
-					offset: {
-						prevOffsetX: this.memory.mouseOffset.prevX - i,
-						prevOffsetY: this.memory.mouseOffset.prevY,
-						newOffsetX: this.memory.mouseOffset.prevX - i,
-						newOffsetY: this.memory.mouseOffset.prevY
-					},
-					pressure: 1,
-					lineWidth: this.memory.brush.lineWidth.draw
-				};
+		} else if ($newOffsetX < 0) {
+			for (let i = 0; i <= totalLengthX; i += cutoffX) {
+				const fixedI: number = i / this.cutoff;
+				const point: Point = this._creatPoint(trail, -fixedI, 0);
 
 				trail.points.push(point);
 			}
@@ -65,38 +50,16 @@ export class CreateSquareService {
 
 		// ↓
 		if ($newOffsetY > 0) {
-			for (let i = 0; i < $newOffsetY; i++) {
-				const point: Point = {
-					id: trail.points.length,
-					color: this.memory.brush.color,
-					visibility: true,
-					offset: {
-						prevOffsetX: this.memory.mouseOffset.prevX + $newOffsetX,
-						prevOffsetY: this.memory.mouseOffset.prevY + i,
-						newOffsetX: this.memory.mouseOffset.prevX + $newOffsetX,
-						newOffsetY: this.memory.mouseOffset.prevY + i
-					},
-					pressure: 1,
-					lineWidth: this.memory.brush.lineWidth.draw
-				};
+			for (let i = 0; i <= totalLengthY; i += cutoffY) {
+				const fixedI: number = i / this.cutoff;
+				const point: Point = this._creatPoint(trail, $newOffsetX, fixedI);
 
 				trail.points.push(point);
 			}
-		} else {
-			for (let i = 0; i < -$newOffsetY; i++) {
-				const point: Point = {
-					id: trail.points.length,
-					color: this.memory.brush.color,
-					visibility: true,
-					offset: {
-						prevOffsetX: this.memory.mouseOffset.prevX + $newOffsetX,
-						prevOffsetY: this.memory.mouseOffset.prevY - i,
-						newOffsetX: this.memory.mouseOffset.prevX + $newOffsetX,
-						newOffsetY: this.memory.mouseOffset.prevY - i
-					},
-					pressure: 1,
-					lineWidth: this.memory.brush.lineWidth.draw
-				};
+		} else if ($newOffsetY < 0) {
+			for (let i = 0; i <= totalLengthY; i += cutoffY) {
+				const fixedI: number = i / this.cutoff;
+				const point: Point = this._creatPoint(trail, $newOffsetX, -fixedI);
 
 				trail.points.push(point);
 			}
@@ -104,38 +67,16 @@ export class CreateSquareService {
 
 		// ←
 		if ($newOffsetX > 0) {
-			for (let i = $newOffsetX; i > 0; i--) {
-				const point: Point = {
-					id: trail.points.length,
-					color: this.memory.brush.color,
-					visibility: true,
-					offset: {
-						prevOffsetX: this.memory.mouseOffset.prevX + i,
-						prevOffsetY: this.memory.mouseOffset.prevY + $newOffsetY,
-						newOffsetX: this.memory.mouseOffset.prevX + i,
-						newOffsetY: this.memory.mouseOffset.prevY + $newOffsetY
-					},
-					pressure: 1,
-					lineWidth: this.memory.brush.lineWidth.draw
-				};
+			for (let i = totalLengthX; i >= 0; i -= cutoffX) {
+				const fixedI: number = i / this.cutoff;
+				const point: Point = this._creatPoint(trail, fixedI, $newOffsetY);
 
 				trail.points.push(point);
 			}
-		} else {
-			for (let i = -$newOffsetX; i > 0; i--) {
-				const point: Point = {
-					id: trail.points.length,
-					color: this.memory.brush.color,
-					visibility: true,
-					offset: {
-						prevOffsetX: this.memory.mouseOffset.prevX - i,
-						prevOffsetY: this.memory.mouseOffset.prevY + $newOffsetY,
-						newOffsetX: this.memory.mouseOffset.prevX - i,
-						newOffsetY: this.memory.mouseOffset.prevY + $newOffsetY
-					},
-					pressure: 1,
-					lineWidth: this.memory.brush.lineWidth.draw
-				};
+		} else if ($newOffsetX < 0) {
+			for (let i = totalLengthX; i >= 0; i -= cutoffX) {
+				const fixedI: number = i / this.cutoff;
+				const point: Point = this._creatPoint(trail, -fixedI, $newOffsetY);
 
 				trail.points.push(point);
 			}
@@ -143,41 +84,37 @@ export class CreateSquareService {
 
 		// ↑
 		if ($newOffsetY > 0) {
-			for (let i = $newOffsetY; i > 0; i--) {
-				const point: Point = {
-					id: trail.points.length,
-					color: this.memory.brush.color,
-					visibility: true,
-					offset: {
-						prevOffsetX: this.memory.mouseOffset.prevX,
-						prevOffsetY: this.memory.mouseOffset.prevY + i,
-						newOffsetX: this.memory.mouseOffset.prevX,
-						newOffsetY: this.memory.mouseOffset.prevY + i
-					},
-					pressure: 1,
-					lineWidth: this.memory.brush.lineWidth.draw
-				};
+			for (let i = totalLengthY; i >= 0; i -= cutoffY) {
+				const fixedI: number = i / this.cutoff;
+				const point: Point = this._creatPoint(trail, 0, fixedI);
 
 				trail.points.push(point);
 			}
-		} else {
-			for (let i = -$newOffsetY; i > 0; i--) {
-				const point: Point = {
-					id: trail.points.length,
-					color: this.memory.brush.color,
-					visibility: true,
-					offset: {
-						prevOffsetX: this.memory.mouseOffset.prevX,
-						prevOffsetY: this.memory.mouseOffset.prevY - i,
-						newOffsetX: this.memory.mouseOffset.prevX,
-						newOffsetY: this.memory.mouseOffset.prevY - i
-					},
-					pressure: 1,
-					lineWidth: this.memory.brush.lineWidth.draw
-				};
+		} else if ($newOffsetY < 0) {
+			for (let i = totalLengthY; i >= 0; i -= cutoffY) {
+				const fixedI: number = i / this.cutoff;
+				const point: Point = this._creatPoint(trail, 0, -fixedI);
 
 				trail.points.push(point);
 			}
 		}
+	}
+
+	private _creatPoint($trail: Trail, $x: number, $y: number): Point {
+		const point: Point = {
+			id: $trail.points.length,
+			color: this.memory.brush.color,
+			visibility: true,
+			offset: {
+				prevOffsetX: this.memory.mouseOffset.prevX + $x,
+				prevOffsetY: this.memory.mouseOffset.prevY + $y,
+				newOffsetX: this.memory.mouseOffset.prevX + $x,
+				newOffsetY: this.memory.mouseOffset.prevY + $y
+			},
+			pressure: 1,
+			lineWidth: this.memory.brush.lineWidth.draw
+		};
+
+		return point;
 	}
 }
