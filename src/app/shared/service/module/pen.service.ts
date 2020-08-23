@@ -37,6 +37,7 @@ export class PenService {
 		if (this._ignoreDuplication(point.offset.prevOffsetX, point.offset.prevOffsetY)) {
 			this._validateMinMax(trail, point.offset.newOffsetX, point.offset.newOffsetY);
 			trail.points.push(point);
+			console.log(trail.points.length);
 		}
 	}
 
