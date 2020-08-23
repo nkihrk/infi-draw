@@ -7,6 +7,8 @@ import { Trail } from '../../model/trail.model';
 	providedIn: 'root'
 })
 export class PenService {
+	private cutoff = 10;
+
 	constructor(private memory: MemoryService) {}
 
 	activate(): void {
@@ -35,7 +37,7 @@ export class PenService {
 		const dist: number = this._distanceBetween(prevP, $currentP);
 		const angle: number = this._angleBetween(prevP, $currentP);
 
-		for (let i = 0; i < dist; i++) {
+		for (let i = 0; i < dist; i += this.cutoff) {
 			const x: number = prevP.offset.newOffsetX + Math.sin(angle) * i;
 			const y: number = prevP.offset.newOffsetY + Math.cos(angle) * i;
 			const point: Point = this._creatPoint($trail);
@@ -80,23 +82,6 @@ export class PenService {
 		};
 
 		return point;
-	}
-
-	private ignoreDuplication($x: number, $y: number): boolean {
-		const trailId: number = this.memory.trailList.length > 0 ? this.memory.trailList.length - 1 : 0;
-		const trail: Trail = this.memory.trailList[trailId];
-		const points: Point[] = trail.points;
-
-		if (points.length > 1) {
-			const pointId: number = points.length - 1;
-			const prevPoint: Point = points[pointId - 1];
-
-			if (prevPoint.offset.newOffsetX === $x && prevPoint.offset.newOffsetY === $y) {
-				return false;
-			}
-		}
-
-		return true;
 	}
 
 	private validateMinMax($trail: Trail, $x: number, $y: number): void {
