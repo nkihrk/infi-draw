@@ -137,17 +137,11 @@ export class MenuComponent implements OnInit {
 			{
 				title: 'なし',
 				key: '',
-				type: 1,
-				exec: () => {},
-				subMenuList: [
-					{
-						title: 'なし',
-						key: '',
-						type: 0,
-						exec: () => {},
-						subMenuList: []
-					}
-				]
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
 			}
 		];
 
@@ -490,27 +484,6 @@ export class MenuComponent implements OnInit {
 	}
 
 	private _show(): MenuList[] {
-		const subMenuListZoom: MenuList[] = [
-			{
-				title: '拡大',
-				key: 'Ctrl++',
-				type: 0,
-				exec: () => {
-					this.initializeActiveStates();
-				},
-				subMenuList: []
-			},
-			{
-				title: '縮小',
-				key: 'Ctrl+-',
-				type: 0,
-				exec: () => {
-					this.initializeActiveStates();
-				},
-				subMenuList: []
-			}
-		];
-
 		const menuList: MenuList[] = [
 			{
 				title: '元のビュー',
@@ -540,11 +513,29 @@ export class MenuComponent implements OnInit {
 				subMenuList: []
 			},
 			{
-				title: '拡大 - 縮小',
+				title: '',
 				key: '',
-				type: 1,
+				type: 2,
 				exec: () => {},
-				subMenuList: subMenuListZoom
+				subMenuList: []
+			},
+			{
+				title: '拡大',
+				key: 'Ctrl+Space+ドラッグ',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
+			},
+			{
+				title: '縮小',
+				key: 'Ctrl+Alt+Space+ドラッグ',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
 			}
 		];
 
