@@ -6,6 +6,7 @@ import { CanvasOffset } from '../../model/canvas-offset.model';
 import { Trail } from '../../model/trail.model';
 import { Erase } from '../../model/erase.model';
 import { Point } from '../../model/point.model';
+import { Arc } from '../../model/arc.model';
 
 @Injectable({
 	providedIn: 'root'
@@ -267,7 +268,8 @@ export class MemoryService {
 					newOffsetX: -Infinity,
 					newOffsetY: -Infinity
 				},
-				points: [] as Point[]
+				points: [] as Point[],
+				arc: {} as Arc
 			};
 			this.trailList.push(trail);
 

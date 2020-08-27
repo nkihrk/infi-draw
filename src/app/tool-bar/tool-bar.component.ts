@@ -64,6 +64,10 @@ export class ToolBarComponent implements OnInit {
 				this.func.createSquare();
 				break;
 
+			case 'circle':
+				this.func.createCircle();
+				break;
+
 			case 'line':
 				this.func.createLine();
 				break;
@@ -113,6 +117,7 @@ export class ToolBarComponent implements OnInit {
 
 			case 'circle':
 				t = this.createCircle.nativeElement;
+				this._toggleActive(t);
 				break;
 
 			case 'line':

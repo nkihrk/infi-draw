@@ -2,12 +2,14 @@ import { Injectable } from '@angular/core';
 import { MemoryService } from '../core/memory.service';
 import { Point } from '../../model/point.model';
 import { Trail } from '../../model/trail.model';
+import { Arc } from '../../model/arc.model';
 import { CoordService } from '../util/coord.service';
 import { PointerEvent } from '../../model/pointer-event.model';
 
 // Draw modules
 import { PenService } from '../module/pen.service';
 import { CreateSquareService } from '../module/create-square.service';
+import { CreateCircleService } from '../module/create-circle.service';
 import { CreateLineService } from '../module/create-line.service';
 
 @Injectable({
@@ -19,6 +21,7 @@ export class DrawService {
 		private coord: CoordService,
 		private pen: PenService,
 		private square: CreateSquareService,
+		private circle: CreateCircleService,
 		private line: CreateLineService
 	) {}
 
@@ -29,6 +32,8 @@ export class DrawService {
 			this.pen.recordTrail();
 		} else if (name === 'square') {
 			this.square.recordTrail($newOffsetX, $newOffsetY);
+		} else if (name === 'circle') {
+			this.circle.recordTrail($newOffsetX, $newOffsetY);
 		} else if (name === 'line') {
 			this.line.recordTrail($newOffsetX, $newOffsetY);
 		}
@@ -51,6 +56,9 @@ export class DrawService {
 					p.offset.prevOffsetY = p.offset.newOffsetY;
 				}
 			} else if (t.type === 'arc') {
+				const a: Arc = t.arc;
+				a.offset.prevOffsetX = a.offset.newOffsetX;
+				a.offset.prevOffsetY = a.offset.newOffsetY;
 			}
 		}
 	}
@@ -63,7 +71,7 @@ export class DrawService {
 		this._updateOffsets($newOffsetX, $newOffsetY, $event);
 	}
 
-	private _updateOffsets($newOffsetX: number, $newOffsetY: number, $event?: PointerEvent): void {
+	private _updateOffsets($newOffsetX: number, $newOffsetY: number, $event: PointerEvent): void {
 		const trailList: Trail[] = this.memory.trailList;
 
 		for (let i = 0; i < trailList.length; i++) {
@@ -77,6 +85,9 @@ export class DrawService {
 					this.coord.updateOffsets($newOffsetX, $newOffsetY, p.offset, $event);
 				}
 			} else if (t.type === 'arc') {
+				const a: Arc = t.arc;
+				this.coord.updateOffsets($newOffsetX, $newOffsetY, a.offset, $event);
+				this.coord.updateSizeByWheel(a.radius, $event);
 			}
 		}
 	}
@@ -102,6 +113,7 @@ export class DrawService {
 				if (trail.type === 'line') {
 					this.renderLine(ctxOekakiBuffer, trail);
 				} else if (trail.type === 'arc') {
+					this.renderCricle(ctxOekakiBuffer, trail.arc);
 				}
 
 				ctxOekakiBuffer.stroke();
@@ -109,24 +121,25 @@ export class DrawService {
 		}
 	}
 
-	renderLine($ctxOekakiBuffer: CanvasRenderingContext2D, $trail: Trail): void {
-		for (let j = 0; j < $trail.points.length; j++) {
-			const prevP: Point = $trail.points[j - 1];
-			const currentP: Point = $trail.points[j];
-			const nextP: Point = $trail.points[j + 1];
+	private renderLine($ctxOekakiBuffer: CanvasRenderingContext2D, $trail: Trail): void {
+		for (let i = 0; i < $trail.points.length; i++) {
+			const prevP: Point = $trail.points[i - 1];
+			const currentP: Point = $trail.points[i];
+			const nextP: Point = $trail.points[i + 1];
 
-			if (currentP.visibility) {
-				$ctxOekakiBuffer.lineWidth = currentP.lineWidth * currentP.pressure * this.memory.canvasOffset.zoomRatio;
-				$ctxOekakiBuffer.strokeStyle = currentP.color;
-				$ctxOekakiBuffer.moveTo(currentP.offset.newOffsetX, currentP.offset.newOffsetY);
+			if (!currentP.visibility) continue;
 
-				if (nextP && nextP.visibility) {
-					$ctxOekakiBuffer.lineTo(nextP.offset.newOffsetX, nextP.offset.newOffsetY);
-					//this._createBezierCurve($ctxOekakiBuffer, currentP, nextP);
-				} else if (prevP && prevP.visibility) {
-					$ctxOekakiBuffer.lineTo(prevP.offset.newOffsetX, prevP.offset.newOffsetY);
-					//this._createBezierCurve($ctxOekakiBuffer, currentP, prevP);
-				}
+			const ctx: CanvasRenderingContext2D = $ctxOekakiBuffer;
+			ctx.lineWidth = currentP.lineWidth * currentP.pressure * this.memory.canvasOffset.zoomRatio;
+			ctx.strokeStyle = currentP.color;
+			ctx.moveTo(currentP.offset.newOffsetX, currentP.offset.newOffsetY);
+
+			if (nextP && nextP.visibility) {
+				ctx.lineTo(nextP.offset.newOffsetX, nextP.offset.newOffsetY);
+				//this._createBezierCurve(ctx, currentP, nextP);
+			} else if (prevP && prevP.visibility) {
+				ctx.lineTo(prevP.offset.newOffsetX, prevP.offset.newOffsetY);
+				//this._createBezierCurve(ctx, currentP, prevP);
 			}
 		}
 	}
@@ -150,5 +163,41 @@ export class DrawService {
 			x: p1.x + (p2.x - p1.x) / 2,
 			y: p1.y + (p2.y - p1.y) / 2
 		};
+	}
+
+	private renderCricle($ctxOekakiBuffer: CanvasRenderingContext2D, $arc: Arc): void {
+		const ctx: CanvasRenderingContext2D = $ctxOekakiBuffer;
+		ctx.lineWidth = $arc.lineWidth * $arc.pressure * this.memory.canvasOffset.zoomRatio;
+		ctx.strokeStyle = $arc.color;
+		ctx.ellipse(
+			$arc.offset.newOffsetX,
+			$arc.offset.newOffsetY,
+			$arc.radius.width,
+			$arc.radius.height,
+			0,
+			0,
+			Math.PI * 2
+		);
+
+		//		for (let i = 0; i < $arc.fragment.length; i++) {
+		//			const prevFrag: { visibility: boolean } = $arc.fragment[i - 1];
+		//			const currentFrag: { visibility: boolean } = $arc.fragment[i];
+		//			const nextFrag: { visibility: boolean } = $arc.fragment[i + 1];
+		//
+		//			if (!currentFrag.visibility) continue;
+		//
+		//			if (nextFrag && nextFrag.visibility) {
+		//				ctx.ellipse(
+		//					$arc.offset.newOffsetX,
+		//					$arc.offset.newOffsetY,
+		//					$arc.radius.x,
+		//					$arc.radius.y,
+		//					0,
+		//					(Math.PI / $arc.fragment.length) * i,
+		//					(Math.PI / $arc.fragment.length) * (i + 1)
+		//				);
+		//			} else if (prevFrag && prevFrag.visibility) {
+		//			}
+		//		}
 	}
 }
