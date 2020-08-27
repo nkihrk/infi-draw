@@ -19,24 +19,8 @@
 		<fa-icon [icon]="faSquare" [fixedWidth]="true" size="sm"></fa-icon>
 		<div class="name-info-column">図形の作成：四角形</div>
 	</div>
-	<div #createCircle (click)="execFunc('circle')" class="icon-prefix name-info-wrapper">
-		<fa-icon [icon]="faCircle" [fixedWidth]="true" size="sm"></fa-icon>
-		<div class="name-info-column">図形の作成：円形</div>
-	</div>
 	<div #createLine (click)="execFunc('line')" class="icon-prefix name-info-wrapper">
 		<div class="fa-line"></div>
 		<div class="name-info-column">図形の作成：直線</div>
-	</div>
-	<div #colorPicker (click)="execFunc('spuit')" class="not-implemented-yet icon-prefix name-info-wrapper">
-		<fa-icon [icon]="faEyeDropper" [fixedWidth]="true" size="sm"></fa-icon>
-		<div class="name-info-column">色の取得</div>
-	</div>
-	<div #zoomIn (click)="execFunc('zoomIn')" class="not-implemented-yet icon-prefix name-info-wrapper">
-		<fa-icon [icon]="faSearchPlus" [fixedWidth]="true" size="sm" style="transform: scaleX(-1);"></fa-icon>
-		<div class="name-info-column">拡大</div>
-	</div>
-	<div #zoomOut (click)="execFunc('zoomOut')" class="not-implemented-yet icon-prefix name-info-wrapper">
-		<fa-icon [icon]="faSearchMinus" [fixedWidth]="true" size="sm" style="transform: scaleX(-1);"></fa-icon>
-		<div class="name-info-column">縮小</div>
 	</div>
 </div>

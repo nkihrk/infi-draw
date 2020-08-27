@@ -6,7 +6,6 @@ import { Offset } from '../../model/offset.model';
 import { MouseOffset } from '../../model/mouse-offset.model';
 import { Point } from '../../model/point.model';
 import { Erase } from '../../model/erase.model';
-import { Arc } from '../../model/arc.model';
 
 @Injectable({
 	providedIn: 'root'
@@ -29,45 +28,19 @@ export class EraseService {
 			const tId: number = trailIndexes[i];
 			const trail: Trail = this.memory.trailList[tId];
 
-			if (trail.type === 'line') {
-				const pointIndexes: number[] = this._validatePoints(tId);
+			const pointIndexes: number[] = this._validatePoints(tId);
 
-				for (let j = 0; j < pointIndexes.length; j++) {
-					const pId: number = pointIndexes[j];
-					const p: Point = this.memory.trailList[tId].points[pId];
+			for (let j = 0; j < pointIndexes.length; j++) {
+				const pId: number = pointIndexes[j];
+				const p: Point = this.memory.trailList[tId].points[pId];
 
-					if (p.visibility) {
-						const erase: Erase = this.memory.eraseList[this.memory.eraseList.length - 1];
-						if (!erase.trailList[tId]) erase.trailList[tId] = { trailId: -1, pointIdList: [] };
-						erase.trailList[tId].trailId = tId;
-						erase.trailList[tId].pointIdList.push(pId);
+				if (p.visibility) {
+					const erase: Erase = this.memory.eraseList[this.memory.eraseList.length - 1];
+					if (!erase.trailList[tId]) erase.trailList[tId] = { trailId: -1, pointIdList: [] };
+					erase.trailList[tId].trailId = tId;
+					erase.trailList[tId].pointIdList.push(pId);
 
-						p.visibility = false;
-					}
-				}
-			} else if (trail.type === 'arc') {
-				const a: Arc = trail.arc;
-				const frags: boolean[] = a.fragment;
-				const unitRad: number = (Math.PI * 2) / frags.length;
-				const diffX: number = this.memory.mouseOffset.x - a.offset.newOffsetX;
-				const diffY: number = this.memory.mouseOffset.y - a.offset.newOffsetY;
-				let angle: number = Math.atan2(diffY, diffX);
-				angle += angle < 0 ? Math.PI * 2 : 0;
-				const fragIndex: number = Math.floor(angle / unitRad);
-
-				const tilt: number = diffY / diffX;
-				const ellipseW: number = a.radius.width;
-				const ellipseH: number = a.radius.height;
-				let ellipseX: number =
-					(ellipseW * ellipseH) / Math.sqrt(ellipseH * ellipseH + ellipseW * ellipseW * tilt * tilt);
-				ellipseX *= diffY > 0 ? 1 : -1;
-				const ellipseY: number = tilt * ellipseX;
-				const ellipseDiffX: number = diffX - ellipseX;
-				const ellipseDiffY: number = diffY - ellipseY;
-				const dist: number = Math.sqrt(ellipseDiffX * ellipseDiffX + ellipseDiffY * ellipseDiffY);
-
-				if (dist < this.memory.brush.lineWidth.erase / 2) {
-					a.fragment[fragIndex] = false;
+					p.visibility = false;
 				}
 			}
 		}
