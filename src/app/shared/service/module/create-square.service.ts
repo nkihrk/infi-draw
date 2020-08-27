@@ -24,8 +24,25 @@ export class CreateSquareService {
 		const trail: Trail = this.memory.trailList[trailId];
 
 		// Initialize points until mouseup event occured
+		trail.min = {
+			prevOffsetX: Infinity,
+			prevOffsetY: Infinity,
+			newOffsetX: Infinity,
+			newOffsetY: Infinity
+		};
+		trail.max = {
+			prevOffsetX: -Infinity,
+			prevOffsetY: -Infinity,
+			newOffsetX: -Infinity,
+			newOffsetY: -Infinity
+		};
 		trail.points = [];
 
+		// Add points along square
+		this.addNewPoints(trail, $newOffsetX, $newOffsetY);
+	}
+
+	private addNewPoints($trail: Trail, $newOffsetX: number, $newOffsetY): void {
 		const totalLengthX: number = Math.abs($newOffsetX) * this.cutoff;
 		const totalLengthY: number = Math.abs($newOffsetY) * this.cutoff;
 		const cutoffX: number = totalLengthX / this.cutoff;
@@ -35,16 +52,22 @@ export class CreateSquareService {
 		if ($newOffsetX > 0) {
 			for (let i = 0; i <= totalLengthX; i += cutoffX) {
 				const fixedI: number = i / this.cutoff;
-				const point: Point = this._creatPoint(trail, fixedI, 0);
+				const point: Point = this._creatPoint($trail, fixedI, 0);
 
-				trail.points.push(point);
+				// Add bounding
+				this._validateMinMax($trail, point.offset.newOffsetX, point.offset.newOffsetY);
+
+				$trail.points.push(point);
 			}
 		} else if ($newOffsetX < 0) {
 			for (let i = 0; i <= totalLengthX; i += cutoffX) {
 				const fixedI: number = i / this.cutoff;
-				const point: Point = this._creatPoint(trail, -fixedI, 0);
+				const point: Point = this._creatPoint($trail, -fixedI, 0);
 
-				trail.points.push(point);
+				// Add bounding
+				this._validateMinMax($trail, point.offset.newOffsetX, point.offset.newOffsetY);
+
+				$trail.points.push(point);
 			}
 		}
 
@@ -52,16 +75,22 @@ export class CreateSquareService {
 		if ($newOffsetY > 0) {
 			for (let i = 0; i <= totalLengthY; i += cutoffY) {
 				const fixedI: number = i / this.cutoff;
-				const point: Point = this._creatPoint(trail, $newOffsetX, fixedI);
+				const point: Point = this._creatPoint($trail, $newOffsetX, fixedI);
 
-				trail.points.push(point);
+				// Add bounding
+				this._validateMinMax($trail, point.offset.newOffsetX, point.offset.newOffsetY);
+
+				$trail.points.push(point);
 			}
 		} else if ($newOffsetY < 0) {
 			for (let i = 0; i <= totalLengthY; i += cutoffY) {
 				const fixedI: number = i / this.cutoff;
-				const point: Point = this._creatPoint(trail, $newOffsetX, -fixedI);
+				const point: Point = this._creatPoint($trail, $newOffsetX, -fixedI);
 
-				trail.points.push(point);
+				// Add bounding
+				this._validateMinMax($trail, point.offset.newOffsetX, point.offset.newOffsetY);
+
+				$trail.points.push(point);
 			}
 		}
 
@@ -69,16 +98,22 @@ export class CreateSquareService {
 		if ($newOffsetX > 0) {
 			for (let i = totalLengthX; i >= 0; i -= cutoffX) {
 				const fixedI: number = i / this.cutoff;
-				const point: Point = this._creatPoint(trail, fixedI, $newOffsetY);
+				const point: Point = this._creatPoint($trail, fixedI, $newOffsetY);
 
-				trail.points.push(point);
+				// Add bounding
+				this._validateMinMax($trail, point.offset.newOffsetX, point.offset.newOffsetY);
+
+				$trail.points.push(point);
 			}
 		} else if ($newOffsetX < 0) {
 			for (let i = totalLengthX; i >= 0; i -= cutoffX) {
 				const fixedI: number = i / this.cutoff;
-				const point: Point = this._creatPoint(trail, -fixedI, $newOffsetY);
+				const point: Point = this._creatPoint($trail, -fixedI, $newOffsetY);
 
-				trail.points.push(point);
+				// Add bounding
+				this._validateMinMax($trail, point.offset.newOffsetX, point.offset.newOffsetY);
+
+				$trail.points.push(point);
 			}
 		}
 
@@ -86,16 +121,22 @@ export class CreateSquareService {
 		if ($newOffsetY > 0) {
 			for (let i = totalLengthY; i >= 0; i -= cutoffY) {
 				const fixedI: number = i / this.cutoff;
-				const point: Point = this._creatPoint(trail, 0, fixedI);
+				const point: Point = this._creatPoint($trail, 0, fixedI);
 
-				trail.points.push(point);
+				// Add bounding
+				this._validateMinMax($trail, point.offset.newOffsetX, point.offset.newOffsetY);
+
+				$trail.points.push(point);
 			}
 		} else if ($newOffsetY < 0) {
 			for (let i = totalLengthY; i >= 0; i -= cutoffY) {
 				const fixedI: number = i / this.cutoff;
-				const point: Point = this._creatPoint(trail, 0, -fixedI);
+				const point: Point = this._creatPoint($trail, 0, -fixedI);
 
-				trail.points.push(point);
+				// Add bounding
+				this._validateMinMax($trail, point.offset.newOffsetX, point.offset.newOffsetY);
+
+				$trail.points.push(point);
 			}
 		}
 	}
@@ -116,5 +157,13 @@ export class CreateSquareService {
 		};
 
 		return point;
+	}
+
+	private _validateMinMax($trail: Trail, $x: number, $y: number): void {
+		$trail.min.newOffsetX = Math.min($trail.min.newOffsetX, $x);
+		$trail.min.newOffsetY = Math.min($trail.min.newOffsetY, $y);
+
+		$trail.max.newOffsetX = Math.max($trail.max.newOffsetX, $x);
+		$trail.max.newOffsetY = Math.max($trail.max.newOffsetY, $y);
 	}
 }

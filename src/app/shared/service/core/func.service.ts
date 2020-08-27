@@ -4,6 +4,7 @@ import { CleanupService } from '../module/cleanup.service';
 import { PenService } from '../module/pen.service';
 import { EraseService } from '../module/erase.service';
 import { CreateSquareService } from '../module/create-square.service';
+import { CreateCircleService } from '../module/create-circle.service';
 import { CreateLineService } from '../module/create-line.service';
 
 @Injectable({
@@ -16,6 +17,7 @@ export class FuncService {
 		private penFunc: PenService,
 		private eraseFunc: EraseService,
 		private createSquareFunc: CreateSquareService,
+		private createCircleFunc: CreateCircleService,
 		private createLineFunc: CreateLineService
 	) {}
 
@@ -105,6 +107,16 @@ export class FuncService {
 
 	createSquare(): void {
 		this.createSquareFunc.activate();
+	}
+
+	//////////////////////////////////////////////////////////
+	//
+	// Create circle
+	//
+	//////////////////////////////////////////////////////////
+
+	createCircle(): void {
+		this.createCircleFunc.activate();
 	}
 
 	//////////////////////////////////////////////////////////

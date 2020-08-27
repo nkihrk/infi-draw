@@ -55,7 +55,7 @@ export class CreateLineService {
 				const point: Point = this._creatPoint($trail, fixedI, this._getYfromX($newOffsetX, $newOffsetY, fixedI));
 
 				// Add bounding
-				this.validateMinMax($trail, point.offset.newOffsetX, point.offset.newOffsetY);
+				this._validateMinMax($trail, point.offset.newOffsetX, point.offset.newOffsetY);
 
 				$trail.points.push(point);
 			}
@@ -65,7 +65,7 @@ export class CreateLineService {
 				const point: Point = this._creatPoint($trail, -fixedI, this._getYfromX($newOffsetX, $newOffsetY, -fixedI));
 
 				// Add bounding
-				this.validateMinMax($trail, point.offset.newOffsetX, point.offset.newOffsetY);
+				this._validateMinMax($trail, point.offset.newOffsetX, point.offset.newOffsetY);
 
 				$trail.points.push(point);
 			}
@@ -76,7 +76,7 @@ export class CreateLineService {
 					const point: Point = this._creatPoint($trail, 0, fixedI);
 
 					// Add bounding
-					this.validateMinMax($trail, point.offset.newOffsetX, point.offset.newOffsetY);
+					this._validateMinMax($trail, point.offset.newOffsetX, point.offset.newOffsetY);
 
 					$trail.points.push(point);
 				}
@@ -86,14 +86,12 @@ export class CreateLineService {
 					const point: Point = this._creatPoint($trail, 0, -fixedI);
 
 					// Add bounding
-					this.validateMinMax($trail, point.offset.newOffsetX, point.offset.newOffsetY);
+					this._validateMinMax($trail, point.offset.newOffsetX, point.offset.newOffsetY);
 
 					$trail.points.push(point);
 				}
 			}
 		}
-
-		console.log($trail.min, $trail.max);
 	}
 
 	private _creatPoint($trail: Trail, $x: number, $y: number): Point {
@@ -118,7 +116,7 @@ export class CreateLineService {
 		return ($newOffsetY / $newOffsetX) * $i;
 	}
 
-	private validateMinMax($trail: Trail, $x: number, $y: number): void {
+	private _validateMinMax($trail: Trail, $x: number, $y: number): void {
 		$trail.min.newOffsetX = Math.min($trail.min.newOffsetX, $x);
 		$trail.min.newOffsetY = Math.min($trail.min.newOffsetY, $y);
 
