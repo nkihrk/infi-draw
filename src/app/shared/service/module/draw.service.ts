@@ -171,23 +171,13 @@ export class DrawService {
 		ctx.strokeStyle = $arc.color;
 
 		for (let i = 0; i < $arc.fragment.length; i++) {
-			const prevFrag: { visibility: boolean } = $arc.fragment[i - 1];
-			const currentFrag: { visibility: boolean } = $arc.fragment[i];
-			const nextFrag: { visibility: boolean } = $arc.fragment[i + 1];
+			const prevFrag: boolean = $arc.fragment[i - 1];
+			const currentFrag: boolean = $arc.fragment[i];
+			const nextFrag: boolean = $arc.fragment[i + 1];
 
-			if (!currentFrag.visibility) continue;
+			if (!currentFrag) continue;
 
-			if (nextFrag && nextFrag.visibility) {
-				ctx.ellipse(
-					$arc.offset.newOffsetX,
-					$arc.offset.newOffsetY,
-					$arc.radius.width,
-					$arc.radius.height,
-					0,
-					((Math.PI * 2) / $arc.fragment.length) * i,
-					((Math.PI * 2) / $arc.fragment.length) * (i + 1)
-				);
-			} else if (prevFrag && prevFrag.visibility) {
+			if (nextFrag || i + 1 === $arc.fragment.length) {
 				ctx.ellipse(
 					$arc.offset.newOffsetX,
 					$arc.offset.newOffsetY,
