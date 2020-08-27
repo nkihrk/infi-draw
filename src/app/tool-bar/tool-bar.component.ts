@@ -9,9 +9,6 @@ import { faPenNib } from '@fortawesome/free-solid-svg-icons';
 import { faEraser } from '@fortawesome/free-solid-svg-icons';
 import { faSquare } from '@fortawesome/free-regular-svg-icons';
 import { faCircle } from '@fortawesome/free-regular-svg-icons';
-import { faEyeDropper } from '@fortawesome/free-solid-svg-icons';
-import { faSearchPlus } from '@fortawesome/free-solid-svg-icons';
-import { faSearchMinus } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
 	selector: 'app-tool-bar',
@@ -24,21 +21,13 @@ export class ToolBarComponent implements OnInit {
 	@ViewChild('pen', { static: true }) pen: ElementRef<HTMLDivElement>;
 	@ViewChild('eraser', { static: true }) eraser: ElementRef<HTMLDivElement>;
 	@ViewChild('createSquare', { static: true }) createSquare: ElementRef<HTMLDivElement>;
-	@ViewChild('createCircle', { static: true }) createCircle: ElementRef<HTMLDivElement>;
 	@ViewChild('createLine', { static: true }) createLine: ElementRef<HTMLDivElement>;
-	@ViewChild('colorPicker', { static: true }) colorPicker: ElementRef<HTMLDivElement>;
-	@ViewChild('zoomIn', { static: true }) zoomIn: ElementRef<HTMLDivElement>;
-	@ViewChild('zoomOut', { static: true }) zoomOut: ElementRef<HTMLDivElement>;
 
 	faMousePointer = faMousePointer;
 	faHandPaper = faHandPaper;
 	faPenNib = faPenNib;
 	faEraser = faEraser;
 	faSquare = faSquare;
-	faCircle = faCircle;
-	faEyeDropper = faEyeDropper;
-	faSearchPlus = faSearchPlus;
-	faSearchMinus = faSearchMinus;
 
 	constructor(private memory: MemoryService, private func: FuncService) {}
 
@@ -62,10 +51,6 @@ export class ToolBarComponent implements OnInit {
 
 			case 'square':
 				this.func.createSquare();
-				break;
-
-			case 'circle':
-				this.func.createCircle();
 				break;
 
 			case 'line':
@@ -115,26 +100,9 @@ export class ToolBarComponent implements OnInit {
 				this._toggleActive(t);
 				break;
 
-			case 'circle':
-				t = this.createCircle.nativeElement;
-				this._toggleActive(t);
-				break;
-
 			case 'line':
 				t = this.createLine.nativeElement;
 				this._toggleActive(t);
-				break;
-
-			case 'spuit':
-				t = this.colorPicker.nativeElement;
-				break;
-
-			case 'zoomIn':
-				t = this.zoomIn.nativeElement;
-				break;
-
-			case 'zoomOut':
-				t = this.zoomOut.nativeElement;
 				break;
 
 			default:
@@ -155,11 +123,7 @@ export class ToolBarComponent implements OnInit {
 		this._resetToolBarClass(this.pen.nativeElement);
 		this._resetToolBarClass(this.eraser.nativeElement);
 		this._resetToolBarClass(this.createSquare.nativeElement);
-		this._resetToolBarClass(this.createCircle.nativeElement);
 		this._resetToolBarClass(this.createLine.nativeElement);
-		this._resetToolBarClass(this.colorPicker.nativeElement);
-		this._resetToolBarClass(this.zoomIn.nativeElement);
-		this._resetToolBarClass(this.zoomOut.nativeElement);
 	}
 
 	private _resetToolBarClass($targetElem: HTMLDivElement): void {
