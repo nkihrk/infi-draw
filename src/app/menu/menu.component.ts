@@ -133,307 +133,21 @@ export class MenuComponent implements OnInit {
 	}
 
 	private _file(): MenuList[] {
-		const subMenuListInport: MenuList[] = [
-			{
-				title: '画像を挿入...',
-				key: '',
-				type: 0,
-				exec: () => {
-					this.initializeActiveStates();
-				},
-				subMenuList: []
-			},
-			{
-				title: '画像をリンク...',
-				key: '',
-				type: 0,
-				exec: () => {
-					this.initializeActiveStates();
-				},
-				subMenuList: []
-			},
-			{
-				title: '',
-				key: '',
-				type: 2,
-				exec: () => {},
-				subMenuList: []
-			},
-			{
-				title: 'フォントを追加...',
-				key: '',
-				type: 0,
-				exec: () => {
-					this.initializeActiveStates();
-				},
-				subMenuList: []
-			}
-		];
-
-		const subMenuListExportPDF: MenuList[] = [
-			{
-				title: '72 dpi',
-				key: '',
-				type: 0,
-				exec: () => {
-					this.initializeActiveStates();
-				},
-				subMenuList: []
-			},
-			{
-				title: '96 dpi',
-				key: '',
-				type: 0,
-				exec: () => {
-					this.initializeActiveStates();
-				},
-				subMenuList: []
-			},
-			{
-				title: '150 dpi',
-				key: '',
-				type: 0,
-				exec: () => {
-					this.initializeActiveStates();
-				},
-				subMenuList: []
-			},
-			{
-				title: '300 dpi',
-				key: '',
-				type: 0,
-				exec: () => {
-					this.initializeActiveStates();
-				},
-				subMenuList: []
-			},
-			{
-				title: '詳細オプション...',
-				key: '',
-				type: 0,
-				exec: () => {
-					this.initializeActiveStates();
-				},
-				subMenuList: []
-			}
-		];
-
-		const subMenuListExport: MenuList[] = [
-			{
-				title: '高度なエクスポート...',
-				key: 'Shift+Ctrl+E',
-				type: 0,
-				exec: () => {
-					this.initializeActiveStates();
-				},
-				subMenuList: []
-			},
-			{
-				title: '',
-				key: '',
-				type: 2,
-				exec: () => {},
-				subMenuList: []
-			},
-			{
-				title: 'PNG画像(.png)',
-				key: '',
-				type: 0,
-				exec: () => {
-					this.initializeActiveStates();
-				},
-				subMenuList: []
-			},
-			{
-				title: 'JPEG画像(.jpg)',
-				key: '',
-				type: 0,
-				exec: () => {
-					this.initializeActiveStates();
-				},
-				subMenuList: []
-			},
-			{
-				title: 'Scalable Vector Graphics(.svg)',
-				key: '',
-				type: 0,
-				exec: () => {
-					this.initializeActiveStates();
-				},
-				subMenuList: []
-			},
-			{
-				title: 'PDFドキュメント(.pdf)',
-				key: '',
-				type: 1,
-				exec: () => {},
-				subMenuList: subMenuListExportPDF
-			}
-		];
-
 		const menuList: MenuList[] = [
 			{
-				title: '新規デザイン...',
-				key: 'Alt+N',
-				type: 0,
-				exec: () => {
-					this.initializeActiveStates();
-				},
-				subMenuList: []
-			},
-			{
-				title: 'テンプレートから新規デザイン...',
+				title: 'なし',
 				key: '',
-				type: 0,
-				exec: () => {
-					this.initializeActiveStates();
-				},
-				subMenuList: []
-			},
-			{
-				title: 'クリップボードから新規作成',
-				key: 'Shift+Ctrl+Alt+N',
-				type: 0,
-				exec: () => {
-					this.initializeActiveStates();
-				},
-				subMenuList: []
-			},
-			{
-				title: '',
-				key: '',
-				type: 2,
-				exec: () => {},
-				subMenuList: []
-			},
-			{
-				title: 'ローカルファイルを開く...',
-				key: 'Ctrl+O',
-				type: 0,
-				exec: () => {
-					this.initializeActiveStates();
-				},
-				subMenuList: []
-			},
-			{
-				title: 'Cloudから開く...',
-				key: 'Shift+Ctrl+O',
-				type: 0,
-				exec: () => {
-					this.initializeActiveStates();
-				},
-				subMenuList: []
-			},
-			{
-				title: '最近のファイルを開く',
-				key: 'Ctrl+O',
 				type: 1,
 				exec: () => {},
 				subMenuList: [
 					{
-						title: '最近開いたファイルはありません',
+						title: 'なし',
 						key: '',
 						type: 0,
 						exec: () => {},
 						subMenuList: []
 					}
 				]
-			},
-			{
-				title: '',
-				key: '',
-				type: 2,
-				exec: () => {},
-				subMenuList: []
-			},
-			{
-				title: '保存',
-				key: 'Ctrl+S',
-				type: 0,
-				exec: () => {
-					this.initializeActiveStates();
-				},
-				subMenuList: []
-			},
-			{
-				title: 'ファイルをダウンロード',
-				key: '',
-				type: 0,
-				exec: () => {
-					this.initializeActiveStates();
-				},
-				subMenuList: []
-			},
-			{
-				title: '名前を付けてCloudに保存...',
-				key: 'Shift+Ctrl+S',
-				type: 0,
-				exec: () => {
-					this.initializeActiveStates();
-				},
-				subMenuList: []
-			},
-			{
-				title: 'バージョン履歴',
-				key: '',
-				type: 0,
-				exec: () => {
-					this.initializeActiveStates();
-				},
-				subMenuList: []
-			},
-			{
-				title: '',
-				key: '',
-				type: 2,
-				exec: () => {},
-				subMenuList: []
-			},
-			{
-				title: 'インポート',
-				key: '',
-				type: 1,
-				exec: () => {},
-				subMenuList: subMenuListInport
-			},
-			{
-				title: '',
-				key: '',
-				type: 2,
-				exec: () => {},
-				subMenuList: []
-			},
-			{
-				title: 'エクスポート',
-				key: '',
-				type: 1,
-				exec: () => {},
-				subMenuList: subMenuListExport
-			},
-			{
-				title: '印刷...',
-				key: 'Ctrl+P',
-				type: 0,
-				exec: () => {
-					this.initializeActiveStates();
-				},
-				subMenuList: []
-			},
-			{
-				title: '',
-				key: '',
-				type: 2,
-				exec: () => {},
-				subMenuList: []
-			},
-			{
-				title: 'ホームに戻る',
-				key: '',
-				type: 0,
-				exec: () => {
-					this.initializeActiveStates();
-				},
-				subMenuList: []
 			}
 		];
 
@@ -441,36 +155,6 @@ export class MenuComponent implements OnInit {
 	}
 
 	private _edit(): MenuList[] {
-		const subMenuListPaste: MenuList[] = [
-			{
-				title: '貼り付け',
-				key: 'Ctrl+V',
-				type: 0,
-				exec: () => {
-					this.initializeActiveStates();
-				},
-				subMenuList: []
-			},
-			{
-				title: '同じ位置に貼り付け',
-				key: 'Shift+Ctrl+V',
-				type: 0,
-				exec: () => {
-					this.initializeActiveStates();
-				},
-				subMenuList: []
-			},
-			{
-				title: '選択範囲内に貼り付け',
-				key: 'Alt+Shift+Ctrl+V',
-				type: 0,
-				exec: () => {
-					this.initializeActiveStates();
-				},
-				subMenuList: []
-			}
-		];
-
 		const menuList: MenuList[] = [
 			{
 				title: '元に戻す',
@@ -521,10 +205,12 @@ export class MenuComponent implements OnInit {
 			},
 			{
 				title: '貼り付け',
-				key: 'Shift+Ctrl+O',
-				type: 1,
-				exec: () => {},
-				subMenuList: subMenuListPaste
+				key: 'Ctrl+V',
+				type: 0,
+				exec: () => {
+					this.initializeActiveStates();
+				},
+				subMenuList: []
 			},
 			{
 				title: '削除',
@@ -552,15 +238,6 @@ export class MenuComponent implements OnInit {
 				subMenuList: []
 			},
 			{
-				title: '選択範囲の編集',
-				key: '',
-				type: 0,
-				exec: () => {
-					this.initializeActiveStates();
-				},
-				subMenuList: []
-			},
-			{
 				title: 'すべて選択',
 				key: 'Ctrl+A',
 				type: 0,
@@ -581,22 +258,6 @@ export class MenuComponent implements OnInit {
 			{
 				title: '選択範囲を反転',
 				key: 'Shift+Ctrl+I',
-				type: 0,
-				exec: () => {
-					this.initializeActiveStates();
-				},
-				subMenuList: []
-			},
-			{
-				title: '',
-				key: '',
-				type: 2,
-				exec: () => {},
-				subMenuList: []
-			},
-			{
-				title: '設定...',
-				key: '',
 				type: 0,
 				exec: () => {
 					this.initializeActiveStates();
@@ -703,56 +364,6 @@ export class MenuComponent implements OnInit {
 			},
 			{
 				title: '下揃え',
-				key: '',
-				type: 0,
-				exec: () => {
-					this.initializeActiveStates();
-				},
-				subMenuList: []
-			},
-			{
-				title: '',
-				key: '',
-				type: 2,
-				exec: () => {},
-				subMenuList: []
-			},
-			{
-				title: '同じ幅',
-				key: '',
-				type: 0,
-				exec: () => {
-					this.initializeActiveStates();
-				},
-				subMenuList: []
-			},
-			{
-				title: '同じ長さ',
-				key: '',
-				type: 0,
-				exec: () => {
-					this.initializeActiveStates();
-				},
-				subMenuList: []
-			},
-			{
-				title: '',
-				key: '',
-				type: 2,
-				exec: () => {},
-				subMenuList: []
-			},
-			{
-				title: '横方向に配置',
-				key: '',
-				type: 0,
-				exec: () => {
-					this.initializeActiveStates();
-				},
-				subMenuList: []
-			},
-			{
-				title: '縦方向に配置',
 				key: '',
 				type: 0,
 				exec: () => {
@@ -881,157 +492,6 @@ export class MenuComponent implements OnInit {
 	private _show(): MenuList[] {
 		const subMenuListZoom: MenuList[] = [
 			{
-				title: '6%',
-				key: '',
-				type: 0,
-				exec: () => {
-					this.initializeActiveStates();
-				},
-				subMenuList: []
-			},
-			{
-				title: '12%',
-				key: '',
-				type: 0,
-				exec: () => {
-					this.initializeActiveStates();
-				},
-				subMenuList: []
-			},
-			{
-				title: '25%',
-				key: '',
-				type: 0,
-				exec: () => {
-					this.initializeActiveStates();
-				},
-				subMenuList: []
-			},
-			{
-				title: '50%',
-				key: '',
-				type: 0,
-				exec: () => {
-					this.initializeActiveStates();
-				},
-				subMenuList: []
-			},
-			{
-				title: '66%',
-				key: '',
-				type: 0,
-				exec: () => {
-					this.initializeActiveStates();
-				},
-				subMenuList: []
-			},
-			{
-				title: '100%',
-				key: '',
-				type: 0,
-				exec: () => {
-					this.initializeActiveStates();
-				},
-				subMenuList: []
-			},
-			{
-				title: '150%',
-				key: '',
-				type: 0,
-				exec: () => {
-					this.initializeActiveStates();
-				},
-				subMenuList: []
-			},
-			{
-				title: '200%',
-				key: '',
-				type: 0,
-				exec: () => {
-					this.initializeActiveStates();
-				},
-				subMenuList: []
-			},
-			{
-				title: '300%',
-				key: '',
-				type: 0,
-				exec: () => {
-					this.initializeActiveStates();
-				},
-				subMenuList: []
-			},
-			{
-				title: '400%',
-				key: '',
-				type: 0,
-				exec: () => {
-					this.initializeActiveStates();
-				},
-				subMenuList: []
-			},
-			{
-				title: '800%',
-				key: '',
-				type: 0,
-				exec: () => {
-					this.initializeActiveStates();
-				},
-				subMenuList: []
-			},
-			{
-				title: '1600%',
-				key: '',
-				type: 0,
-				exec: () => {
-					this.initializeActiveStates();
-				},
-				subMenuList: []
-			},
-			{
-				title: '3200%',
-				key: '',
-				type: 0,
-				exec: () => {
-					this.initializeActiveStates();
-				},
-				subMenuList: []
-			},
-			{
-				title: '6400%',
-				key: '',
-				type: 0,
-				exec: () => {
-					this.initializeActiveStates();
-				},
-				subMenuList: []
-			},
-			{
-				title: '12800%',
-				key: '',
-				type: 0,
-				exec: () => {
-					this.initializeActiveStates();
-				},
-				subMenuList: []
-			},
-			{
-				title: '25600%',
-				key: '',
-				type: 0,
-				exec: () => {
-					this.initializeActiveStates();
-				},
-				subMenuList: []
-			},
-			{
-				title: '',
-				key: '',
-				type: 2,
-				exec: () => {},
-				subMenuList: []
-			},
-			{
 				title: '拡大',
 				key: 'Ctrl++',
 				type: 0,
@@ -1063,15 +523,6 @@ export class MenuComponent implements OnInit {
 			},
 			{
 				title: '選択範囲を画面に合わせる',
-				key: '',
-				type: 0,
-				exec: () => {
-					this.initializeActiveStates();
-				},
-				subMenuList: []
-			},
-			{
-				title: 'レイヤーを画面に合わせる',
 				key: '',
 				type: 0,
 				exec: () => {
