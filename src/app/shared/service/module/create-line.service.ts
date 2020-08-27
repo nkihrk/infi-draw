@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { MemoryService } from '../core/memory.service';
 import { Point } from '../../model/point.model';
 import { Trail } from '../../model/trail.model';
+import { Offset } from '../../model/offset.model';
 
 @Injectable({
 	providedIn: 'root'
 })
 export class CreateLineService {
-	private cutoff = 100;
+	private cutoff = 50;
 
 	constructor(private memory: MemoryService) {}
 
@@ -24,8 +25,25 @@ export class CreateLineService {
 		const trail: Trail = this.memory.trailList[trailId];
 
 		// Initialize points until mouseup event occured
+		trail.min = {
+			prevOffsetX: Infinity,
+			prevOffsetY: Infinity,
+			newOffsetX: Infinity,
+			newOffsetY: Infinity
+		};
+		trail.max = {
+			prevOffsetX: -Infinity,
+			prevOffsetY: -Infinity,
+			newOffsetX: -Infinity,
+			newOffsetY: -Infinity
+		};
 		trail.points = [];
 
+		// Add points along straight line
+		this.addNewPoints(trail, $newOffsetX, $newOffsetY);
+	}
+
+	private addNewPoints($trail: Trail, $newOffsetX: number, $newOffsetY): void {
 		const totalLengthX: number = Math.abs($newOffsetX) * this.cutoff;
 		const totalLengthY: number = Math.abs($newOffsetY) * this.cutoff;
 		const cutoffX: number = totalLengthX / this.cutoff;
@@ -34,34 +52,48 @@ export class CreateLineService {
 		if ($newOffsetX > 0) {
 			for (let i = 0; i <= totalLengthX; i += cutoffX) {
 				const fixedI: number = i / this.cutoff;
-				const point: Point = this._creatPoint(trail, fixedI, this._getYfromX($newOffsetX, $newOffsetY, fixedI));
+				const point: Point = this._creatPoint($trail, fixedI, this._getYfromX($newOffsetX, $newOffsetY, fixedI));
 
-				trail.points.push(point);
+				// Add bounding
+				this.validateMinMax($trail, point.offset.newOffsetX, point.offset.newOffsetY);
+
+				$trail.points.push(point);
 			}
 		} else if ($newOffsetX < 0) {
 			for (let i = 0; i <= totalLengthX; i += cutoffX) {
 				const fixedI: number = i / this.cutoff;
-				const point: Point = this._creatPoint(trail, -fixedI, this._getYfromX($newOffsetX, $newOffsetY, -fixedI));
+				const point: Point = this._creatPoint($trail, -fixedI, this._getYfromX($newOffsetX, $newOffsetY, -fixedI));
 
-				trail.points.push(point);
+				// Add bounding
+				this.validateMinMax($trail, point.offset.newOffsetX, point.offset.newOffsetY);
+
+				$trail.points.push(point);
 			}
 		} else if ($newOffsetX === 0) {
 			if ($newOffsetY > 0) {
 				for (let i = 0; i <= totalLengthY; i += cutoffY) {
 					const fixedI: number = i / this.cutoff;
-					const point: Point = this._creatPoint(trail, 0, fixedI);
+					const point: Point = this._creatPoint($trail, 0, fixedI);
 
-					trail.points.push(point);
+					// Add bounding
+					this.validateMinMax($trail, point.offset.newOffsetX, point.offset.newOffsetY);
+
+					$trail.points.push(point);
 				}
 			} else if ($newOffsetY < 0) {
 				for (let i = 0; i <= totalLengthY; i += cutoffY) {
 					const fixedI: number = i / this.cutoff;
-					const point: Point = this._creatPoint(trail, 0, -fixedI);
+					const point: Point = this._creatPoint($trail, 0, -fixedI);
 
-					trail.points.push(point);
+					// Add bounding
+					this.validateMinMax($trail, point.offset.newOffsetX, point.offset.newOffsetY);
+
+					$trail.points.push(point);
 				}
 			}
 		}
+
+		console.log($trail.min, $trail.max);
 	}
 
 	private _creatPoint($trail: Trail, $x: number, $y: number): Point {
@@ -84,5 +116,13 @@ export class CreateLineService {
 
 	private _getYfromX($newOffsetX: number, $newOffsetY: number, $i): number {
 		return ($newOffsetY / $newOffsetX) * $i;
+	}
+
+	private validateMinMax($trail: Trail, $x: number, $y: number): void {
+		$trail.min.newOffsetX = Math.min($trail.min.newOffsetX, $x);
+		$trail.min.newOffsetY = Math.min($trail.min.newOffsetY, $y);
+
+		$trail.max.newOffsetX = Math.max($trail.max.newOffsetX, $x);
+		$trail.max.newOffsetY = Math.max($trail.max.newOffsetY, $y);
 	}
 }
