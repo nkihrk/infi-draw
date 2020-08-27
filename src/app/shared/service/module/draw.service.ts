@@ -113,7 +113,7 @@ export class DrawService {
 				if (trail.type === 'line') {
 					this.renderLine(ctxOekakiBuffer, trail);
 				} else if (trail.type === 'arc') {
-					this.renderCricle(ctxOekakiBuffer, trail.arc);
+					this.renderCircle(ctxOekakiBuffer, trail.arc);
 				}
 
 				ctxOekakiBuffer.stroke();
@@ -165,39 +165,39 @@ export class DrawService {
 		};
 	}
 
-	private renderCricle($ctxOekakiBuffer: CanvasRenderingContext2D, $arc: Arc): void {
+	private renderCircle($ctxOekakiBuffer: CanvasRenderingContext2D, $arc: Arc): void {
 		const ctx: CanvasRenderingContext2D = $ctxOekakiBuffer;
 		ctx.lineWidth = $arc.lineWidth * $arc.pressure * this.memory.canvasOffset.zoomRatio;
 		ctx.strokeStyle = $arc.color;
-		ctx.ellipse(
-			$arc.offset.newOffsetX,
-			$arc.offset.newOffsetY,
-			$arc.radius.width,
-			$arc.radius.height,
-			0,
-			0,
-			Math.PI * 2
-		);
 
-		//		for (let i = 0; i < $arc.fragment.length; i++) {
-		//			const prevFrag: { visibility: boolean } = $arc.fragment[i - 1];
-		//			const currentFrag: { visibility: boolean } = $arc.fragment[i];
-		//			const nextFrag: { visibility: boolean } = $arc.fragment[i + 1];
-		//
-		//			if (!currentFrag.visibility) continue;
-		//
-		//			if (nextFrag && nextFrag.visibility) {
-		//				ctx.ellipse(
-		//					$arc.offset.newOffsetX,
-		//					$arc.offset.newOffsetY,
-		//					$arc.radius.x,
-		//					$arc.radius.y,
-		//					0,
-		//					(Math.PI / $arc.fragment.length) * i,
-		//					(Math.PI / $arc.fragment.length) * (i + 1)
-		//				);
-		//			} else if (prevFrag && prevFrag.visibility) {
-		//			}
-		//		}
+		for (let i = 0; i < $arc.fragment.length; i++) {
+			const prevFrag: { visibility: boolean } = $arc.fragment[i - 1];
+			const currentFrag: { visibility: boolean } = $arc.fragment[i];
+			const nextFrag: { visibility: boolean } = $arc.fragment[i + 1];
+
+			if (!currentFrag.visibility) continue;
+
+			if (nextFrag && nextFrag.visibility) {
+				ctx.ellipse(
+					$arc.offset.newOffsetX,
+					$arc.offset.newOffsetY,
+					$arc.radius.width,
+					$arc.radius.height,
+					0,
+					((Math.PI * 2) / $arc.fragment.length) * i,
+					((Math.PI * 2) / $arc.fragment.length) * (i + 1)
+				);
+			} else if (prevFrag && prevFrag.visibility) {
+				ctx.ellipse(
+					$arc.offset.newOffsetX,
+					$arc.offset.newOffsetY,
+					$arc.radius.width,
+					$arc.radius.height,
+					0,
+					((Math.PI * 2) / $arc.fragment.length) * i,
+					((Math.PI * 2) / $arc.fragment.length) * (i + 1)
+				);
+			}
+		}
 	}
 }
