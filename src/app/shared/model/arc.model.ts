@@ -10,5 +10,5 @@ export interface Arc {
 	};
 	pressure: number;
 	lineWidth: number;
-	fragment: { visibility: boolean }[];
+	fragment: boolean[];
 }

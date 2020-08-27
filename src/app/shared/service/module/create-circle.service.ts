@@ -7,7 +7,7 @@ import { Arc } from '../../model/arc.model';
 	providedIn: 'root'
 })
 export class CreateCircleService {
-	private cutoff = 10;
+	private cutoff = 100;
 
 	constructor(private memory: MemoryService) {}
 
@@ -42,7 +42,7 @@ export class CreateCircleService {
 			},
 			pressure: 1,
 			lineWidth: this.memory.brush.lineWidth.draw,
-			fragment: Array(this.cutoff).fill({ visibility: true })
+			fragment: Array(this.cutoff).fill(true)
 		};
 
 		return arc;
