@@ -7,7 +7,7 @@ import { Point } from '../../model/point.model';
 	providedIn: 'root'
 })
 export class CreateSquareService {
-	private cutoff = 100;
+	private cutoff = 50;
 
 	constructor(private memory: MemoryService) {}
 

@@ -119,10 +119,8 @@ export class ToolMenuComponent implements OnInit {
 		$pickr
 			.on('init', (instance) => {})
 			.on('hide', (instance) => {
-				setTimeout(() => {
-					// Remove in-active after after completelly hided pickr
-					this.pickrInfoRef.nativeElement.classList.remove('in-active');
-				}, 1000);
+				// Remove in-active after after completelly hided pickr
+				this.pickrInfoRef.nativeElement.classList.remove('in-active');
 			})
 			.on('show', (color, instance) => {
 				this.pickrInfoRef.nativeElement.classList.add('in-active');

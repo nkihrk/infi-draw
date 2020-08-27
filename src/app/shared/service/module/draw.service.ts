@@ -143,7 +143,6 @@ export class DrawService {
 		const midPoint = this._midPointBetween(currentP, newP);
 
 		$ctxOekakiBuffer.quadraticCurveTo($currentP.offset.newOffsetX, $currentP.offset.newOffsetY, midPoint.x, midPoint.y);
-		$ctxOekakiBuffer.lineTo($newP.offset.newOffsetX, $newP.offset.newOffsetY);
 	}
 
 	private _midPointBetween(p1: { x: number; y: number }, p2: { x: number; y: number }): { x: number; y: number } {

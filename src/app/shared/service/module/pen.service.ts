@@ -24,7 +24,10 @@ export class PenService {
 		const trail: Trail = this.memory.trailList[trailId];
 		const point: Point = this._creatPoint(trail);
 
+		// Update bounding
 		this.validateMinMax(trail, point.offset.newOffsetX, point.offset.newOffsetY);
+
+		// Add a new point
 		if (trail.points.length > 0) {
 			this.addNewPoints(trail, point);
 		} else {
