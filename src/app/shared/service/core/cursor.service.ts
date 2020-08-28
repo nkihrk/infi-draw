@@ -21,6 +21,8 @@ export class CursorService {
 
 			if (name === 'hand') {
 				this._hand();
+			} else if (name === 'zoom') {
+				this._zoom();
 			}
 		}
 	}
@@ -37,6 +39,15 @@ export class CursorService {
 		if (!appWrapper.classList.contains('grab-cursor')) {
 			this._resetAppWrapperClass();
 			appWrapper.classList.add('grab-cursor');
+		}
+	}
+
+	private _zoom(): void {
+		const appWrapper: HTMLDivElement = this.memory.renderer.appWrapper;
+
+		if (!appWrapper.classList.contains('zoom-in-cursor')) {
+			this._resetAppWrapperClass();
+			appWrapper.classList.add('zoom-in-cursor');
 		}
 	}
 
