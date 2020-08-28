@@ -54,7 +54,7 @@ export class PointerEventService {
 				if ($name === 'hand') {
 					this._updateCanvases($newOffsetX, $newOffsetY, $event);
 				} else if ($name === 'zoom') {
-					this.zoomFunc.updateOffsets($newOffsetX, $newOffsetY);
+					this.zoomFunc.updateOffsets();
 				}
 				break;
 		}

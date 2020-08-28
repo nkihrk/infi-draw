@@ -77,10 +77,8 @@ export class CpuService {
 
 	private _onShadowPointerDown(): void {
 		// Pointerdown event with no pointermove
-		this.memory.pointerOffset.prev.x = this.memory.pointerOffset.current.x;
-		this.memory.pointerOffset.prev.y = this.memory.pointerOffset.current.y;
-
-		this.register.onPointerDown();
+		this.memory.pointerOffset.tmp.x = this.memory.pointerOffset.current.x;
+		this.memory.pointerOffset.tmp.y = this.memory.pointerOffset.current.y;
 	}
 
 	//////////////////////////////////////////////////////////
@@ -96,10 +94,6 @@ export class CpuService {
 		this.memory.states.isNeededToUpdateHistory = false;
 	}
 
-	private _onShadowPointerUp(): void {
-		this.register.onPointerUp();
-	}
-
 	//////////////////////////////////////////////////////////
 	//
 	// All events but pointerdown
@@ -113,10 +107,6 @@ export class CpuService {
 			this.detectWheelEnd();
 		}
 
-		this.register.onNoPointerDown($event);
-	}
-
-	private _onShadowNoPointerDown($event: Pointer): void {
 		this.register.onNoPointerDown($event);
 	}
 
@@ -157,39 +147,37 @@ export class CpuService {
 
 	_onPointerMove($event: Pointer): void {
 		// Pointermove event with pointerdown (Wheel event is excluded)
-		if (!this.memory.flgs.wheelFlg) {
-			// Check if its idling
-			this._onIdle($event);
+		if (this.memory.flgs.wheelFlg) return;
 
-			//////////////////////////////////////////////////////////
-			//
-			// Pile new history
-			//
-			//////////////////////////////////////////////////////////
+		// Check if its idling
+		this._onIdle($event);
 
-			if (
-				this.memory.states.isNeededToUpdateHistory &&
-				this.memory.reservedByFunc.current.group === 'brush' &&
-				this.memory.flgs.leftDownMoveFlg
-			) {
-				this.memory.pileNewHistory();
-			}
+		//////////////////////////////////////////////////////////
+		//
+		// Pile new history
+		//
+		//////////////////////////////////////////////////////////
 
-			const newOffsetX: number = this.memory.pointerOffset.current.x - this.memory.pointerOffset.prev.x;
-			const newOffsetY: number = this.memory.pointerOffset.current.y - this.memory.pointerOffset.prev.y;
-
-			this.register.onPointerMove(newOffsetX, newOffsetY, $event);
-
-			// Prevent infinite iteration on histroy updating
-			this.memory.states.isNeededToUpdateHistory = false;
+		if (
+			this.memory.states.isNeededToUpdateHistory &&
+			this.memory.reservedByFunc.current.group === 'brush' &&
+			this.memory.flgs.leftDownMoveFlg
+		) {
+			this.memory.pileNewHistory();
 		}
+
+		const newOffsetX: number = this.memory.pointerOffset.current.x - this.memory.pointerOffset.prev.x;
+		const newOffsetY: number = this.memory.pointerOffset.current.y - this.memory.pointerOffset.prev.y;
+
+		this.register.onPointerMove(newOffsetX, newOffsetY, $event);
+
+		// Prevent infinite iteration on histroy updating
+		this.memory.states.isNeededToUpdateHistory = false;
 	}
 
 	private _onIdle($event: Pointer): void {
 		if (!!this.idleTimer) clearInterval(this.idleTimer);
 		this.idleTimer = setTimeout(() => {
-			this._onShadowPointerUp();
-			this._onShadowNoPointerDown($event);
 			this._onShadowPointerDown();
 		}, this.idleInterval);
 	}
