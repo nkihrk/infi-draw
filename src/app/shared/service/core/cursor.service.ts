@@ -36,18 +36,25 @@ export class CursorService {
 	private _hand(): void {
 		const appWrapper: HTMLDivElement = this.memory.renderer.appWrapper;
 
-		if (!appWrapper.classList.contains('grab-cursor')) {
-			this._resetAppWrapperClass();
-			appWrapper.classList.add('grab-cursor');
-		}
+		if (appWrapper.classList.contains('grab-cursor')) return;
+
+		this._resetAppWrapperClass();
+		appWrapper.classList.add('grab-cursor');
 	}
 
 	private _zoom(): void {
 		const appWrapper: HTMLDivElement = this.memory.renderer.appWrapper;
 
-		if (!appWrapper.classList.contains('zoom-in-cursor')) {
+		if (this.memory.states.isZoomCursorPositive) {
+			if (appWrapper.classList.contains('zoom-in-cursor')) return;
+
 			this._resetAppWrapperClass();
 			appWrapper.classList.add('zoom-in-cursor');
+		} else {
+			if (appWrapper.classList.contains('zoom-out-cursor')) return;
+
+			this._resetAppWrapperClass();
+			appWrapper.classList.add('zoom-out-cursor');
 		}
 	}
 
@@ -63,26 +70,26 @@ export class CursorService {
 			this._resetAppWrapperClass();
 		}
 
-		if (isCanvas && !this.memory.states.isCanvasLocked) {
-			const type: string = this.memory.reservedByFunc.current.type;
-			const x: number = this.memory.pointerOffset.current.x;
-			const y: number = this.memory.pointerOffset.current.y;
+		if (!isCanvas || this.memory.states.isCanvasLocked) return;
 
-			let r = 0;
-			if (type === 'draw') {
-				r = (this.memory.brush.lineWidth.draw * this.memory.canvasOffset.zoomRatio) / 2;
-			} else if (type === 'erase') {
-				r = this.memory.brush.lineWidth.erase / 2;
-			}
+		const type: string = this.memory.reservedByFunc.current.type;
+		const x: number = this.memory.pointerOffset.current.x;
+		const y: number = this.memory.pointerOffset.current.y;
 
-			if (r > 0) {
-				$ctxUiBuffer.translate(0.5, 0.5);
-				$ctxUiBuffer.beginPath();
-				$ctxUiBuffer.strokeStyle = this.memory.constant.STROKE_STYLE;
-				$ctxUiBuffer.lineWidth = 1;
-				$ctxUiBuffer.arc(x, y, r, 0, 2 * Math.PI);
-				$ctxUiBuffer.stroke();
-			}
+		let r = 0;
+		if (type === 'draw') {
+			r = (this.memory.brush.lineWidth.draw * this.memory.canvasOffset.zoomRatio) / 2;
+		} else if (type === 'erase') {
+			r = this.memory.brush.lineWidth.erase / 2;
+		}
+
+		if (r > 0) {
+			$ctxUiBuffer.translate(0.5, 0.5);
+			$ctxUiBuffer.beginPath();
+			$ctxUiBuffer.strokeStyle = this.memory.constant.STROKE_STYLE;
+			$ctxUiBuffer.lineWidth = 1;
+			$ctxUiBuffer.arc(x, y, r, 0, 2 * Math.PI);
+			$ctxUiBuffer.stroke();
 		}
 	}
 }
