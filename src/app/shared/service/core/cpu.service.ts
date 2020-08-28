@@ -13,6 +13,9 @@ export class CpuService {
 	private wCounter2 = 0;
 	private wMaker = true;
 
+	// Detect idling of pointer events
+	private idleTimer: number;
+
 	constructor(private memory: MemoryService, private register: RegisterService) {}
 
 	////////////////////////////////////////////////////////////////////////////////////////////
@@ -23,10 +26,10 @@ export class CpuService {
 
 	update($event: PointerEvent): void {
 		// Update mouseOffset
-		this.memory.mouseOffset.x = $event.x - this.memory.renderer.canvasWrapper.getBoundingClientRect().left;
-		this.memory.mouseOffset.y = $event.y - this.memory.renderer.canvasWrapper.getBoundingClientRect().top;
-		this.memory.mouseOffset.rawX = $event.x;
-		this.memory.mouseOffset.rawY = $event.y;
+		this.memory.pointerOffset.current.x = $event.x - this.memory.renderer.canvasWrapper.getBoundingClientRect().left;
+		this.memory.pointerOffset.current.y = $event.y - this.memory.renderer.canvasWrapper.getBoundingClientRect().top;
+		this.memory.pointerOffset.raw.x = $event.x;
+		this.memory.pointerOffset.raw.y = $event.y;
 
 		// When mouse button is down
 		if (this.memory.flgs.leftDownFlg || this.memory.flgs.middleDownFlg || this.memory.flgs.rightDownFlg) {
@@ -61,12 +64,20 @@ export class CpuService {
 
 	_onMouseDown(): void {
 		// Mousedown event with no mousemove
-		this.memory.mouseOffset.prevX = this.memory.mouseOffset.x;
-		this.memory.mouseOffset.prevY = this.memory.mouseOffset.y;
+		this.memory.pointerOffset.prev.x = this.memory.pointerOffset.current.x;
+		this.memory.pointerOffset.prev.y = this.memory.pointerOffset.current.y;
 
 		this.register.onMouseDown();
 
 		this.memory.states.isNeededToUpdateHistory = true;
+	}
+
+	private _onShadowMouseDown(): void {
+		// Mousedown event with no mousemove
+		this.memory.pointerOffset.prev.x = this.memory.pointerOffset.current.x;
+		this.memory.pointerOffset.prev.y = this.memory.pointerOffset.current.y;
+
+		this.register.onMouseDown();
 	}
 
 	//////////////////////////////////////////////////////////
@@ -82,6 +93,10 @@ export class CpuService {
 		this.memory.states.isNeededToUpdateHistory = false;
 	}
 
+	private _onShadowMouseUp(): void {
+		this.register.onMouseUp();
+	}
+
 	//////////////////////////////////////////////////////////
 	//
 	// All events but mousedown
@@ -92,25 +107,29 @@ export class CpuService {
 		// Wheel event - zooming-in/out
 		if (this.memory.flgs.wheelFlg) {
 			// Watch wheel events to detect an end of the event
-			this._detectWheelEnd();
+			this.detectWheelEnd();
 		}
 
 		this.register.onNoMouseDown($event);
 	}
 
+	private _onShadowNoMouseDown($event: PointerEvent): void {
+		this.register.onNoMouseDown($event);
+	}
+
 	// https://jsfiddle.net/rafaylik/sLjyyfox/
-	_detectWheelEnd(): void {
+	private detectWheelEnd(): void {
 		// if (this.wCounter1 === 0) this.memory.pileNewHistory(this.memory.history);
 		this.wCounter1 += 1;
 		if (this.wMaker) this._wheelStart();
 	}
 
-	_wheelStart(): void {
+	private _wheelStart(): void {
 		this.wMaker = false;
 		this._wheelAct();
 	}
 
-	_wheelAct(): void {
+	private _wheelAct(): void {
 		this.wCounter2 = this.wCounter1;
 		setTimeout(() => {
 			if (this.wCounter2 === this.wCounter1) {
@@ -121,7 +140,7 @@ export class CpuService {
 		}, this.wInterval);
 	}
 
-	_wheelEnd(): void {
+	private _wheelEnd(): void {
 		this.wCounter1 = 0;
 		this.wCounter2 = 0;
 		this.wMaker = true;
@@ -136,6 +155,9 @@ export class CpuService {
 	_onMouseMove($event: PointerEvent): void {
 		// Mousemove event with mousedown (Wheel event is excluded)
 		if (!this.memory.flgs.wheelFlg) {
+			// Check if its idling
+			this._onIdle($event);
+
 			//////////////////////////////////////////////////////////
 			//
 			// Pile new history
@@ -150,13 +172,22 @@ export class CpuService {
 				this.memory.pileNewHistory();
 			}
 
-			const newOffsetX: number = this.memory.mouseOffset.x - this.memory.mouseOffset.prevX;
-			const newOffsetY: number = this.memory.mouseOffset.y - this.memory.mouseOffset.prevY;
+			const newOffsetX: number = this.memory.pointerOffset.current.x - this.memory.pointerOffset.prev.x;
+			const newOffsetY: number = this.memory.pointerOffset.current.y - this.memory.pointerOffset.prev.y;
 
 			this.register.onMouseMove(newOffsetX, newOffsetY, $event);
 
 			// Prevent infinite iteration on histroy updating
 			this.memory.states.isNeededToUpdateHistory = false;
 		}
+	}
+
+	private _onIdle($event: PointerEvent): void {
+		if (!!this.idleTimer) clearInterval(this.idleTimer);
+		this.idleTimer = setTimeout(() => {
+			this._onShadowMouseUp();
+			this._onShadowNoMouseDown($event);
+			this._onShadowMouseDown();
+		}, 100);
 	}
 }

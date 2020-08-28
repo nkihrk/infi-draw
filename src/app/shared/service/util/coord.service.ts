@@ -22,17 +22,17 @@ export class CoordService {
 				offsetY += $newOffsetY;
 			}
 		} else {
-			offsetX -= this.memory.mouseOffset.x;
-			offsetY -= this.memory.mouseOffset.y;
+			offsetX -= this.memory.pointerOffset.current.x;
+			offsetY -= this.memory.pointerOffset.current.y;
 
 			if ($event.delta > 0) {
 				const ratio: number = 1 - this.memory.constant.WHEEL_ZOOM_SPEED;
-				offsetX = offsetX * ratio + this.memory.mouseOffset.x;
-				offsetY = offsetY * ratio + this.memory.mouseOffset.y;
+				offsetX = offsetX * ratio + this.memory.pointerOffset.current.x;
+				offsetY = offsetY * ratio + this.memory.pointerOffset.current.y;
 			} else {
 				const ratio: number = 1 + this.memory.constant.WHEEL_ZOOM_SPEED;
-				offsetX = offsetX * ratio + this.memory.mouseOffset.x;
-				offsetY = offsetY * ratio + this.memory.mouseOffset.y;
+				offsetX = offsetX * ratio + this.memory.pointerOffset.current.x;
+				offsetY = offsetY * ratio + this.memory.pointerOffset.current.y;
 			}
 		}
 

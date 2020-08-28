@@ -101,10 +101,10 @@ export class CreateLineService {
 			color: this.memory.brush.color,
 			visibility: true,
 			offset: {
-				prevOffsetX: this.memory.mouseOffset.prevX + $x,
-				prevOffsetY: this.memory.mouseOffset.prevY + $y,
-				newOffsetX: this.memory.mouseOffset.prevX + $x,
-				newOffsetY: this.memory.mouseOffset.prevY + $y
+				prevOffsetX: this.memory.pointerOffset.prev.x + $x,
+				prevOffsetY: this.memory.pointerOffset.prev.y + $y,
+				newOffsetX: this.memory.pointerOffset.prev.x + $x,
+				newOffsetY: this.memory.pointerOffset.prev.y + $y
 			},
 			pressure: 1,
 			lineWidth: this.memory.brush.lineWidth.draw
