@@ -30,24 +30,26 @@ export class ZoomService {
 		}
 	}
 
-	updateOffsets($newOffsetX: number, $newOffsetY: number): void {
-		const x: number = this.memory.pointerOffset.tmp.x;
-		const y: number = this.memory.pointerOffset.tmp.y;
+	updateOffsets(): void {
+		const x: number = this.memory.pointerOffset.prev.x;
+		const y: number = this.memory.pointerOffset.prev.y;
+		const diffX: number = this.memory.pointerOffset.current.x - this.memory.pointerOffset.tmp.x;
+		const diffY: number = this.memory.pointerOffset.current.y - this.memory.pointerOffset.tmp.y;
 
-		if (Math.abs($newOffsetX) > Math.abs($newOffsetY)) {
-			if ($newOffsetX > 0) {
-				// Set for cursor
-				this.memory.states.isZoomCursorPositive = true;
+		if (Math.abs(diffX) < Math.abs(diffY)) return;
 
-				this.canvas.updateOffsetByZoom(x, y, false);
-				this.draw.updateOffsetsByZoom(x, y, false);
-			} else {
-				// Set for cursor
-				this.memory.states.isZoomCursorPositive = false;
+		if (diffX > 0) {
+			// Set for cursor
+			this.memory.states.isZoomCursorPositive = true;
 
-				this.canvas.updateOffsetByZoom(x, y, true);
-				this.draw.updateOffsetsByZoom(x, y, true);
-			}
+			this.canvas.updateOffsetByZoom(x, y, false);
+			this.draw.updateOffsetsByZoom(x, y, false);
+		} else {
+			// Set for cursor
+			this.memory.states.isZoomCursorPositive = false;
+
+			this.canvas.updateOffsetByZoom(x, y, true);
+			this.draw.updateOffsetsByZoom(x, y, true);
 		}
 	}
 }
