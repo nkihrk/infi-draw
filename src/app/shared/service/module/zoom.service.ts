@@ -28,15 +28,15 @@ export class ZoomService {
 	}
 
 	updateOffsets($newOffsetX: number, $newOffsetY: number): void {
-		const x: number = this.memory.renderer.canvasWrapper.getBoundingClientRect().width / 2;
-		const y: number = this.memory.renderer.canvasWrapper.getBoundingClientRect().height / 2;
+		const x: number = this.memory.mouseOffset.prevX;
+		const y: number = this.memory.mouseOffset.prevY;
 
 		if ($newOffsetX > 0) {
-			this.canvas.updateOffsetByZoom(x, y, true);
-			this.draw.updateOffsetsByZoom(x, y, true);
-		} else {
 			this.canvas.updateOffsetByZoom(x, y, false);
 			this.draw.updateOffsetsByZoom(x, y, false);
+		} else {
+			this.canvas.updateOffsetByZoom(x, y, true);
+			this.draw.updateOffsetsByZoom(x, y, true);
 		}
 	}
 }

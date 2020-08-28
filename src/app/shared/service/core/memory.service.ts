@@ -94,7 +94,7 @@ export class MemoryService {
 
 	readonly constant = {
 		WHEEL_ZOOM_SPEED: 0.2,
-		POINTER_ZOOM_SPEED: 0.02,
+		POINTER_ZOOM_SPEED: 0.05,
 		GRID_COLOR: '#373543',
 		GRID_SCALE: 50,
 		RULER_COLOR: '#606060',

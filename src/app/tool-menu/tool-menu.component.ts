@@ -121,9 +121,11 @@ export class ToolMenuComponent implements OnInit {
 			.on('hide', (instance) => {
 				// Remove in-active after after completelly hided pickr
 				this.pickrInfoRef.nativeElement.classList.remove('in-active');
+				this.memory.states.isCanvasLocked = false;
 			})
 			.on('show', (color, instance) => {
 				this.pickrInfoRef.nativeElement.classList.add('in-active');
+				this.memory.states.isCanvasLocked = true;
 			})
 			.on('save', (color, instance) => {
 				// Set brush color
