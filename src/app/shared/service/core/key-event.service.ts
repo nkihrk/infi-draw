@@ -3,12 +3,14 @@ import { Key } from '../../model/key.model';
 import { FuncService } from './func.service';
 import { KeyMapService } from './key-map.service';
 import { MemoryService } from './memory.service';
+import * as _ from 'lodash';
 
 @Injectable({
 	providedIn: 'root'
 })
 export class KeyEventService {
 	private whichFunc = '';
+	private count = 0;
 
 	constructor(private keymap: KeyMapService, private func: FuncService, private memory: MemoryService) {}
 
@@ -25,13 +27,23 @@ export class KeyEventService {
 	_keyDownFuncs($e: Key): void {
 		const keymap: any = this.keymap.keyMap;
 
+		// Save a previous state once
+		if (this.count === 0) {
+			this.memory.reservedByFunc.prev = _.cloneDeep(this.memory.reservedByFunc.current);
+		}
+		this.count++;
+
 		if (keymap.Control) {
 			if (keymap.Shift) {
 				if (keymap.z || keymap.Z) {
 					this._redo($e);
 				}
-			} else if (keymap.z) {
-				this._undo($e);
+			} else {
+				if (keymap.z) {
+					this._undo($e);
+				} else if (keymap[' ']) {
+					this._zoom($e);
+				}
 			}
 		} else if (keymap.Shift) {
 			if (keymap.Control) {
@@ -64,34 +76,32 @@ export class KeyEventService {
 				this.func.hand();
 				break;
 
+			case 'zoom':
+				this.func.zoom(false);
+				break;
+
 			default:
 				break;
 		}
 
 		// Initialize
 		this.whichFunc = '';
+		this.count = 0;
 	}
 
 	_pen($e: Key): void {
-		if (this.whichFunc !== 'pen') this._keyUpFuncs($e);
-
 		this.whichFunc = 'pen';
 	}
 
 	_eraser($e: Key): void {
-		if (this.whichFunc !== 'eraser') this._keyUpFuncs($e);
-
 		this.whichFunc = 'eraser';
 	}
 
 	_hand($e: Key): void {
-		if (this.whichFunc !== 'hand') this._keyUpFuncs($e);
-
 		this.whichFunc = 'hand';
 	}
 	_redo($e: Key): void {
 		$e.e.preventDefault();
-		if (this.whichFunc !== 'redo') this._keyUpFuncs($e);
 
 		this.whichFunc = 'redo';
 		this.func.redo();
@@ -99,9 +109,13 @@ export class KeyEventService {
 
 	_undo($e: Key): void {
 		$e.e.preventDefault();
-		if (this.whichFunc !== 'undo') this._keyUpFuncs($e);
 
 		this.whichFunc = 'undo';
 		this.func.undo();
+	}
+
+	_zoom($e: Key): void {
+		this.whichFunc = 'zoom';
+		this.func.zoom(true);
 	}
 }

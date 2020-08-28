@@ -12,7 +12,8 @@ export class PenService {
 	constructor(private memory: MemoryService) {}
 
 	activate(): void {
-		this.memory.reservedByFunc = {
+		this.memory.reservedByFunc.prev = this.memory.reservedByFunc.current;
+		this.memory.reservedByFunc.current = {
 			name: 'pen',
 			type: 'draw',
 			group: 'brush'

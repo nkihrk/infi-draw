@@ -39,8 +39,8 @@ export class RegisterService {
 
 	onMouseMove($newOffsetX: number, $newOffsetY: number, $event: PointerEvent): void {
 		const flgs: Flgs = this.memory.flgs;
-		const type: string = this.memory.reservedByFunc.type;
-		const name: string = this.memory.reservedByFunc.name;
+		const type: string = this.memory.reservedByFunc.current.type;
+		const name: string = this.memory.reservedByFunc.current.name;
 
 		if (flgs.leftDownMoveFlg) {
 			this.mouseEvent.leftDownMove(type, name, $newOffsetX, $newOffsetY, $event);

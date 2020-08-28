@@ -47,6 +47,7 @@ export class MouseEventService {
 			default:
 				if ($name === 'hand') {
 					this._updateCanvases($newOffsetX, $newOffsetY, $event);
+				} else if ($name === 'zoom') {
 				}
 				break;
 		}

@@ -80,9 +80,16 @@ export class MemoryService {
 	};
 
 	reservedByFunc = {
-		name: 'pen',
-		type: 'draw',
-		group: 'brush'
+		current: {
+			name: 'pen',
+			type: 'draw',
+			group: 'brush'
+		},
+		prev: {
+			name: '',
+			type: '',
+			group: ''
+		}
 	};
 
 	readonly constant = {
@@ -244,12 +251,12 @@ export class MemoryService {
 		// Remove unnecessary event ids
 		this.oekakiOrder = _.take(this.oekakiOrder, this.orderId + 1);
 
-		if (this.reservedByFunc.type === 'draw') {
+		if (this.reservedByFunc.current.type === 'draw') {
 			this.trailList = _.take(this.trailList, this.drawId + 1);
 
 			const trail: Trail = {
 				id: this.trailList.length,
-				name: this.reservedByFunc.name,
+				name: this.reservedByFunc.current.name,
 				visibility: true,
 				min: {
 					prevOffsetX: Infinity,
@@ -270,7 +277,7 @@ export class MemoryService {
 			// To tell 'draw'
 			this.oekakiOrder.push(1);
 			this.drawId++;
-		} else if (this.reservedByFunc.type === 'erase') {
+		} else if (this.reservedByFunc.current.type === 'erase') {
 			this.eraseList = _.take(this.eraseList, this.eraseId + 1);
 
 			const erase: Erase = {

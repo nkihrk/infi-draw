@@ -12,12 +12,12 @@ export class CursorService {
 		const c: HTMLCanvasElement = ctxUiBuffer.canvas;
 		c.width = this.memory.renderer.canvasWrapper.clientWidth;
 		c.height = this.memory.renderer.canvasWrapper.clientHeight;
-		const group: string = this.memory.reservedByFunc.group;
+		const group: string = this.memory.reservedByFunc.current.group;
 
 		if (group === 'brush') {
 			this._brush(ctxUiBuffer);
 		} else {
-			const name: string = this.memory.reservedByFunc.name;
+			const name: string = this.memory.reservedByFunc.current.name;
 
 			if (name === 'hand') {
 				this._hand();
@@ -53,7 +53,7 @@ export class CursorService {
 		}
 
 		if (isCanvas && !this.memory.states.isCanvasLocked) {
-			const type: string = this.memory.reservedByFunc.type;
+			const type: string = this.memory.reservedByFunc.current.type;
 			const x: number = this.memory.mouseOffset.x;
 			const y: number = this.memory.mouseOffset.y;
 
