@@ -15,6 +15,7 @@ export class CpuService {
 
 	// Detect idling of pointer events
 	private idleTimer: number;
+	private idleInterval = 1;
 
 	constructor(private memory: MemoryService, private register: RegisterService) {}
 
@@ -66,6 +67,8 @@ export class CpuService {
 		// Pointerdown event with no pointermove
 		this.memory.pointerOffset.prev.x = this.memory.pointerOffset.current.x;
 		this.memory.pointerOffset.prev.y = this.memory.pointerOffset.current.y;
+		this.memory.pointerOffset.tmp.x = this.memory.pointerOffset.current.x;
+		this.memory.pointerOffset.tmp.y = this.memory.pointerOffset.current.y;
 
 		this.register.onPointerDown();
 
@@ -188,6 +191,6 @@ export class CpuService {
 			this._onShadowPointerUp();
 			this._onShadowNoPointerDown($event);
 			this._onShadowPointerDown();
-		}, 100);
+		}, this.idleInterval);
 	}
 }

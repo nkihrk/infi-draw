@@ -8,6 +8,9 @@ import { DrawService } from '../module/draw.service';
 	providedIn: 'root'
 })
 export class ZoomService {
+	private prevX: number = 0;
+	private prevY: number = 0;
+
 	constructor(
 		private memory: MemoryService,
 		private coord: CoordService,
@@ -28,15 +31,17 @@ export class ZoomService {
 	}
 
 	updateOffsets($newOffsetX: number, $newOffsetY: number): void {
-		const x: number = this.memory.pointerOffset.prev.x;
-		const y: number = this.memory.pointerOffset.prev.y;
+		const x: number = this.memory.pointerOffset.tmp.x;
+		const y: number = this.memory.pointerOffset.tmp.y;
 
-		if ($newOffsetX > 0) {
-			this.canvas.updateOffsetByZoom(x, y, false);
-			this.draw.updateOffsetsByZoom(x, y, false);
-		} else {
-			this.canvas.updateOffsetByZoom(x, y, true);
-			this.draw.updateOffsetsByZoom(x, y, true);
+		if (Math.abs($newOffsetX) > Math.abs($newOffsetY)) {
+			if ($newOffsetX > 0) {
+				this.canvas.updateOffsetByZoom(x, y, false);
+				this.draw.updateOffsetsByZoom(x, y, false);
+			} else {
+				this.canvas.updateOffsetByZoom(x, y, true);
+				this.draw.updateOffsetsByZoom(x, y, true);
+			}
 		}
 	}
 }
