@@ -52,8 +52,8 @@ export class CursorService {
 	}
 
 	private _brush($ctxUiBuffer: CanvasRenderingContext2D): void {
-		const rawX: number = this.memory.mouseOffset.rawX;
-		const rawY: number = this.memory.mouseOffset.rawY;
+		const rawX: number = this.memory.pointerOffset.raw.x;
+		const rawY: number = this.memory.pointerOffset.raw.y;
 		const canvasX: number = this.memory.renderer.main.getBoundingClientRect().x;
 		const canvasY: number = this.memory.renderer.main.getBoundingClientRect().y;
 		const isCanvas: boolean = canvasX < rawX && canvasY < rawY;
@@ -65,8 +65,8 @@ export class CursorService {
 
 		if (isCanvas && !this.memory.states.isCanvasLocked) {
 			const type: string = this.memory.reservedByFunc.current.type;
-			const x: number = this.memory.mouseOffset.x;
-			const y: number = this.memory.mouseOffset.y;
+			const x: number = this.memory.pointerOffset.current.x;
+			const y: number = this.memory.pointerOffset.current.y;
 
 			let r = 0;
 			if (type === 'draw') {

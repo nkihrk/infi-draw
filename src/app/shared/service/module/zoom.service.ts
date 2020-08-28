@@ -28,8 +28,8 @@ export class ZoomService {
 	}
 
 	updateOffsets($newOffsetX: number, $newOffsetY: number): void {
-		const x: number = this.memory.mouseOffset.prevX;
-		const y: number = this.memory.mouseOffset.prevY;
+		const x: number = this.memory.pointerOffset.prev.x;
+		const y: number = this.memory.pointerOffset.prev.y;
 
 		if ($newOffsetX > 0) {
 			this.canvas.updateOffsetByZoom(x, y, false);

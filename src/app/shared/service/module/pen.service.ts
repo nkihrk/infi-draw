@@ -76,10 +76,10 @@ export class PenService {
 			color: this.memory.brush.color,
 			visibility: true,
 			offset: {
-				prevOffsetX: this.memory.mouseOffset.x,
-				prevOffsetY: this.memory.mouseOffset.y,
-				newOffsetX: this.memory.mouseOffset.x,
-				newOffsetY: this.memory.mouseOffset.y
+				prevOffsetX: this.memory.pointerOffset.current.x,
+				prevOffsetY: this.memory.pointerOffset.current.y,
+				newOffsetX: this.memory.pointerOffset.current.x,
+				newOffsetY: this.memory.pointerOffset.current.y
 			},
 			pressure: 1,
 			lineWidth: this.memory.brush.lineWidth.draw

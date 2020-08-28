@@ -1,6 +1,7 @@
 import { ElementRef, Injectable } from '@angular/core';
 import * as _ from 'lodash';
 import { Flgs } from '../../model/flgs.model';
+import { PointerOffset } from '../../model/pointer-offset.model';
 import { History } from '../../model/history.model';
 import { CanvasOffset } from '../../model/canvas-offset.model';
 import { Trail } from '../../model/trail.model';
@@ -11,7 +12,7 @@ import { Point } from '../../model/point.model';
 	providedIn: 'root'
 })
 export class MemoryService {
-	// oekakiOrder
+	// brush order
 	private orderId = -1;
 	// draw
 	private drawId = -1;
@@ -70,13 +71,23 @@ export class MemoryService {
 		isCanvasLocked: false
 	};
 
-	mouseOffset = {
-		x: -Infinity,
-		y: -Infinity,
-		rawX: -Infinity,
-		rawY: -Infinity,
-		prevX: -Infinity,
-		prevY: -Infinity
+	pointerOffset: PointerOffset = {
+		current: {
+			x: -Infinity,
+			y: -Infinity
+		},
+		prev: {
+			x: -Infinity,
+			y: -Infinity
+		},
+		raw: {
+			x: -Infinity,
+			y: -Infinity
+		},
+		tmp: {
+			x: -Infinity,
+			y: -Infinity
+		}
 	};
 
 	reservedByFunc = {
