@@ -5,7 +5,6 @@ import { PenService } from '../module/pen.service';
 import { EraseService } from '../module/erase.service';
 import { CreateSquareService } from '../module/create-square.service';
 import { CreateLineService } from '../module/create-line.service';
-import * as _ from 'lodash';
 
 @Injectable({
 	providedIn: 'root'
@@ -132,7 +131,7 @@ export class FuncService {
 				group: ''
 			};
 		} else {
-			this.memory.reservedByFunc.current = _.cloneDeep(this.memory.reservedByFunc.prev);
+			this.memory.reservedByFunc.current = this.memory.reservedByFunc.prev;
 		}
 	}
 }

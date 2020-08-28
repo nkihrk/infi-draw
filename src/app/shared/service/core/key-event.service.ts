@@ -3,7 +3,6 @@ import { Key } from '../../model/key.model';
 import { FuncService } from './func.service';
 import { KeyMapService } from './key-map.service';
 import { MemoryService } from './memory.service';
-import * as _ from 'lodash';
 
 @Injectable({
 	providedIn: 'root'
@@ -29,7 +28,7 @@ export class KeyEventService {
 
 		// Save a previous state once
 		if (this.count === 0) {
-			this.memory.reservedByFunc.prev = _.cloneDeep(this.memory.reservedByFunc.current);
+			this.memory.reservedByFunc.prev = this.memory.reservedByFunc.current;
 		}
 		this.count++;
 
