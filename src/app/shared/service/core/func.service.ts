@@ -125,7 +125,7 @@ export class FuncService {
 	//
 	//////////////////////////////////////////////////////////
 
-	zoom($toggleFlg: boolean): void {
+	zoom($toggleFlg?: boolean): void {
 		this.zoomFunc.activate($toggleFlg);
 	}
 }

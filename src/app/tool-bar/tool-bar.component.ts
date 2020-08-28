@@ -9,6 +9,7 @@ import { faPenNib } from '@fortawesome/free-solid-svg-icons';
 import { faEraser } from '@fortawesome/free-solid-svg-icons';
 import { faSquare } from '@fortawesome/free-regular-svg-icons';
 import { faCircle } from '@fortawesome/free-regular-svg-icons';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
 	selector: 'app-tool-bar',
@@ -22,12 +23,14 @@ export class ToolBarComponent implements OnInit {
 	@ViewChild('eraser', { static: true }) eraser: ElementRef<HTMLDivElement>;
 	@ViewChild('createSquare', { static: true }) createSquare: ElementRef<HTMLDivElement>;
 	@ViewChild('createLine', { static: true }) createLine: ElementRef<HTMLDivElement>;
+	@ViewChild('zoom', { static: true }) zoom: ElementRef<HTMLDivElement>;
 
 	faMousePointer = faMousePointer;
 	faHandPaper = faHandPaper;
 	faPenNib = faPenNib;
 	faEraser = faEraser;
 	faSquare = faSquare;
+	faZoom = faSearch;
 
 	constructor(private memory: MemoryService, private func: FuncService) {}
 
@@ -55,6 +58,10 @@ export class ToolBarComponent implements OnInit {
 
 			case 'line':
 				this.func.createLine();
+				break;
+
+			case 'zoom':
+				this.func.zoom(true);
 				break;
 
 			default:
@@ -105,6 +112,11 @@ export class ToolBarComponent implements OnInit {
 				this._toggleActive(t);
 				break;
 
+			case 'zoom':
+				t = this.zoom.nativeElement;
+				this._toggleActive(t);
+				break;
+
 			default:
 				this._resetToolBarClassAll();
 				break;
@@ -125,6 +137,7 @@ export class ToolBarComponent implements OnInit {
 		this._resetToolBarClass(this.eraser.nativeElement);
 		this._resetToolBarClass(this.createSquare.nativeElement);
 		this._resetToolBarClass(this.createLine.nativeElement);
+		this._resetToolBarClass(this.zoom.nativeElement);
 	}
 
 	private _resetToolBarClass($targetElem: HTMLDivElement): void {

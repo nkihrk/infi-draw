@@ -5,7 +5,7 @@
 	</div>
 	<div #hand (click)="execFunc('hand')" class="icon-prefix name-info-wrapper">
 		<fa-icon [icon]="faHandPaper" [fixedWidth]="true" size="sm"></fa-icon>
-		<div class="name-info-column">ハンド</div>
+		<div class="name-info-column">手のひら</div>
 	</div>
 	<div #pen (click)="execFunc('pen')" class="icon-prefix name-info-wrapper">
 		<fa-icon [icon]="faPenNib" [fixedWidth]="true" size="sm"></fa-icon>
@@ -22,5 +22,9 @@
 	<div #createLine (click)="execFunc('line')" class="icon-prefix name-info-wrapper">
 		<div class="fa-line"></div>
 		<div class="name-info-column">図形の作成：直線</div>
+	</div>
+	<div #zoom (click)="execFunc('zoom')" class="icon-prefix name-info-wrapper">
+		<fa-icon [icon]="faZoom" [fixedWidth]="true" size="sm" class="invert-icon"></fa-icon>
+		<div class="name-info-column">拡大・縮小</div>
 	</div>
 </div>

@@ -8,8 +8,8 @@ import { DrawService } from '../module/draw.service';
 	providedIn: 'root'
 })
 export class ZoomService {
-	private prevX: number = 0;
-	private prevY: number = 0;
+	private prevX = 0;
+	private prevY = 0;
 
 	constructor(
 		private memory: MemoryService,
@@ -36,9 +36,15 @@ export class ZoomService {
 
 		if (Math.abs($newOffsetX) > Math.abs($newOffsetY)) {
 			if ($newOffsetX > 0) {
+				// Set for cursor
+				this.memory.states.isZoomCursorPositive = true;
+
 				this.canvas.updateOffsetByZoom(x, y, false);
 				this.draw.updateOffsetsByZoom(x, y, false);
 			} else {
+				// Set for cursor
+				this.memory.states.isZoomCursorPositive = false;
+
 				this.canvas.updateOffsetByZoom(x, y, true);
 				this.draw.updateOffsetsByZoom(x, y, true);
 			}
