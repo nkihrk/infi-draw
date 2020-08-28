@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { PointerEvent } from '../../model/pointer-event.model';
+import { Pointer } from '../../model/pointer.model';
 import { CoordService } from '../util/coord.service';
 import { MemoryService } from '../../service/core/memory.service';
 import { Offset } from '../../model/offset.model';
@@ -19,15 +19,15 @@ export class CanvasService {
 		this.registerOnMouseDown();
 	}
 
-	registerOnWheel($event: PointerEvent): void {
+	registerOnWheel($event: Pointer): void {
 		this._updateOffset(0, 0, $event);
 	}
 
-	registerOnMouseMiddleMove($newOffsetX: number, $newOffsetY: number, $event: PointerEvent): void {
+	registerOnMouseMiddleMove($newOffsetX: number, $newOffsetY: number, $event: Pointer): void {
 		this._updateOffset($newOffsetX, $newOffsetY, $event);
 	}
 
-	private _updateOffset($newOffsetX: number, $newOffsetY: number, $event: PointerEvent): void {
+	private _updateOffset($newOffsetX: number, $newOffsetY: number, $event: Pointer): void {
 		const offset: Offset = this.coord.updateOffset($newOffsetX, $newOffsetY, this.memory.canvasOffset, $event);
 		let zoomRatio: number = this.memory.canvasOffset.zoomRatio;
 

@@ -9,7 +9,7 @@ import { MemoryService } from '../shared/service/core/memory.service';
 import { DebugService } from '../shared/service/util/debug.service';
 import { FlgEventService } from '../shared/service/core/flg-event.service';
 import { CpuService } from '../shared/service/core/cpu.service';
-import { PointerEvent } from '../shared/model/pointer-event.model';
+import { Pointer } from '../shared/model/pointer.model';
 import { DrawService } from '../shared/service/module/draw.service';
 import { CursorService } from '../shared/service/core/cursor.service';
 
@@ -54,7 +54,7 @@ export class CanvasComponent implements OnInit {
 		this.render();
 	}
 
-	onPointerEvents($event: PointerEvent): void {
+	onPointerEvents($event: Pointer): void {
 		this.flg.updateFlgs($event);
 		this.cpu.update($event);
 	}

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { PointerEvent } from '../../model/pointer-event.model';
+import { Pointer } from '../../model/pointer.model';
 import { Flgs } from '../../model/flgs.model';
 import { CanvasService } from './canvas.service';
 
@@ -11,7 +11,7 @@ import { ZoomService } from '../module/zoom.service';
 @Injectable({
 	providedIn: 'root'
 })
-export class MouseEventService {
+export class PointerEventService {
 	constructor(
 		private canvas: CanvasService,
 		private drawFunc: DrawService,
@@ -29,7 +29,7 @@ export class MouseEventService {
 		this.drawFunc.registerOnNoMouseDown();
 	}
 
-	wheel($event: PointerEvent): void {
+	wheel($event: Pointer): void {
 		this.canvas.registerOnWheel($event);
 		this.drawFunc.registerOnWheel($event);
 	}
@@ -40,7 +40,7 @@ export class MouseEventService {
 
 	middleUp(): void {}
 
-	leftDownMove($type: string, $name: string, $newOffsetX: number, $newOffsetY: number, $event: PointerEvent): void {
+	leftDownMove($type: string, $name: string, $newOffsetX: number, $newOffsetY: number, $event: Pointer): void {
 		switch ($type) {
 			case 'draw':
 				this.drawFunc.registerDrawFuncs($newOffsetX, $newOffsetY);
@@ -60,9 +60,9 @@ export class MouseEventService {
 		}
 	}
 
-	rightDownMove($type: string, $newOffsetX: number, $newOffsetY: number, $event: PointerEvent): void {}
+	rightDownMove($type: string, $newOffsetX: number, $newOffsetY: number, $event: Pointer): void {}
 
-	middleDownMove($newOffsetX: number, $newOffsetY: number, $event: PointerEvent): void {
+	middleDownMove($newOffsetX: number, $newOffsetY: number, $event: Pointer): void {
 		this._updateCanvases($newOffsetX, $newOffsetY, $event);
 	}
 
@@ -72,7 +72,7 @@ export class MouseEventService {
 	//
 	//////////////////////////////////////////////////////////
 
-	private _updateCanvases($newOffsetX: number, $newOffsetY: number, $event: PointerEvent): void {
+	private _updateCanvases($newOffsetX: number, $newOffsetY: number, $event: Pointer): void {
 		// Update canvas coordinates
 		this.canvas.registerOnMouseMiddleMove($newOffsetX, $newOffsetY, $event);
 		// Update trail point coordinates
