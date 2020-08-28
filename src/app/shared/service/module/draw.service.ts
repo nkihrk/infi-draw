@@ -52,7 +52,11 @@ export class DrawService {
 		}
 	}
 
-	registerOnNoMouseDown($event: PointerEvent): void {
+	registerOnNoMouseDown(): void {
+		this.registerOnMouseDown();
+	}
+
+	registerOnWheel($event: PointerEvent): void {
 		this._updateOffsets(0, 0, $event);
 	}
 
@@ -65,12 +69,29 @@ export class DrawService {
 
 		for (let i = 0; i < trailList.length; i++) {
 			const t: Trail = trailList[i];
-			this.coord.updateOffsets($newOffsetX, $newOffsetY, t.min, $event);
-			this.coord.updateOffsets($newOffsetX, $newOffsetY, t.max, $event);
+			t.min = this.coord.updateOffset($newOffsetX, $newOffsetY, t.min, $event);
+			t.max = this.coord.updateOffset($newOffsetX, $newOffsetY, t.max, $event);
 
 			for (let j = 0; j < t.points.length; j++) {
 				const p: Point = t.points[j];
-				this.coord.updateOffsets($newOffsetX, $newOffsetY, p.offset, $event);
+				p.offset = this.coord.updateOffset($newOffsetX, $newOffsetY, p.offset, $event);
+			}
+		}
+	}
+
+	updateOffsetsByZoom($x: number, $y: number, $deltaFlg: boolean): void {
+		this.registerOnNoMouseDown();
+
+		const trailList: Trail[] = this.memory.trailList;
+
+		for (let i = 0; i < trailList.length; i++) {
+			const t: Trail = trailList[i];
+			t.min = this.coord.updateOffsetWithGivenPoint($x, $y, t.min, $deltaFlg);
+			t.max = this.coord.updateOffsetWithGivenPoint($x, $y, t.max, $deltaFlg);
+
+			for (let j = 0; j < t.points.length; j++) {
+				const p: Point = t.points[j];
+				p.offset = this.coord.updateOffsetWithGivenPoint($x, $y, p.offset, $deltaFlg);
 			}
 		}
 	}

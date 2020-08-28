@@ -6,12 +6,18 @@ import { CanvasService } from './canvas.service';
 // Modules
 import { DrawService } from '../module/draw.service';
 import { EraseService } from '../module/erase.service';
+import { ZoomService } from '../module/zoom.service';
 
 @Injectable({
 	providedIn: 'root'
 })
 export class MouseEventService {
-	constructor(private canvas: CanvasService, private drawFunc: DrawService, private eraseFunc: EraseService) {}
+	constructor(
+		private canvas: CanvasService,
+		private drawFunc: DrawService,
+		private eraseFunc: EraseService,
+		private zoomFunc: ZoomService
+	) {}
 
 	down(): void {
 		this.canvas.registerOnMouseDown();
@@ -19,13 +25,13 @@ export class MouseEventService {
 	}
 
 	noDown(): void {
-		this.canvas.registerOnMouseDown();
-		this.drawFunc.registerOnMouseDown();
+		this.canvas.registerOnNoMouseDown();
+		this.drawFunc.registerOnNoMouseDown();
 	}
 
 	wheel($event: PointerEvent): void {
-		this.canvas.registerOnNoMouseDown($event);
-		this.drawFunc.registerOnNoMouseDown($event);
+		this.canvas.registerOnWheel($event);
+		this.drawFunc.registerOnWheel($event);
 	}
 
 	leftUp(): void {}
@@ -48,6 +54,7 @@ export class MouseEventService {
 				if ($name === 'hand') {
 					this._updateCanvases($newOffsetX, $newOffsetY, $event);
 				} else if ($name === 'zoom') {
+					this.zoomFunc.updateOffsets($newOffsetX, $newOffsetY);
 				}
 				break;
 		}

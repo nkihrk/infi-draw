@@ -5,6 +5,7 @@ import { PenService } from '../module/pen.service';
 import { EraseService } from '../module/erase.service';
 import { CreateSquareService } from '../module/create-square.service';
 import { CreateLineService } from '../module/create-line.service';
+import { ZoomService } from '../module/zoom.service';
 
 @Injectable({
 	providedIn: 'root'
@@ -16,7 +17,8 @@ export class FuncService {
 		private penFunc: PenService,
 		private eraseFunc: EraseService,
 		private createSquareFunc: CreateSquareService,
-		private createLineFunc: CreateLineService
+		private createLineFunc: CreateLineService,
+		private zoomFunc: ZoomService
 	) {}
 
 	//////////////////////////////////////////////////////////
@@ -123,15 +125,7 @@ export class FuncService {
 	//
 	//////////////////////////////////////////////////////////
 
-	zoom($flg: boolean): void {
-		if ($flg) {
-			this.memory.reservedByFunc.current = {
-				name: 'zoom',
-				type: '',
-				group: ''
-			};
-		} else {
-			this.memory.reservedByFunc.current = this.memory.reservedByFunc.prev;
-		}
+	zoom($toggleFlg: boolean): void {
+		this.zoomFunc.activate($toggleFlg);
 	}
 }

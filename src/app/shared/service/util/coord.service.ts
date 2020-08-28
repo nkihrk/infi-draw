@@ -1,121 +1,101 @@
 import { Injectable } from '@angular/core';
 import { PointerEvent } from '../../model/pointer-event.model';
 import { MemoryService } from '../core/memory.service';
+import { Offset } from '../../model/offset.model';
 
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root'
 })
 export class CoordService {
-  constructor(private memory: MemoryService) {}
+	constructor(private memory: MemoryService) {}
 
-  updateOffsetsNoRistrict($newOffsetX, $newOffsetY, $offsets: any, $event: PointerEvent): void {
-    const offsets = $offsets;
-    let offsetX: number = offsets.prevOffsetX;
-    let offsetY: number = offsets.prevOffsetY;
+	updateOffset($newOffsetX: number, $newOffsetY: number, $offset: Offset, $event: PointerEvent): Offset {
+		let offsetX: number = $offset.prevOffsetX;
+		let offsetY: number = $offset.prevOffsetY;
 
-    if (!this.memory.flgs.wheelFlg) {
-      if ($event.btn === 0 || $event.btn === 1) {
-        offsetX += $newOffsetX;
-        offsetY += $newOffsetY;
-      }
-    } else {
-      offsetX -= this.memory.mouseOffset.x;
-      offsetY -= this.memory.mouseOffset.y;
+		if (!this.memory.flgs.wheelFlg) {
+			if (
+				($event.btn === 0 && !this.memory.states.isPreventSelect) ||
+				($event.btn === 1 && !this.memory.states.isPreventTrans)
+			) {
+				offsetX += $newOffsetX;
+				offsetY += $newOffsetY;
+			}
+		} else {
+			offsetX -= this.memory.mouseOffset.x;
+			offsetY -= this.memory.mouseOffset.y;
 
-      if ($event.delta > 0) {
-        const ratio: number = 1 - this.memory.constant.ZOOM_SPEED;
-        offsetX = offsetX * ratio + this.memory.mouseOffset.x;
-        offsetY = offsetY * ratio + this.memory.mouseOffset.y;
-      } else {
-        const ratio: number = 1 + this.memory.constant.ZOOM_SPEED;
-        offsetX = offsetX * ratio + this.memory.mouseOffset.x;
-        offsetY = offsetY * ratio + this.memory.mouseOffset.y;
-      }
-    }
+			if ($event.delta > 0) {
+				const ratio: number = 1 - this.memory.constant.WHEEL_ZOOM_SPEED;
+				offsetX = offsetX * ratio + this.memory.mouseOffset.x;
+				offsetY = offsetY * ratio + this.memory.mouseOffset.y;
+			} else {
+				const ratio: number = 1 + this.memory.constant.WHEEL_ZOOM_SPEED;
+				offsetX = offsetX * ratio + this.memory.mouseOffset.x;
+				offsetY = offsetY * ratio + this.memory.mouseOffset.y;
+			}
+		}
 
-    offsets.newOffsetX = offsetX;
-    offsets.newOffsetY = offsetY;
-  }
+		$offset.newOffsetX = offsetX;
+		$offset.newOffsetY = offsetY;
 
-  updateOffsets($newOffsetX, $newOffsetY, $offsets: any, $event: PointerEvent): void {
-    const offsets = $offsets;
-    let offsetX: number = offsets.prevOffsetX;
-    let offsetY: number = offsets.prevOffsetY;
+		return $offset;
+	}
 
-    if (!this.memory.flgs.wheelFlg) {
-      if (
-        ($event.btn === 0 && !this.memory.states.isPreventSelect) ||
-        ($event.btn === 1 && !this.memory.states.isPreventWholeTrans)
-      ) {
-        offsetX += $newOffsetX;
-        offsetY += $newOffsetY;
-      }
-    } else {
-      if (!this.memory.states.isPreventWheel) {
-        offsetX -= this.memory.mouseOffset.x;
-        offsetY -= this.memory.mouseOffset.y;
+	updateOffsetWithGivenPoint($x: number, $y: number, $offset: Offset, $deltaFlg: boolean): Offset {
+		let offsetX: number = $offset.prevOffsetX;
+		let offsetY: number = $offset.prevOffsetY;
 
-        if ($event.delta > 0) {
-          const ratio: number = 1 - this.memory.constant.ZOOM_SPEED;
-          offsetX = offsetX * ratio + this.memory.mouseOffset.x;
-          offsetY = offsetY * ratio + this.memory.mouseOffset.y;
-        } else {
-          const ratio: number = 1 + this.memory.constant.ZOOM_SPEED;
-          offsetX = offsetX * ratio + this.memory.mouseOffset.x;
-          offsetY = offsetY * ratio + this.memory.mouseOffset.y;
-        }
-      }
-    }
+		offsetX -= $x;
+		offsetY -= $y;
 
-    offsets.newOffsetX = offsetX;
-    offsets.newOffsetY = offsetY;
-  }
+		if ($deltaFlg) {
+			const ratio: number = 1 - this.memory.constant.POINTER_ZOOM_SPEED;
+			offsetX = offsetX * ratio + $x;
+			offsetY = offsetY * ratio + $y;
+		} else {
+			const ratio: number = 1 + this.memory.constant.POINTER_ZOOM_SPEED;
+			offsetX = offsetX * ratio + $x;
+			offsetY = offsetY * ratio + $y;
+		}
 
-  updateSizeByPointer($size: any, $newOffsetX, $newOffsetY): void {
-    const size = $size;
-    size.width += $newOffsetX;
-    size.height += $newOffsetY;
-  }
+		$offset.newOffsetX = offsetX;
+		$offset.newOffsetY = offsetY;
 
-  updateSizeByWheel($size: any, $event: PointerEvent): void {
-    const size = $size;
-    let width: number = size.width;
-    let height: number = size.height;
+		return $offset;
+	}
 
-    if (this.memory.flgs.wheelFlg && !this.memory.states.isPreventWheel) {
-      let ratio = 1;
-      if ($event.delta > 0) {
-        // Negative zoom
-        ratio -= this.memory.constant.ZOOM_SPEED;
-      } else {
-        // Positive zoom
-        ratio += this.memory.constant.ZOOM_SPEED;
-      }
+	updateZoomRatioByWheel($zoomRatio: number, $event: PointerEvent): number {
+		let zoomRatio: number = $zoomRatio;
 
-      width *= ratio;
-      height *= ratio;
+		let ratio = 1;
+		if ($event.delta > 0) {
+			// Negative zoom
+			ratio -= this.memory.constant.WHEEL_ZOOM_SPEED;
+		} else {
+			// Positive zoom
+			ratio += this.memory.constant.WHEEL_ZOOM_SPEED;
+		}
 
-      size.width = width;
-      size.height = height;
-    }
-  }
+		zoomRatio *= ratio;
 
-  updateZoomRatioByWheel($zoomRatio: number, $event: PointerEvent): number {
-    let zoomRatio: number = $zoomRatio;
+		return zoomRatio;
+	}
 
-    if (this.memory.flgs.wheelFlg && !this.memory.states.isPreventWheel) {
-      let ratio = 1;
-      if ($event.delta > 0) {
-        // Negative zoom
-        ratio -= this.memory.constant.ZOOM_SPEED;
-      } else {
-        // Positive zoom
-        ratio += this.memory.constant.ZOOM_SPEED;
-      }
+	updateZoomRatioByPointer($zoomRatio: number, $deltaFlg: boolean): number {
+		let zoomRatio: number = $zoomRatio;
 
-      zoomRatio *= ratio;
-    }
+		let ratio = 1;
+		if ($deltaFlg) {
+			// Negative zoom
+			ratio -= this.memory.constant.POINTER_ZOOM_SPEED;
+		} else {
+			// Positive zoom
+			ratio += this.memory.constant.POINTER_ZOOM_SPEED;
+		}
 
-    return zoomRatio;
-  }
+		zoomRatio *= ratio;
+
+		return zoomRatio;
+	}
 }
