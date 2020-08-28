@@ -36,7 +36,7 @@ export class ZoomService {
 		const diffX: number = this.memory.pointerOffset.current.x - this.memory.pointerOffset.tmp.x;
 		const diffY: number = this.memory.pointerOffset.current.y - this.memory.pointerOffset.tmp.y;
 
-		if (Math.abs(diffX) < Math.abs(diffY)) return;
+		if (Math.abs(diffX) <= Math.abs(diffY)) return;
 
 		if (diffX > 0) {
 			// Set for cursor
