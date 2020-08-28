@@ -3,7 +3,7 @@ import { MemoryService } from '../core/memory.service';
 import { Point } from '../../model/point.model';
 import { Trail } from '../../model/trail.model';
 import { CoordService } from '../util/coord.service';
-import { PointerEvent } from '../../model/pointer-event.model';
+import { Pointer } from '../../model/pointer.model';
 
 // Draw modules
 import { PenService } from '../module/pen.service';
@@ -56,15 +56,15 @@ export class DrawService {
 		this.registerOnMouseDown();
 	}
 
-	registerOnWheel($event: PointerEvent): void {
+	registerOnWheel($event: Pointer): void {
 		this._updateOffsets(0, 0, $event);
 	}
 
-	registerOnMouseMiddleMove($newOffsetX: number, $newOffsetY: number, $event: PointerEvent): void {
+	registerOnMouseMiddleMove($newOffsetX: number, $newOffsetY: number, $event: Pointer): void {
 		this._updateOffsets($newOffsetX, $newOffsetY, $event);
 	}
 
-	private _updateOffsets($newOffsetX: number, $newOffsetY: number, $event: PointerEvent): void {
+	private _updateOffsets($newOffsetX: number, $newOffsetY: number, $event: Pointer): void {
 		const trailList: Trail[] = this.memory.trailList;
 
 		for (let i = 0; i < trailList.length; i++) {

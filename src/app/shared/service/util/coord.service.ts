@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { PointerEvent } from '../../model/pointer-event.model';
+import { Pointer } from '../../model/pointer.model';
 import { MemoryService } from '../core/memory.service';
 import { Offset } from '../../model/offset.model';
 
@@ -9,7 +9,7 @@ import { Offset } from '../../model/offset.model';
 export class CoordService {
 	constructor(private memory: MemoryService) {}
 
-	updateOffset($newOffsetX: number, $newOffsetY: number, $offset: Offset, $event: PointerEvent): Offset {
+	updateOffset($newOffsetX: number, $newOffsetY: number, $offset: Offset, $event: Pointer): Offset {
 		let offsetX: number = $offset.prevOffsetX;
 		let offsetY: number = $offset.prevOffsetY;
 
@@ -65,7 +65,7 @@ export class CoordService {
 		return $offset;
 	}
 
-	updateZoomRatioByWheel($zoomRatio: number, $event: PointerEvent): number {
+	updateZoomRatioByWheel($zoomRatio: number, $event: Pointer): number {
 		let zoomRatio: number = $zoomRatio;
 
 		let ratio = 1;

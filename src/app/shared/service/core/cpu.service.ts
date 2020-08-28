@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { PointerEvent } from '../../model/pointer-event.model';
+import { Pointer } from '../../model/pointer.model';
 import { MemoryService } from './memory.service';
 import { RegisterService } from './register.service';
 
@@ -24,26 +24,26 @@ export class CpuService {
 	//
 	////////////////////////////////////////////////////////////////////////////////////////////
 
-	update($event: PointerEvent): void {
-		// Update mouseOffset
+	update($event: Pointer): void {
+		// Update ouseOffset
 		this.memory.pointerOffset.current.x = $event.x - this.memory.renderer.canvasWrapper.getBoundingClientRect().left;
 		this.memory.pointerOffset.current.y = $event.y - this.memory.renderer.canvasWrapper.getBoundingClientRect().top;
 		this.memory.pointerOffset.raw.x = $event.x;
 		this.memory.pointerOffset.raw.y = $event.y;
 
-		// When mouse button is down
+		// When pointer button is down
 		if (this.memory.flgs.leftDownFlg || this.memory.flgs.middleDownFlg || this.memory.flgs.rightDownFlg) {
-			this._onMouseDown();
+			this._onPointerDown();
 		}
 
-		// When mouse button is up
+		// When pointer button is up
 		if (this.memory.flgs.leftUpFlg || this.memory.flgs.middleUpFlg || this.memory.flgs.rightUpFlg) {
-			this._onMouseUp();
+			this._onPointerUp();
 		}
 
-		// Update anytime when the event is not mousedown
+		// Update anytime when the event is not pointerdown
 		if (!this.memory.flgs.downFlg) {
-			this._onNoMouseDown($event);
+			this._onNoPointerDown($event);
 		}
 
 		// When double clicked
@@ -52,69 +52,69 @@ export class CpuService {
 
 		// Only allow left and middle buttons
 		if (this.memory.flgs.leftDownMoveFlg || this.memory.flgs.middleDownMoveFlg) {
-			this._onMouseMove($event);
+			this._onPointerMove($event);
 		}
 	}
 
 	//////////////////////////////////////////////////////////
 	//
-	// Mousedown event
+	// Pointerdown event
 	//
 	//////////////////////////////////////////////////////////
 
-	_onMouseDown(): void {
-		// Mousedown event with no mousemove
+	_onPointerDown(): void {
+		// Pointerdown event with no pointermove
 		this.memory.pointerOffset.prev.x = this.memory.pointerOffset.current.x;
 		this.memory.pointerOffset.prev.y = this.memory.pointerOffset.current.y;
 
-		this.register.onMouseDown();
+		this.register.onPointerDown();
 
 		this.memory.states.isNeededToUpdateHistory = true;
 	}
 
-	private _onShadowMouseDown(): void {
-		// Mousedown event with no mousemove
+	private _onShadowPointerDown(): void {
+		// Pointerdown event with no pointermove
 		this.memory.pointerOffset.prev.x = this.memory.pointerOffset.current.x;
 		this.memory.pointerOffset.prev.y = this.memory.pointerOffset.current.y;
 
-		this.register.onMouseDown();
+		this.register.onPointerDown();
 	}
 
 	//////////////////////////////////////////////////////////
 	//
-	// Mouseup event
+	// Pointerup event
 	//
 	//////////////////////////////////////////////////////////
 
-	_onMouseUp(): void {
-		this.register.onMouseUp();
+	_onPointerUp(): void {
+		this.register.onPointerUp();
 
 		// Prevent infinite iteration on histroy updating
 		this.memory.states.isNeededToUpdateHistory = false;
 	}
 
-	private _onShadowMouseUp(): void {
-		this.register.onMouseUp();
+	private _onShadowPointerUp(): void {
+		this.register.onPointerUp();
 	}
 
 	//////////////////////////////////////////////////////////
 	//
-	// All events but mousedown
+	// All events but pointerdown
 	//
 	//////////////////////////////////////////////////////////
 
-	_onNoMouseDown($event: PointerEvent): void {
+	_onNoPointerDown($event: Pointer): void {
 		// Wheel event - zooming-in/out
 		if (this.memory.flgs.wheelFlg) {
 			// Watch wheel events to detect an end of the event
 			this.detectWheelEnd();
 		}
 
-		this.register.onNoMouseDown($event);
+		this.register.onNoPointerDown($event);
 	}
 
-	private _onShadowNoMouseDown($event: PointerEvent): void {
-		this.register.onNoMouseDown($event);
+	private _onShadowNoPointerDown($event: Pointer): void {
+		this.register.onNoPointerDown($event);
 	}
 
 	// https://jsfiddle.net/rafaylik/sLjyyfox/
@@ -148,12 +148,12 @@ export class CpuService {
 
 	//////////////////////////////////////////////////////////
 	//
-	// Mousemove event
+	// Pointermove event
 	//
 	//////////////////////////////////////////////////////////
 
-	_onMouseMove($event: PointerEvent): void {
-		// Mousemove event with mousedown (Wheel event is excluded)
+	_onPointerMove($event: Pointer): void {
+		// Pointermove event with pointerdown (Wheel event is excluded)
 		if (!this.memory.flgs.wheelFlg) {
 			// Check if its idling
 			this._onIdle($event);
@@ -175,19 +175,19 @@ export class CpuService {
 			const newOffsetX: number = this.memory.pointerOffset.current.x - this.memory.pointerOffset.prev.x;
 			const newOffsetY: number = this.memory.pointerOffset.current.y - this.memory.pointerOffset.prev.y;
 
-			this.register.onMouseMove(newOffsetX, newOffsetY, $event);
+			this.register.onPointerMove(newOffsetX, newOffsetY, $event);
 
 			// Prevent infinite iteration on histroy updating
 			this.memory.states.isNeededToUpdateHistory = false;
 		}
 	}
 
-	private _onIdle($event: PointerEvent): void {
+	private _onIdle($event: Pointer): void {
 		if (!!this.idleTimer) clearInterval(this.idleTimer);
 		this.idleTimer = setTimeout(() => {
-			this._onShadowMouseUp();
-			this._onShadowNoMouseDown($event);
-			this._onShadowMouseDown();
+			this._onShadowPointerUp();
+			this._onShadowNoPointerDown($event);
+			this._onShadowPointerDown();
 		}, 100);
 	}
 }

@@ -1,12 +1,12 @@
 import { Directive, EventEmitter, HostListener, Output } from '@angular/core';
 import { Key } from '../model/key.model';
-import { PointerEvent } from '../model/pointer-event.model';
+import { Pointer } from '../model/pointer.model';
 
 @Directive({
 	selector: '[appEvent]'
 })
 export class EventDirective {
-	@Output() dataSet = new EventEmitter<PointerEvent>();
+	@Output() dataSet = new EventEmitter<Pointer>();
 	@Output() key = new EventEmitter<Key>();
 	@Output() isUnload = new EventEmitter<any>();
 
