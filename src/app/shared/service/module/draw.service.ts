@@ -23,7 +23,7 @@ export class DrawService {
 	) {}
 
 	registerDrawFuncs($newOffsetX: number, $newOffsetY: number): void {
-		const name: string = this.memory.reservedByFunc.name;
+		const name: string = this.memory.reservedByFunc.current.name;
 
 		if (name === 'pen') {
 			this.pen.recordTrail();

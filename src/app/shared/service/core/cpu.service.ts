@@ -144,7 +144,7 @@ export class CpuService {
 
 			if (
 				this.memory.states.isNeededToUpdateHistory &&
-				this.memory.reservedByFunc.group === 'brush' &&
+				this.memory.reservedByFunc.current.group === 'brush' &&
 				this.memory.flgs.leftDownMoveFlg
 			) {
 				this.memory.pileNewHistory();

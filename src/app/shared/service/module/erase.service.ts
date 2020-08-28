@@ -14,7 +14,8 @@ export class EraseService {
 	constructor(private memory: MemoryService, private debug: DebugService) {}
 
 	activate(): void {
-		this.memory.reservedByFunc = {
+		this.memory.reservedByFunc.prev = this.memory.reservedByFunc.current;
+		this.memory.reservedByFunc.current = {
 			name: 'eraser',
 			type: 'erase',
 			group: 'brush'

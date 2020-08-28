@@ -12,10 +12,10 @@ export class CleanupService {
 
 	activate(): void {
 		// To store previous states
-		const tmpReserved = this.memory.reservedByFunc;
+		const tmpReserved = this.memory.reservedByFunc.current;
 
 		// To tell pipeline that this function is a part of the erase module
-		this.memory.reservedByFunc = {
+		this.memory.reservedByFunc.current = {
 			name: 'cleanup',
 			type: 'erase',
 			group: 'brush'
@@ -26,7 +26,7 @@ export class CleanupService {
 		this._setVisibilities();
 
 		// initialize with previous states
-		this.memory.reservedByFunc = tmpReserved;
+		this.memory.reservedByFunc.current = tmpReserved;
 	}
 
 	private _setVisibilities(): void {

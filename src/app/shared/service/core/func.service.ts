@@ -5,6 +5,7 @@ import { PenService } from '../module/pen.service';
 import { EraseService } from '../module/erase.service';
 import { CreateSquareService } from '../module/create-square.service';
 import { CreateLineService } from '../module/create-line.service';
+import * as _ from 'lodash';
 
 @Injectable({
 	providedIn: 'root'
@@ -70,7 +71,7 @@ export class FuncService {
 	//////////////////////////////////////////////////////////
 
 	hand(): void {
-		this.memory.reservedByFunc = {
+		this.memory.reservedByFunc.current = {
 			name: 'hand',
 			type: '',
 			group: ''
@@ -115,5 +116,23 @@ export class FuncService {
 
 	createLine(): void {
 		this.createLineFunc.activate();
+	}
+
+	//////////////////////////////////////////////////////////
+	//
+	// Zoom
+	//
+	//////////////////////////////////////////////////////////
+
+	zoom($flg: boolean): void {
+		if ($flg) {
+			this.memory.reservedByFunc.current = {
+				name: 'zoom',
+				type: '',
+				group: ''
+			};
+		} else {
+			this.memory.reservedByFunc.current = _.cloneDeep(this.memory.reservedByFunc.prev);
+		}
 	}
 }

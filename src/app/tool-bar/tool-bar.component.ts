@@ -72,7 +72,7 @@ export class ToolBarComponent implements OnInit {
 	}
 
 	private _render(): void {
-		const name: string = this.memory.reservedByFunc.name;
+		const name: string = this.memory.reservedByFunc.current.name;
 		let t: HTMLDivElement;
 
 		switch (name) {
@@ -106,6 +106,7 @@ export class ToolBarComponent implements OnInit {
 				break;
 
 			default:
+				this._resetToolBarClassAll();
 				break;
 		}
 	}
