@@ -64,7 +64,7 @@ export class MemoryService {
 	states = {
 		isPreventSelect: false,
 		isPreventWheel: false,
-		isPreventWholeTrans: false,
+		isPreventTrans: false,
 		isNeededToUpdateHistory: false,
 		isChangedStates: false,
 		isCanvasLocked: false
@@ -93,7 +93,8 @@ export class MemoryService {
 	};
 
 	readonly constant = {
-		ZOOM_SPEED: 0.2, // Zoom speed of canvas
+		WHEEL_ZOOM_SPEED: 0.2,
+		POINTER_ZOOM_SPEED: 0.02,
 		GRID_COLOR: '#373543',
 		GRID_SCALE: 50,
 		RULER_COLOR: '#606060',
