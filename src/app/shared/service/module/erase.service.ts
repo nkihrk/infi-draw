@@ -89,8 +89,9 @@ export class EraseService {
 
 		const points: Point[] = this.memory.trailList[$trailId].points;
 		for (let i = 0; i < points.length; i++) {
-			const pointX: number = points[i].offset.newOffsetX;
-			const pointY: number = points[i].offset.newOffsetY;
+			const p: Point = points[i];
+			const pointX: number = p.offset.newOffsetX;
+			const pointY: number = p.offset.newOffsetY;
 			const pointerOffset: PointerOffset = this.memory.pointerOffset;
 			const r: number = this.memory.brush.lineWidth.erase / 2;
 
@@ -98,7 +99,7 @@ export class EraseService {
 			const diffY: number = pointY - pointerOffset.current.y;
 			const distance: number = Math.sqrt(diffX * diffX + diffY * diffY);
 
-			const isCollided: boolean = distance < r;
+			const isCollided: boolean = distance - (p.lineWidth * p.pressure * this.memory.canvasOffset.zoomRatio) / 2 < r;
 
 			if (isCollided) validList.push(i);
 		}
