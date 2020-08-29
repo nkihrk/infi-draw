@@ -69,13 +69,7 @@ export class DrawService {
 
 		for (let i = 0; i < trailList.length; i++) {
 			const t: Trail = trailList[i];
-			t.min = this.coord.updateOffset($newOffsetX, $newOffsetY, t.min, $event);
-			t.max = this.coord.updateOffset($newOffsetX, $newOffsetY, t.max, $event);
-
-			for (let j = 0; j < t.points.length; j++) {
-				const p: Point = t.points[j];
-				p.offset = this.coord.updateOffset($newOffsetX, $newOffsetY, p.offset, $event);
-			}
+			this.updateTargetTrailOffsets(t, $newOffsetX, $newOffsetY, $event);
 		}
 	}
 
