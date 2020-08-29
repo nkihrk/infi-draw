@@ -4,6 +4,7 @@ import { Flgs } from '../../model/flgs.model';
 import { CanvasService } from './canvas.service';
 
 // Modules
+import { SelectService } from '../module/select.service';
 import { DrawService } from '../module/draw.service';
 import { EraseService } from '../module/erase.service';
 import { ZoomService } from '../module/zoom.service';
@@ -14,6 +15,7 @@ import { ZoomService } from '../module/zoom.service';
 export class PointerEventService {
 	constructor(
 		private canvas: CanvasService,
+		private selectFunc: SelectService,
 		private drawFunc: DrawService,
 		private eraseFunc: EraseService,
 		private zoomFunc: ZoomService
@@ -23,6 +25,21 @@ export class PointerEventService {
 		this.canvas.registerOnMouseDown();
 		this.drawFunc.registerOnMouseDown();
 	}
+
+	leftDown($name: string): void {
+		switch ($name) {
+			case 'select':
+				this.selectFunc.getTargetTrail();
+				break;
+
+			default:
+				break;
+		}
+	}
+
+	rightDown(): void {}
+
+	middleDown(): void {}
 
 	noDown(): void {
 		this.canvas.registerOnNoMouseDown();

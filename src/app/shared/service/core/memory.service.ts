@@ -1,5 +1,6 @@
 import { ElementRef, Injectable } from '@angular/core';
 import * as _ from 'lodash';
+import { LibService } from '../util/lib.service';
 import { Flgs } from '../../model/flgs.model';
 import { PointerOffset } from '../../model/pointer-offset.model';
 import { History } from '../../model/history.model';
@@ -19,6 +20,11 @@ export class MemoryService {
 	// erase
 	private eraseId = -1;
 
+	trailList: Trail[] = [];
+	eraseList: Erase[] = [];
+	oekakiOrder: number[] = [];
+	colorIdList: { id: number; colorId: string }[] = [];
+
 	canvasOffset: CanvasOffset = {
 		zoomRatio: 1,
 		prevOffsetX: 0,
@@ -26,10 +32,6 @@ export class MemoryService {
 		newOffsetX: 0,
 		newOffsetY: 0
 	};
-
-	trailList: Trail[] = [];
-	eraseList: Erase[] = [];
-	oekakiOrder: number[] = [];
 
 	brush = {
 		color: 'rgba(233, 30, 99, 0.95)',
@@ -119,7 +121,7 @@ export class MemoryService {
 	brushSizeSlider: BrushSizeSlider = {} as BrushSizeSlider;
 	renderer: Renderer = { ctx: {} as Ctx } as Renderer;
 
-	constructor() {}
+	constructor(private lib: LibService) {}
 
 	initBrushSizeSlider(
 		$brushSizeWrapper: ElementRef<HTMLDivElement>,
@@ -159,6 +161,7 @@ export class MemoryService {
 		this.renderer.oekakiBuffer = document.createElement('canvas');
 		this.renderer.rulerLbuffer = document.createElement('canvas');
 		this.renderer.rulerCbuffer = document.createElement('canvas');
+		this.renderer.colorBuffer = document.createElement('canvas');
 
 		// ctx - Renderer
 		this.renderer.ctx.main = this.renderer.main.getContext('2d');
@@ -172,6 +175,7 @@ export class MemoryService {
 		this.renderer.ctx.oekakiBuffer = this.renderer.oekakiBuffer.getContext('2d');
 		this.renderer.ctx.rulerLbuffer = this.renderer.rulerLbuffer.getContext('2d');
 		this.renderer.ctx.rulerCbuffer = this.renderer.rulerCbuffer.getContext('2d');
+		this.renderer.ctx.colorBuffer = this.renderer.colorBuffer.getContext('2d');
 
 		// Debugger
 		this.renderer.debugger = document.createElement('canvas');
@@ -262,47 +266,59 @@ export class MemoryService {
 		this.oekakiOrder = _.take(this.oekakiOrder, this.orderId + 1);
 
 		if (this.reservedByFunc.current.type === 'draw') {
-			this.trailList = _.take(this.trailList, this.drawId + 1);
-
-			const trail: Trail = {
-				id: this.trailList.length,
-				name: this.reservedByFunc.current.name,
-				visibility: true,
-				min: {
-					prevOffsetX: Infinity,
-					prevOffsetY: Infinity,
-					newOffsetX: Infinity,
-					newOffsetY: Infinity
-				},
-				max: {
-					prevOffsetX: -Infinity,
-					prevOffsetY: -Infinity,
-					newOffsetX: -Infinity,
-					newOffsetY: -Infinity
-				},
-				points: [] as Point[]
-			};
-			this.trailList.push(trail);
-
-			// To tell 'draw'
-			this.oekakiOrder.push(1);
-			this.drawId++;
+			this._newDrawHistory();
 		} else if (this.reservedByFunc.current.type === 'erase') {
-			this.eraseList = _.take(this.eraseList, this.eraseId + 1);
-
-			const erase: Erase = {
-				id: this.eraseList.length,
-				trailList: []
-			};
-			this.eraseList.push(erase);
-
-			// To tell 'erase'
-			this.oekakiOrder.push(0);
-			this.eraseId++;
+			this._newEraseHistory();
 		}
 
 		this.orderId++;
 		this.states.isChangedStates = true;
+	}
+
+	private _newDrawHistory(): void {
+		this.trailList = _.take(this.trailList, this.drawId + 1);
+
+		const trail: Trail = {
+			id: this.trailList.length,
+			colorId: this.lib.genUniqueColor(this.colorIdList),
+			name: this.reservedByFunc.current.name,
+			visibility: true,
+			min: {
+				prevOffsetX: Infinity,
+				prevOffsetY: Infinity,
+				newOffsetX: Infinity,
+				newOffsetY: Infinity
+			},
+			max: {
+				prevOffsetX: -Infinity,
+				prevOffsetY: -Infinity,
+				newOffsetX: -Infinity,
+				newOffsetY: -Infinity
+			},
+			points: [] as Point[]
+		};
+		this.trailList.push(trail);
+
+		// Push new colorId
+		this.colorIdList.push({ id: trail.id, colorId: trail.colorId });
+
+		// To tell 'draw'
+		this.oekakiOrder.push(1);
+		this.drawId++;
+	}
+
+	private _newEraseHistory(): void {
+		this.eraseList = _.take(this.eraseList, this.eraseId + 1);
+
+		const erase: Erase = {
+			id: this.eraseList.length,
+			trailList: []
+		};
+		this.eraseList.push(erase);
+
+		// To tell 'erase'
+		this.oekakiOrder.push(0);
+		this.eraseId++;
 	}
 }
 
@@ -330,6 +346,7 @@ interface Renderer {
 	oekakiBuffer: HTMLCanvasElement;
 	rulerLbuffer: HTMLCanvasElement;
 	rulerCbuffer: HTMLCanvasElement;
+	colorBuffer: HTMLCanvasElement;
 	ctx: Ctx;
 }
 
@@ -347,4 +364,5 @@ interface Ctx {
 	oekakiBuffer: CanvasRenderingContext2D;
 	rulerLbuffer: CanvasRenderingContext2D;
 	rulerCbuffer: CanvasRenderingContext2D;
+	colorBuffer: CanvasRenderingContext2D;
 }
