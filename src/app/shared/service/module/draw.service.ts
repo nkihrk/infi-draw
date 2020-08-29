@@ -79,6 +79,16 @@ export class DrawService {
 		}
 	}
 
+	updateTargetTrailOffsets($trail: Trail, $newOffsetX: number, $newOffsetY: number, $event: Pointer): void {
+		$trail.min = this.coord.updateOffset($newOffsetX, $newOffsetY, $trail.min, $event);
+		$trail.max = this.coord.updateOffset($newOffsetX, $newOffsetY, $trail.max, $event);
+
+		for (let i = 0; i < $trail.points.length; i++) {
+			const p: Point = $trail.points[i];
+			p.offset = this.coord.updateOffset($newOffsetX, $newOffsetY, p.offset, $event);
+		}
+	}
+
 	updateOffsetsByZoom($x: number, $y: number, $deltaFlg: boolean): void {
 		this.registerOnNoMouseDown();
 

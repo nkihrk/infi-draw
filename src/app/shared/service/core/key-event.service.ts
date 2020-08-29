@@ -57,12 +57,18 @@ export class KeyEventService {
 				this._pen($e);
 			} else if (keymap.h) {
 				this._hand($e);
+			} else if (keymap.v) {
+				this._select($e);
 			}
 		}
 	}
 
 	_keyUpFuncs($e: Key): void {
 		switch (this.whichFunc) {
+			case 'select':
+				this.func.select();
+				break;
+
 			case 'pen':
 				this.func.pen();
 				break;
@@ -99,6 +105,11 @@ export class KeyEventService {
 	_hand($e: Key): void {
 		this.whichFunc = 'hand';
 	}
+
+	_select($e: Key): void {
+		this.whichFunc = 'select';
+	}
+
 	_redo($e: Key): void {
 		$e.e.preventDefault();
 

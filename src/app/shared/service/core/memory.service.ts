@@ -25,6 +25,9 @@ export class MemoryService {
 	oekakiOrder: number[] = [];
 	colorIdList: { id: number; colorId: string }[] = [];
 
+	// Current selected trail id. -1 means none selected
+	selectedId = -1;
+
 	canvasOffset: CanvasOffset = {
 		zoomRatio: 1,
 		prevOffsetX: 0,

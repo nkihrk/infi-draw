@@ -20,10 +20,11 @@ export class KeyMapService {
 		const isEkey: boolean = this.keyMap.e; // Erase
 		const isHkey: boolean = this.keyMap.h; // Hand
 		const isPkey: boolean = this.keyMap.p; // Draw
+		const isVkey: boolean = this.keyMap.v; // Select
 		const isZkey: boolean = this.keyMap.z; // Undo and redo
 
 		const isPermitkey: boolean =
-			isCtrlKey || isAltKey || isShiftKey || isSpaceKey || isEkey || isHkey || isPkey || isZkey;
+			isCtrlKey || isAltKey || isShiftKey || isSpaceKey || isEkey || isHkey || isPkey || isVkey || isZkey;
 		if (!isPermitkey) this.keyMap = {};
 	}
 

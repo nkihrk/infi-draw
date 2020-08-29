@@ -23,6 +23,8 @@ export class CursorService {
 				this._hand();
 			} else if (name === 'zoom') {
 				this._zoom();
+			} else {
+				this._resetAppWrapperClass();
 			}
 		}
 	}

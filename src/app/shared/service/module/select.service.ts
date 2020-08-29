@@ -1,14 +1,16 @@
 import { Injectable } from '@angular/core';
 import { MemoryService } from '../core/memory.service';
 import { LibService } from '../util/lib.service';
+import { DrawService } from '../module/draw.service';
 import { Point } from '../../model/point.model';
 import { Trail } from '../../model/trail.model';
+import { Pointer } from '../../model/pointer.model';
 
 @Injectable({
 	providedIn: 'root'
 })
 export class SelectService {
-	constructor(private memory: MemoryService, private lib: LibService) {}
+	constructor(private memory: MemoryService, private lib: LibService, private draw: DrawService) {}
 
 	activate(): void {
 		this.memory.reservedByFunc.current = {
@@ -18,13 +20,13 @@ export class SelectService {
 		};
 	}
 
-	getTargetTrail(): void {
+	getTargetTrailId(): void {
 		// Render color buffer
 		this.preComputeColorBuffer();
 
 		const ctx: CanvasRenderingContext2D = this.memory.renderer.ctx.colorBuffer;
 		const trailListId: number = this.lib.checkHitArea(this.memory.pointerOffset, ctx, this.memory.trailList);
-		console.log(trailListId);
+		this.memory.selectedId = trailListId;
 	}
 
 	private preComputeColorBuffer(): void {
@@ -71,5 +73,15 @@ export class SelectService {
 				ctx.lineTo(prevP.offset.newOffsetX, prevP.offset.newOffsetY);
 			}
 		}
+	}
+
+	updateTargetTrailOffset($newOffsetX: number, $newOffsetY: number, $event: Pointer): void {
+		const id: number = this.memory.selectedId;
+
+		// If none selected, return
+		if (id === -1) return;
+
+		const trail: Trail = this.memory.trailList[id];
+		this.draw.updateTargetTrailOffsets(trail, $newOffsetX, $newOffsetY, $event);
 	}
 }
