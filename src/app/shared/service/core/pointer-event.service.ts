@@ -29,7 +29,7 @@ export class PointerEventService {
 	leftDown($name: string): void {
 		switch ($name) {
 			case 'select':
-				this.selectFunc.getTargetTrail();
+				this.selectFunc.getTargetTrailId();
 				break;
 
 			default:
@@ -68,7 +68,9 @@ export class PointerEventService {
 				break;
 
 			default:
-				if ($name === 'hand') {
+				if ($name === 'select') {
+					this.selectFunc.updateTargetTrailOffset($newOffsetX, $newOffsetY, $event);
+				} else if ($name === 'hand') {
 					this._updateCanvases($newOffsetX, $newOffsetY, $event);
 				} else if ($name === 'zoom') {
 					this.zoomFunc.updateOffsets();
