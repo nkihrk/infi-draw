@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MemoryService } from './memory.service';
 import { CleanupService } from '../module/cleanup.service';
+import { SelectService } from '../module/select.service';
 import { PenService } from '../module/pen.service';
 import { EraseService } from '../module/erase.service';
 import { CreateSquareService } from '../module/create-square.service';
@@ -14,6 +15,7 @@ export class FuncService {
 	constructor(
 		private memory: MemoryService,
 		private cleanupFunc: CleanupService,
+		private selectFunc: SelectService,
 		private penFunc: PenService,
 		private eraseFunc: EraseService,
 		private createSquareFunc: CreateSquareService,
@@ -53,6 +55,16 @@ export class FuncService {
 		if (this.memory.states.isChangedStates) {
 			$e.returnValue = true;
 		}
+	}
+
+	//////////////////////////////////////////////////////////
+	//
+	// Select
+	//
+	//////////////////////////////////////////////////////////
+
+	select(): void {
+		this.selectFunc.activate();
 	}
 
 	//////////////////////////////////////////////////////////

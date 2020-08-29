@@ -13,7 +13,6 @@ export class CreateLineService {
 	constructor(private memory: MemoryService) {}
 
 	activate(): void {
-		this.memory.reservedByFunc.prev = this.memory.reservedByFunc.current;
 		this.memory.reservedByFunc.current = {
 			name: 'line',
 			type: 'draw',

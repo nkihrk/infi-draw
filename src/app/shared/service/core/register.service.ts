@@ -11,7 +11,18 @@ export class RegisterService {
 	constructor(private memory: MemoryService, private pointerEvent: PointerEventService) {}
 
 	onPointerDown(): void {
+		const flgs: Flgs = this.memory.flgs;
+		const name: string = this.memory.reservedByFunc.current.name;
+
 		this.pointerEvent.down();
+
+		if (flgs.leftDownFlg) {
+			this.pointerEvent.leftDown(name);
+		} else if (flgs.rightDownFlg) {
+			this.pointerEvent.rightDown();
+		} else if (flgs.middleDownFlg) {
+			this.pointerEvent.middleDown();
+		}
 	}
 
 	onNoPointerDown($event: Pointer): void {

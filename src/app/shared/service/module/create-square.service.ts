@@ -12,7 +12,6 @@ export class CreateSquareService {
 	constructor(private memory: MemoryService) {}
 
 	activate(): void {
-		this.memory.reservedByFunc.prev = this.memory.reservedByFunc.current;
 		this.memory.reservedByFunc.current = {
 			name: 'square',
 			type: 'draw',

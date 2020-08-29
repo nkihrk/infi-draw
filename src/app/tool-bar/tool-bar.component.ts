@@ -40,6 +40,10 @@ export class ToolBarComponent implements OnInit {
 
 	execFunc($name: string): void {
 		switch ($name) {
+			case 'select':
+				this.func.select();
+				break;
+
 			case 'hand':
 				this.func.hand();
 				break;
@@ -89,45 +93,43 @@ export class ToolBarComponent implements OnInit {
 
 			case 'hand':
 				t = this.hand.nativeElement;
-				this._toggleActive(t);
 				break;
 
 			case 'pen':
 				t = this.pen.nativeElement;
-				this._toggleActive(t);
 				break;
 
 			case 'eraser':
 				t = this.eraser.nativeElement;
-				this._toggleActive(t);
 				break;
 
 			case 'square':
 				t = this.createSquare.nativeElement;
-				this._toggleActive(t);
 				break;
 
 			case 'line':
 				t = this.createLine.nativeElement;
-				this._toggleActive(t);
 				break;
 
 			case 'zoom':
 				t = this.zoom.nativeElement;
-				this._toggleActive(t);
 				break;
 
 			default:
 				this._resetToolBarClassAll();
+				return;
 				break;
 		}
+
+		// Toggle active
+		this._toggleActive(t);
 	}
 
 	private _toggleActive($targetElem: HTMLDivElement): void {
-		if (!$targetElem.classList.contains('active')) {
-			this._resetToolBarClassAll();
-			$targetElem.classList.add('active');
-		}
+		if ($targetElem.classList.contains('active')) return;
+
+		this._resetToolBarClassAll();
+		$targetElem.classList.add('active');
 	}
 
 	private _resetToolBarClassAll(): void {
