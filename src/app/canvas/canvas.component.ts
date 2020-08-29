@@ -11,7 +11,7 @@ import { FlgEventService } from '../shared/service/core/flg-event.service';
 import { CpuService } from '../shared/service/core/cpu.service';
 import { Pointer } from '../shared/model/pointer.model';
 import { DrawService } from '../shared/service/module/draw.service';
-import { CursorService } from '../shared/service/core/cursor.service';
+import { UiService } from '../shared/service/core/ui.service';
 
 @Component({
 	selector: 'app-canvas',
@@ -19,13 +19,13 @@ import { CursorService } from '../shared/service/core/cursor.service';
 	styleUrls: ['./canvas.component.scss']
 })
 export class CanvasComponent implements OnInit {
-	@ViewChild('appWrapper', { static: true }) appWrapper: ElementRef<HTMLDivElement>;
-	@ViewChild('canvasWrapper', { static: true }) canvasWrapper: ElementRef<HTMLDivElement>;
-	@ViewChild('rulerWrapper', { static: true }) rulerWrapper: ElementRef<HTMLDivElement>;
-	@ViewChild('canvasMain', { static: true }) main: ElementRef<HTMLCanvasElement>;
-	@ViewChild('canvasUI', { static: true }) ui: ElementRef<HTMLCanvasElement>;
-	@ViewChild('canvasLine', { static: true }) l: ElementRef<HTMLCanvasElement>;
-	@ViewChild('canvasColumn', { static: true }) c: ElementRef<HTMLCanvasElement>;
+	@ViewChild('appWrapper', { static: true }) appWrapperRef: ElementRef<HTMLDivElement>;
+	@ViewChild('canvasWrapper', { static: true }) canvasWrapperRef: ElementRef<HTMLDivElement>;
+	@ViewChild('rulerWrapper', { static: true }) rulerWrapperRef: ElementRef<HTMLDivElement>;
+	@ViewChild('canvasMain', { static: true }) mainRef: ElementRef<HTMLCanvasElement>;
+	@ViewChild('canvasUI', { static: true }) uiRef: ElementRef<HTMLCanvasElement>;
+	@ViewChild('canvasLine', { static: true }) lineRef: ElementRef<HTMLCanvasElement>;
+	@ViewChild('canvasColumn', { static: true }) columnRef: ElementRef<HTMLCanvasElement>;
 
 	constructor(
 		private ruler: RulerService,
@@ -38,18 +38,18 @@ export class CanvasComponent implements OnInit {
 		private debug: DebugService,
 		private flg: FlgEventService,
 		private draw: DrawService,
-		private cursor: CursorService
+		private ui: UiService
 	) {}
 
 	ngOnInit(): void {
 		this.memory.initRenderer(
-			this.appWrapper,
-			this.canvasWrapper,
-			this.rulerWrapper,
-			this.main,
-			this.ui,
-			this.l,
-			this.c
+			this.appWrapperRef,
+			this.canvasWrapperRef,
+			this.rulerWrapperRef,
+			this.mainRef,
+			this.uiRef,
+			this.lineRef,
+			this.columnRef
 		);
 		this.render();
 	}
@@ -80,7 +80,7 @@ export class CanvasComponent implements OnInit {
 		// Module renderer
 		this.ruler.render();
 		this.grid.render();
-		this.cursor.render();
+		this.ui.render();
 		this.draw.render();
 
 		// Main renderer
