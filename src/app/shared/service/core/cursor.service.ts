@@ -7,15 +7,11 @@ import { MemoryService } from './memory.service';
 export class CursorService {
 	constructor(private memory: MemoryService) {}
 
-	render(): void {
-		const ctxUiBuffer: CanvasRenderingContext2D = this.memory.renderer.ctx.uiBuffer;
-		const c: HTMLCanvasElement = ctxUiBuffer.canvas;
-		c.width = this.memory.renderer.canvasWrapper.clientWidth;
-		c.height = this.memory.renderer.canvasWrapper.clientHeight;
+	render($ctx: CanvasRenderingContext2D): void {
 		const group: string = this.memory.reservedByFunc.current.group;
 
 		if (group === 'brush') {
-			this._brush(ctxUiBuffer);
+			this._brush($ctx);
 		} else {
 			const name: string = this.memory.reservedByFunc.current.name;
 
@@ -60,7 +56,7 @@ export class CursorService {
 		}
 	}
 
-	private _brush($ctxUiBuffer: CanvasRenderingContext2D): void {
+	private _brush($ctx: CanvasRenderingContext2D): void {
 		const rawX: number = this.memory.pointerOffset.raw.x;
 		const rawY: number = this.memory.pointerOffset.raw.y;
 		const canvasX: number = this.memory.renderer.main.getBoundingClientRect().x;
@@ -86,12 +82,12 @@ export class CursorService {
 		}
 
 		if (r > 0) {
-			$ctxUiBuffer.translate(0.5, 0.5);
-			$ctxUiBuffer.beginPath();
-			$ctxUiBuffer.strokeStyle = this.memory.constant.STROKE_STYLE;
-			$ctxUiBuffer.lineWidth = 1;
-			$ctxUiBuffer.arc(x, y, r, 0, 2 * Math.PI);
-			$ctxUiBuffer.stroke();
+			$ctx.translate(0.5, 0.5);
+			$ctx.beginPath();
+			$ctx.strokeStyle = this.memory.constant.STROKE_STYLE;
+			$ctx.lineWidth = 1;
+			$ctx.arc(x, y, r, 0, 2 * Math.PI);
+			$ctx.stroke();
 		}
 	}
 }
