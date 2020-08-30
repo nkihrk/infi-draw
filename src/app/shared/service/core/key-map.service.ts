@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { MemoryService } from './memory.service';
 import { Key } from '../../model/key.model';
 
 @Injectable({
@@ -7,7 +8,7 @@ import { Key } from '../../model/key.model';
 export class KeyMapService {
 	public keyMap: any = {};
 
-	constructor() {}
+	constructor(private memory: MemoryService) {}
 
 	keyDownEvent($e: Key): void {
 		this.keyMap[$e.key] = true;
@@ -26,6 +27,8 @@ export class KeyMapService {
 		const isPermitkey: boolean =
 			isCtrlKey || isAltKey || isShiftKey || isSpaceKey || isEkey || isHkey || isPkey || isVkey || isZkey;
 		if (!isPermitkey) this.keyMap = {};
+
+		this.memory.keyMap = this.keyMap;
 	}
 
 	keyUpEvent($e: Key): void {

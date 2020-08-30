@@ -26,6 +26,8 @@ export class MemoryService {
 	colorIdList: { id: number; colorId: string }[] = [];
 	selectedList: number[] = [];
 
+	keyMap: any = {};
+
 	canvasOffset: CanvasOffset = {
 		zoomRatio: 1,
 		prevOffsetX: 0,
