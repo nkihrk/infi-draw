@@ -28,15 +28,19 @@ export class SelectService {
 		const ctx: CanvasRenderingContext2D = this.memory.renderer.ctx.colorBuffer;
 		const trailListId: number = this.lib.checkHitArea(this.memory.pointerOffset, ctx, this.memory.trailList);
 
-		if (trailListId === -1) {
-			// Return if none is selected
-			if (this.memory.selectedId === -1) return;
+		this.singleSelect(trailListId);
+	}
 
-			const trail: Trail = this.memory.trailList[this.memory.selectedId];
+	private singleSelect($trailListId: number): void {
+		if ($trailListId === -1) {
+			// Return if none is selected
+			if (this.memory.selectedList[0] === -1) return;
+
+			const trail: Trail = this.memory.trailList[this.memory.selectedList[0]];
 			// Reset selectedId if its not inside the bouding
-			if (!this._validateBounding(trail)) this.memory.selectedId = -1;
+			if (!this._validateBounding(trail)) this.memory.selectedList[0] = -1;
 		} else {
-			this.memory.selectedId = trailListId;
+			this.memory.selectedList[0] = $trailListId;
 		}
 	}
 
@@ -87,13 +91,15 @@ export class SelectService {
 	}
 
 	updateTargetTrailOffset($newOffsetX: number, $newOffsetY: number, $event: Pointer): void {
-		const id: number = this.memory.selectedId;
-		const trail: Trail = this.memory.trailList[id];
+		for (let i = 0; i < this.memory.selectedList.length; i++) {
+			const id: number = this.memory.selectedList[i];
+			const trail: Trail = this.memory.trailList[id];
 
-		// If none selected, return
-		if (id === -1) return;
+			// If none selected, return
+			if (id === -1) continue;
 
-		this.draw.updateTargetTrailOffsets(trail, $newOffsetX, $newOffsetY, $event);
+			this.draw.updateTargetTrailOffsets(trail, $newOffsetX, $newOffsetY, $event);
+		}
 	}
 
 	private _validateBounding($trail: Trail): boolean {

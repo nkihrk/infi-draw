@@ -14,16 +14,27 @@ export class SelectUiService {
 	constructor(private memory: MemoryService) {}
 
 	render($ctx: CanvasRenderingContext2D): void {
-		if (this.memory.selectedId === -1) return;
+		for (let i = 0; i < this.memory.selectedList.length; i++) {
+			if (this.memory.selectedList[i] === -1) continue;
 
-		const id: number = this.memory.selectedId;
-		const trail: Trail = this.memory.trailList[id];
-		const x: number = trail.min.newOffsetX - trail.points[0].lineWidth * this.memory.canvasOffset.zoomRatio;
-		const y: number = trail.min.newOffsetY - trail.points[0].lineWidth * this.memory.canvasOffset.zoomRatio;
+			const id: number = this.memory.selectedList[i];
+			const trail: Trail = this.memory.trailList[id];
+
+			this.addSelectBoxToTrail(trail, $ctx);
+		}
+	}
+
+	private addSelectBoxToTrail($trail: Trail, $ctx: CanvasRenderingContext2D): void {
+		const x: number = $trail.min.newOffsetX - $trail.points[0].lineWidth * this.memory.canvasOffset.zoomRatio;
+		const y: number = $trail.min.newOffsetY - $trail.points[0].lineWidth * this.memory.canvasOffset.zoomRatio;
 		const w: number =
-			trail.max.newOffsetX - trail.min.newOffsetX + trail.points[0].lineWidth * this.memory.canvasOffset.zoomRatio * 2;
+			$trail.max.newOffsetX -
+			$trail.min.newOffsetX +
+			$trail.points[0].lineWidth * this.memory.canvasOffset.zoomRatio * 2;
 		const h: number =
-			trail.max.newOffsetY - trail.min.newOffsetY + trail.points[0].lineWidth * this.memory.canvasOffset.zoomRatio * 2;
+			$trail.max.newOffsetY -
+			$trail.min.newOffsetY +
+			$trail.points[0].lineWidth * this.memory.canvasOffset.zoomRatio * 2;
 
 		// Frame
 		$ctx.beginPath();
@@ -31,8 +42,8 @@ export class SelectUiService {
 		$ctx.lineWidth = this.lineWidth;
 		$ctx.rect(x, y, w, h);
 		// Stick
-		$ctx.moveTo(x + w / 2, y);
-		$ctx.lineTo(x + w / 2, y - 40);
+		//$ctx.moveTo(x + w / 2, y);
+		//$ctx.lineTo(x + w / 2, y - 40);
 		$ctx.stroke();
 
 		// Corner points
@@ -68,13 +79,13 @@ export class SelectUiService {
 		$ctx.fill();
 
 		// Rotate point
-		$ctx.beginPath();
-		$ctx.strokeStyle = this.style;
-		$ctx.fillStyle = '#ffffff';
-		$ctx.lineWidth = this.lineWidth * 2;
-		// Point
-		$ctx.arc(x + w / 2, y - 40, this.r, 0, Math.PI * 2);
-		$ctx.fill();
-		$ctx.stroke();
+		//		$ctx.beginPath();
+		//		$ctx.strokeStyle = this.style;
+		//		$ctx.fillStyle = '#ffffff';
+		//		$ctx.lineWidth = this.lineWidth * 2;
+		//		// Point
+		//		$ctx.arc(x + w / 2, y - 40, this.r, 0, Math.PI * 2);
+		//		$ctx.fill();
+		//		$ctx.stroke();
 	}
 }
