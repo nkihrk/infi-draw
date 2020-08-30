@@ -24,9 +24,7 @@ export class MemoryService {
 	eraseList: Erase[] = [];
 	oekakiOrder: number[] = [];
 	colorIdList: { id: number; colorId: string }[] = [];
-
-	// Current selected trail id. -1 means none selected
-	selectedId = -1;
+	selectedList: number[] = [];
 
 	canvasOffset: CanvasOffset = {
 		zoomRatio: 1,
