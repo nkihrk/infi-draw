@@ -21,6 +21,18 @@ export class SelectService {
 		};
 	}
 
+	updateTargetTrailOffset($newOffsetX: number, $newOffsetY: number, $event: Pointer): void {
+		for (let i = 0; i < this.memory.selectedList.length; i++) {
+			const id: number = this.memory.selectedList[i];
+			const trail: Trail = this.memory.trailList[id];
+
+			// If none selected, return
+			if (id === -1) continue;
+
+			this.draw.updateTargetTrailOffsets(trail, $newOffsetX, $newOffsetY, $event);
+		}
+	}
+
 	getTargetTrailId(): void {
 		// Render color buffer
 		this.preComputeColorBuffer();
@@ -28,20 +40,69 @@ export class SelectService {
 		const ctx: CanvasRenderingContext2D = this.memory.renderer.ctx.colorBuffer;
 		const trailListId: number = this.lib.checkHitArea(this.memory.pointerOffset, ctx, this.memory.trailList);
 
-		this.singleSelect(trailListId);
+		this.select(trailListId);
 	}
 
-	private singleSelect($trailListId: number): void {
-		if ($trailListId === -1) {
-			// Return if none is selected
-			if (this.memory.selectedList[0] === -1) return;
+	private select($trailListId: number): void {
+		const selectedList: number[] = this.memory.selectedList;
 
-			const trail: Trail = this.memory.trailList[this.memory.selectedList[0]];
-			// Reset selectedId if its not inside the bouding
-			if (!this._validateBounding(trail)) this.memory.selectedList[0] = -1;
+		if ($trailListId === -1) {
+			let isInBoundings = false;
+
+			for (let i = 0; i < selectedList.length; i++) {
+				const id: number = selectedList[i];
+				// Return if none is selected
+				if (id === -1) continue;
+
+				const trail: Trail = this.memory.trailList[id];
+				// Reset selectedId if its already selected
+				if (this._validateBounding(trail)) {
+					// For multi-select
+					if (this.memory.keyMap.Shift) this.memory.selectedList[i] = -1;
+					isInBoundings = true;
+				}
+			}
+
+			// Initialize if none is selected
+			if (!isInBoundings) this.memory.selectedList = [];
 		} else {
-			this.memory.selectedList[0] = $trailListId;
+			const selectedId: number = this._checkSelected($trailListId);
+
+			if (selectedId === -1) {
+				if (!this.memory.keyMap.Shift) this.memory.selectedList = [];
+				this.memory.selectedList.push($trailListId);
+			} else {
+				// For multi-select
+				if (this.memory.keyMap.Shift) this.memory.selectedList[selectedId] = -1;
+			}
 		}
+	}
+
+	// Return -1 if selected target is not present in the selectedList
+	private _checkSelected($trailListId: number): number {
+		const selectedList: number[] = this.memory.selectedList;
+
+		for (let i = 0; i < selectedList.length; i++) {
+			if ($trailListId === selectedList[i]) {
+				return i;
+			}
+		}
+
+		return -1;
+	}
+
+	private _validateBounding($trail: Trail): boolean {
+		const offset: PointerOffset = this.memory.pointerOffset;
+
+		const minX: number = $trail.min.newOffsetX - $trail.points[0].lineWidth * this.memory.canvasOffset.zoomRatio;
+		const minY: number = $trail.min.newOffsetY - $trail.points[0].lineWidth * this.memory.canvasOffset.zoomRatio;
+		const maxX: number = $trail.max.newOffsetX + $trail.points[0].lineWidth * this.memory.canvasOffset.zoomRatio * 2;
+		const maxY: number = $trail.max.newOffsetY + $trail.points[0].lineWidth * this.memory.canvasOffset.zoomRatio * 2;
+
+		const isInBoundingX: boolean = minX <= offset.current.x && offset.current.x <= maxX;
+		const isInBoundingY: boolean = minY <= offset.current.y && offset.current.y <= maxY;
+
+		return isInBoundingX && isInBoundingY;
 	}
 
 	private preComputeColorBuffer(): void {
@@ -88,31 +149,5 @@ export class SelectService {
 				ctx.lineTo(prevP.offset.newOffsetX, prevP.offset.newOffsetY);
 			}
 		}
-	}
-
-	updateTargetTrailOffset($newOffsetX: number, $newOffsetY: number, $event: Pointer): void {
-		for (let i = 0; i < this.memory.selectedList.length; i++) {
-			const id: number = this.memory.selectedList[i];
-			const trail: Trail = this.memory.trailList[id];
-
-			// If none selected, return
-			if (id === -1) continue;
-
-			this.draw.updateTargetTrailOffsets(trail, $newOffsetX, $newOffsetY, $event);
-		}
-	}
-
-	private _validateBounding($trail: Trail): boolean {
-		const offset: PointerOffset = this.memory.pointerOffset;
-
-		const minX: number = $trail.min.newOffsetX - $trail.points[0].lineWidth * this.memory.canvasOffset.zoomRatio;
-		const minY: number = $trail.min.newOffsetY - $trail.points[0].lineWidth * this.memory.canvasOffset.zoomRatio;
-		const maxX: number = $trail.max.newOffsetX + $trail.points[0].lineWidth * this.memory.canvasOffset.zoomRatio * 2;
-		const maxY: number = $trail.max.newOffsetY + $trail.points[0].lineWidth * this.memory.canvasOffset.zoomRatio * 2;
-
-		const isInBoundingX: boolean = minX <= offset.current.x && offset.current.x <= maxX;
-		const isInBoundingY: boolean = minY <= offset.current.y && offset.current.y <= maxY;
-
-		return isInBoundingX && isInBoundingY;
 	}
 }
