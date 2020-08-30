@@ -6,6 +6,7 @@ import { Point } from '../../model/point.model';
 import { Trail } from '../../model/trail.model';
 import { Pointer } from '../../model/pointer.model';
 import { PointerOffset } from '../../model/pointer-offset.model';
+import { Offset } from '../../model/offset.model';
 
 @Injectable({
 	providedIn: 'root'
@@ -47,7 +48,19 @@ export class SelectService {
 		const selectedList: number[] = this.memory.selectedList;
 
 		if ($trailListId === -1) {
-			let isInBoundings = false;
+			let min: Offset = {
+				prevOffsetX: Infinity,
+				prevOffsetY: Infinity,
+				newOffsetX: Infinity,
+				newOffsetY: Infinity
+			};
+			let max: Offset = {
+				prevOffsetX: -Infinity,
+				prevOffsetY: -Infinity,
+				newOffsetX: -Infinity,
+				newOffsetY: -Infinity
+			};
+			let lineWidth = -Infinity;
 
 			for (let i = 0; i < selectedList.length; i++) {
 				const id: number = selectedList[i];
@@ -55,21 +68,27 @@ export class SelectService {
 				if (id === -1) continue;
 
 				const trail: Trail = this.memory.trailList[id];
+				const tmp: { min: Offset; max: Offset; lineWidth: number } = this._getNewMinMax(min, max, lineWidth, trail);
+
+				min = tmp.min;
+				max = tmp.max;
+				lineWidth = tmp.lineWidth;
+
 				// Reset selectedId if its already selected
-				if (this._validateBounding(trail)) {
-					// For multi-select
-					if (this.memory.keyMap.Shift) this.memory.selectedList[i] = -1;
-					isInBoundings = true;
+				// For multi-select
+				if (this.memory.keyMap.Shift && this._validateBounding(trail.min, trail.max, trail.points[0].lineWidth)) {
+					this.memory.selectedList[i] = -1;
 				}
 			}
 
 			// Initialize if none is selected
-			if (!isInBoundings) this.memory.selectedList = [];
+			if (!this._validateBounding(min, max, lineWidth)) this.memory.selectedList = [];
 		} else {
 			const selectedId: number = this._checkSelected($trailListId);
 
 			if (selectedId === -1) {
 				if (!this.memory.keyMap.Shift) this.memory.selectedList = [];
+
 				this.memory.selectedList.push($trailListId);
 			} else {
 				// For multi-select
@@ -91,18 +110,35 @@ export class SelectService {
 		return -1;
 	}
 
-	private _validateBounding($trail: Trail): boolean {
+	private _validateBounding($min: Offset, $max: Offset, $lineWidth: number): boolean {
 		const offset: PointerOffset = this.memory.pointerOffset;
 
-		const minX: number = $trail.min.newOffsetX - $trail.points[0].lineWidth * this.memory.canvasOffset.zoomRatio;
-		const minY: number = $trail.min.newOffsetY - $trail.points[0].lineWidth * this.memory.canvasOffset.zoomRatio;
-		const maxX: number = $trail.max.newOffsetX + $trail.points[0].lineWidth * this.memory.canvasOffset.zoomRatio * 2;
-		const maxY: number = $trail.max.newOffsetY + $trail.points[0].lineWidth * this.memory.canvasOffset.zoomRatio * 2;
+		const minX: number = $min.newOffsetX - $lineWidth * this.memory.canvasOffset.zoomRatio;
+		const minY: number = $min.newOffsetY - $lineWidth * this.memory.canvasOffset.zoomRatio;
+		const maxX: number = $max.newOffsetX + $lineWidth * this.memory.canvasOffset.zoomRatio * 2;
+		const maxY: number = $max.newOffsetY + $lineWidth * this.memory.canvasOffset.zoomRatio * 2;
 
 		const isInBoundingX: boolean = minX <= offset.current.x && offset.current.x <= maxX;
 		const isInBoundingY: boolean = minY <= offset.current.y && offset.current.y <= maxY;
 
 		return isInBoundingX && isInBoundingY;
+	}
+
+	private _getNewMinMax(
+		$min: Offset,
+		$max: Offset,
+		$lineWidth: number,
+		$trail: Trail
+	): { min: Offset; max: Offset; lineWidth: number } {
+		$min.newOffsetX = Math.min($min.newOffsetX, $trail.min.newOffsetX);
+		$min.newOffsetY = Math.min($min.newOffsetY, $trail.min.newOffsetY);
+
+		$max.newOffsetX = Math.max($max.newOffsetX, $trail.max.newOffsetX);
+		$max.newOffsetY = Math.max($max.newOffsetY, $trail.max.newOffsetY);
+
+		$lineWidth = Math.max($lineWidth, $trail.points[0].lineWidth);
+
+		return { min: $min, max: $max, lineWidth: $lineWidth };
 	}
 
 	private preComputeColorBuffer(): void {
