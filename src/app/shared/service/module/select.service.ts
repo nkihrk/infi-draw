@@ -5,6 +5,7 @@ import { DrawService } from '../module/draw.service';
 import { Point } from '../../model/point.model';
 import { Trail } from '../../model/trail.model';
 import { Pointer } from '../../model/pointer.model';
+import { PointerOffset } from '../../model/pointer-offset.model';
 
 @Injectable({
 	providedIn: 'root'
@@ -26,7 +27,17 @@ export class SelectService {
 
 		const ctx: CanvasRenderingContext2D = this.memory.renderer.ctx.colorBuffer;
 		const trailListId: number = this.lib.checkHitArea(this.memory.pointerOffset, ctx, this.memory.trailList);
-		this.memory.selectedId = trailListId;
+
+		if (trailListId === -1) {
+			// Return if none is selected
+			if (this.memory.selectedId === -1) return;
+
+			const trail: Trail = this.memory.trailList[this.memory.selectedId];
+			// Reset selectedId if its not inside the bouding
+			if (!this._validateBounding(trail)) this.memory.selectedId = -1;
+		} else {
+			this.memory.selectedId = trailListId;
+		}
 	}
 
 	private preComputeColorBuffer(): void {
@@ -77,11 +88,25 @@ export class SelectService {
 
 	updateTargetTrailOffset($newOffsetX: number, $newOffsetY: number, $event: Pointer): void {
 		const id: number = this.memory.selectedId;
+		const trail: Trail = this.memory.trailList[id];
 
 		// If none selected, return
 		if (id === -1) return;
 
-		const trail: Trail = this.memory.trailList[id];
 		this.draw.updateTargetTrailOffsets(trail, $newOffsetX, $newOffsetY, $event);
+	}
+
+	private _validateBounding($trail: Trail): boolean {
+		const offset: PointerOffset = this.memory.pointerOffset;
+
+		const minX: number = $trail.min.newOffsetX - $trail.points[0].lineWidth * this.memory.canvasOffset.zoomRatio;
+		const minY: number = $trail.min.newOffsetY - $trail.points[0].lineWidth * this.memory.canvasOffset.zoomRatio;
+		const maxX: number = $trail.max.newOffsetX + $trail.points[0].lineWidth * this.memory.canvasOffset.zoomRatio * 2;
+		const maxY: number = $trail.max.newOffsetY + $trail.points[0].lineWidth * this.memory.canvasOffset.zoomRatio * 2;
+
+		const isInBoundingX: boolean = minX <= offset.current.x && offset.current.x <= maxX;
+		const isInBoundingY: boolean = minY <= offset.current.y && offset.current.y <= maxY;
+
+		return isInBoundingX && isInBoundingY;
 	}
 }
