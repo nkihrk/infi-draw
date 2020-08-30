@@ -1,9 +1,10 @@
-@import "./reset";
-@import "./app/variables";
+@import './reset';
+@import './app/variables';
 // For pickr
-@import "@simonwep/pickr/dist/themes/monolith.min.css";
+@import '@simonwep/pickr/dist/themes/monolith.min.css';
 
 html {
+	overflow: hidden;
 	background-color: #32303f;
 }
 
