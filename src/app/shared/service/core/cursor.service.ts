@@ -82,7 +82,6 @@ export class CursorService {
 		}
 
 		if (r > 0) {
-			$ctx.translate(0.5, 0.5);
 			$ctx.beginPath();
 			$ctx.strokeStyle = this.memory.constant.STROKE_STYLE;
 			$ctx.lineWidth = 1;
