@@ -191,6 +191,16 @@ export class MemoryService {
 		if (drawOrErase === undefined) return;
 
 		if (drawOrErase === 1 && this.drawId > -1) {
+			const selectedListId: number = _.findIndex(this.selectedList, ($id: number) => {
+				return $id === this.drawId;
+			});
+
+			if (selectedListId > 0) {
+				this.selectedList.splice(selectedListId, selectedListId);
+			} else if (selectedListId === 0) {
+				this.selectedList = [];
+			}
+
 			// draw
 			this._updateDraw(this.drawId, false);
 

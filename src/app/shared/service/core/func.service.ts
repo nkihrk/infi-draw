@@ -73,6 +73,8 @@ export class FuncService {
 		this.memory.selectedList = [];
 
 		for (let i = 0; i < n; i++) {
+			if (!this.memory.trailList[i].visibility) continue;
+
 			this.memory.selectedList.push(i);
 		}
 	}
