@@ -24,6 +24,8 @@ export class EraseService {
 	setVisibility() {
 		const trailIndexes: number[] = this._validateTrails();
 
+		if (this.memory.selectedList.length > 0) this.memory.selectedList = [];
+
 		for (let i = 0; i < trailIndexes.length; i++) {
 			const tId: number = trailIndexes[i];
 			const trail: Trail = this.memory.trailList[tId];

@@ -67,6 +67,16 @@ export class FuncService {
 		this.selectFunc.activate();
 	}
 
+	selectAll(): void {
+		const n: number = this.memory.trailList.length;
+
+		this.memory.selectedList = [];
+
+		for (let i = 0; i < n; i++) {
+			this.memory.selectedList.push(i);
+		}
+	}
+
 	//////////////////////////////////////////////////////////
 	//
 	// Clean up

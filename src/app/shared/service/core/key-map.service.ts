@@ -18,6 +18,7 @@ export class KeyMapService {
 		const isShiftKey: boolean = this.keyMap.Shift;
 		const isSpaceKey: boolean = this.keyMap[' '];
 
+		const isAkey: boolean = this.keyMap.a; // Select all
 		const isEkey: boolean = this.keyMap.e; // Erase
 		const isHkey: boolean = this.keyMap.h; // Hand
 		const isPkey: boolean = this.keyMap.p; // Draw
@@ -25,7 +26,7 @@ export class KeyMapService {
 		const isZkey: boolean = this.keyMap.z; // Undo and redo
 
 		const isPermitkey: boolean =
-			isCtrlKey || isAltKey || isShiftKey || isSpaceKey || isEkey || isHkey || isPkey || isVkey || isZkey;
+			isCtrlKey || isAltKey || isShiftKey || isSpaceKey || isAkey || isEkey || isHkey || isPkey || isVkey || isZkey;
 		if (!isPermitkey) this.keyMap = {};
 
 		this.memory.keyMap = this.keyMap;

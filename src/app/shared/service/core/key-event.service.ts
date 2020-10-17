@@ -23,7 +23,7 @@ export class KeyEventService {
 		}
 	}
 
-	_keyDownFuncs($e: Key): void {
+	private _keyDownFuncs($e: Key): void {
 		const keymap: any = this.keymap.keyMap;
 
 		// Save a previous state once
@@ -38,7 +38,9 @@ export class KeyEventService {
 					this._redo($e);
 				}
 			} else {
-				if (keymap.z) {
+				if (keymap.a) {
+					this._selectAll($e);
+				} else if (keymap.z) {
 					this._undo($e);
 				} else if (keymap[' ']) {
 					this._zoom($e);
@@ -63,7 +65,7 @@ export class KeyEventService {
 		}
 	}
 
-	_keyUpFuncs($e: Key): void {
+	private _keyUpFuncs($e: Key): void {
 		switch (this.whichFunc) {
 			case 'select':
 				this.func.select();
@@ -94,37 +96,44 @@ export class KeyEventService {
 		this.count = 0;
 	}
 
-	_pen($e: Key): void {
+	private _pen($e: Key): void {
 		this.whichFunc = 'pen';
 	}
 
-	_eraser($e: Key): void {
+	private _eraser($e: Key): void {
 		this.whichFunc = 'eraser';
 	}
 
-	_hand($e: Key): void {
+	private _hand($e: Key): void {
 		this.whichFunc = 'hand';
 	}
 
-	_select($e: Key): void {
+	private _select($e: Key): void {
 		this.whichFunc = 'select';
 	}
 
-	_redo($e: Key): void {
+	private _selectAll($e: Key): void {
+		$e.e.preventDefault();
+
+		this.whichFunc = 'select-all';
+		this.func.selectAll();
+	}
+
+	private _redo($e: Key): void {
 		$e.e.preventDefault();
 
 		this.whichFunc = 'redo';
 		this.func.redo();
 	}
 
-	_undo($e: Key): void {
+	private _undo($e: Key): void {
 		$e.e.preventDefault();
 
 		this.whichFunc = 'undo';
 		this.func.undo();
 	}
 
-	_zoom($e: Key): void {
+	private _zoom($e: Key): void {
 		this.whichFunc = 'zoom';
 		this.func.zoom(true);
 	}

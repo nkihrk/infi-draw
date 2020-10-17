@@ -25,6 +25,8 @@ export class DrawService {
 	registerDrawFuncs($newOffsetX: number, $newOffsetY: number): void {
 		const name: string = this.memory.reservedByFunc.current.name;
 
+		if (this.memory.selectedList.length > 0) this.memory.selectedList = [];
+
 		if (name === 'pen') {
 			this.pen.recordTrail();
 		} else if (name === 'square') {
