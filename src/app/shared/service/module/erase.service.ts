@@ -89,11 +89,12 @@ export class EraseService {
 	private _validatePoints($trailId: number): number[] {
 		const validList: number[] = [];
 
-		const points: Point[] = this.memory.trailList[$trailId].points;
+		const trail: Trail = this.memory.trailList[$trailId];
+		const points: Point[] = trail.points;
 		for (let i = 0; i < points.length; i++) {
 			const p: Point = points[i];
-			const pointX: number = p.offset.newOffsetX;
-			const pointY: number = p.offset.newOffsetY;
+			const pointX: number = p.relativeOffset.x * this.memory.canvasOffset.zoomRatio + trail.origin.newOffsetX;
+			const pointY: number = p.relativeOffset.y * this.memory.canvasOffset.zoomRatio + trail.origin.newOffsetY;
 			const pointerOffset: PointerOffset = this.memory.pointerOffset;
 			const r: number = this.memory.brush.lineWidth.erase / 2;
 

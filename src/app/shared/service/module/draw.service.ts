@@ -46,11 +46,8 @@ export class DrawService {
 			t.max.prevOffsetX = t.max.newOffsetX;
 			t.max.prevOffsetY = t.max.newOffsetY;
 
-			for (let j = 0; j < t.points.length; j++) {
-				const p: Point = t.points[j];
-				p.offset.prevOffsetX = p.offset.newOffsetX;
-				p.offset.prevOffsetY = p.offset.newOffsetY;
-			}
+			t.origin.prevOffsetX = t.origin.newOffsetX;
+			t.origin.prevOffsetY = t.origin.newOffsetY;
 		}
 	}
 
@@ -79,10 +76,7 @@ export class DrawService {
 		$trail.min = this.coord.updateOffset($newOffsetX, $newOffsetY, $trail.min, $event);
 		$trail.max = this.coord.updateOffset($newOffsetX, $newOffsetY, $trail.max, $event);
 
-		for (let i = 0; i < $trail.points.length; i++) {
-			const p: Point = $trail.points[i];
-			p.offset = this.coord.updateOffset($newOffsetX, $newOffsetY, p.offset, $event);
-		}
+		$trail.origin = this.coord.updateOffset($newOffsetX, $newOffsetY, $trail.origin, $event);
 	}
 
 	updateOffsetsByZoom($x: number, $y: number, $deltaFlg: boolean): void {
@@ -95,10 +89,7 @@ export class DrawService {
 			t.min = this.coord.updateOffsetWithGivenPoint($x, $y, t.min, $deltaFlg);
 			t.max = this.coord.updateOffsetWithGivenPoint($x, $y, t.max, $deltaFlg);
 
-			for (let j = 0; j < t.points.length; j++) {
-				const p: Point = t.points[j];
-				p.offset = this.coord.updateOffsetWithGivenPoint($x, $y, p.offset, $deltaFlg);
-			}
+			t.origin = this.coord.updateOffsetWithGivenPoint($x, $y, t.origin, $deltaFlg);
 		}
 	}
 
@@ -138,13 +129,25 @@ export class DrawService {
 			const ctx: CanvasRenderingContext2D = $ctxOekakiBuffer;
 			ctx.lineWidth = currentP.lineWidth * currentP.pressure * this.memory.canvasOffset.zoomRatio;
 			ctx.strokeStyle = currentP.color;
-			ctx.moveTo(currentP.offset.newOffsetX, currentP.offset.newOffsetY);
+			const currentPoffsetX: number =
+				currentP.relativeOffset.x * this.memory.canvasOffset.zoomRatio + $trail.origin.newOffsetX;
+			const currentPoffsetY: number =
+				currentP.relativeOffset.y * this.memory.canvasOffset.zoomRatio + $trail.origin.newOffsetY;
+			ctx.moveTo(currentPoffsetX, currentPoffsetY);
 
 			if (nextP && nextP.visibility) {
-				ctx.lineTo(nextP.offset.newOffsetX, nextP.offset.newOffsetY);
+				const nextPoffsetX: number =
+					nextP.relativeOffset.x * this.memory.canvasOffset.zoomRatio + $trail.origin.newOffsetX;
+				const nextPoffsetY: number =
+					nextP.relativeOffset.y * this.memory.canvasOffset.zoomRatio + $trail.origin.newOffsetY;
+				ctx.lineTo(nextPoffsetX, nextPoffsetY);
 				//this._createBezierCurve(ctx, currentP, nextP);
 			} else if (prevP && prevP.visibility) {
-				ctx.lineTo(prevP.offset.newOffsetX, prevP.offset.newOffsetY);
+				const prevPoffsetX: number =
+					prevP.relativeOffset.x * this.memory.canvasOffset.zoomRatio + $trail.origin.newOffsetX;
+				const prevPoffsetY: number =
+					prevP.relativeOffset.y * this.memory.canvasOffset.zoomRatio + $trail.origin.newOffsetY;
+				ctx.lineTo(prevPoffsetX, prevPoffsetY);
 				//this._createBezierCurve(ctx, currentP, prevP);
 			}
 		}
