@@ -34,8 +34,19 @@ export class SelectUiService {
 
 			const id: number = this.memory.selectedList[i];
 			const trail: Trail = this.memory.trailList[id];
-			const tmp: { min: Offset; max: Offset; lineWidth: number } = this._getNewMinMax(min, max, lineWidth, trail);
 
+			if (!trail.visibility) continue;
+
+			let count = 0;
+			for (let j = 0; j < trail.points.length; j++) {
+				if (trail.points[j].visibility) continue;
+
+				count++;
+			}
+
+			if (count === trail.points.length) continue;
+
+			const tmp: { min: Offset; max: Offset; lineWidth: number } = this._getNewMinMax(min, max, lineWidth, trail);
 			min = tmp.min;
 			max = tmp.max;
 			lineWidth = tmp.lineWidth;
