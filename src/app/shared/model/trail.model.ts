@@ -8,5 +8,6 @@ export interface Trail {
 	visibility: boolean;
 	min: Offset;
 	max: Offset;
+	origin: Offset;
 	points: Point[];
 }

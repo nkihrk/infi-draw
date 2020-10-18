@@ -7,6 +7,9 @@ import { EraseService } from '../module/erase.service';
 import { CreateSquareService } from '../module/create-square.service';
 import { CreateLineService } from '../module/create-line.service';
 import { ZoomService } from '../module/zoom.service';
+import { Erase } from '../../model/erase.model';
+import { Trail } from '../../model/trail.model';
+import * as _ from 'lodash';
 
 @Injectable({
 	providedIn: 'root'
@@ -68,14 +71,19 @@ export class FuncService {
 	}
 
 	selectAll(): void {
-		const n: number = this.memory.trailList.length;
-
 		this.memory.selectedList = [];
 
-		for (let i = 0; i < n; i++) {
+		for (let i = 0; i < this.memory.trailList.length; i++) {
 			if (!this.memory.trailList[i].visibility) continue;
 
-			this.memory.selectedList.push(i);
+			const trail: Trail = this.memory.trailList[i];
+
+			for (let j = 0; j < trail.points.length; j++) {
+				if (!trail.points[j].visibility) continue;
+
+				this.memory.selectedList.push(i);
+				break;
+			}
 		}
 	}
 

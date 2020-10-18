@@ -25,7 +25,11 @@ export class PenService {
 		const point: Point = this._creatPoint(trail);
 
 		// Update bounding
-		this.validateMinMax(trail, point.offset.newOffsetX, point.offset.newOffsetY);
+		this.validateMinMax(
+			trail,
+			point.relativeOffset.x * this.memory.canvasOffset.zoomRatio + trail.origin.newOffsetX,
+			point.relativeOffset.y * this.memory.canvasOffset.zoomRatio + trail.origin.newOffsetY
+		);
 
 		// Add a new point
 		if (trail.points.length > 0) {
@@ -41,15 +45,10 @@ export class PenService {
 		const angle: number = this._angleBetween(prevP, $currentP);
 
 		for (let i = 0; i < dist; i += this.cutoff) {
-			const x: number = prevP.offset.newOffsetX + Math.sin(angle) * i;
-			const y: number = prevP.offset.newOffsetY + Math.cos(angle) * i;
+			const x: number = prevP.relativeOffset.x + Math.sin(angle) * i;
+			const y: number = prevP.relativeOffset.y + Math.cos(angle) * i;
 			const point: Point = this._creatPoint($trail);
-			point.offset = {
-				newOffsetX: x,
-				newOffsetY: y,
-				prevOffsetX: x,
-				prevOffsetY: y
-			};
+			point.relativeOffset = { x, y };
 
 			$trail.points.push(point);
 		}
@@ -57,15 +56,15 @@ export class PenService {
 
 	private _distanceBetween($prevP: Point, $currentP: Point): number {
 		return Math.sqrt(
-			Math.pow($currentP.offset.newOffsetX - $prevP.offset.newOffsetX, 2) +
-				Math.pow($currentP.offset.newOffsetY - $prevP.offset.newOffsetY, 2)
+			Math.pow($currentP.relativeOffset.x - $prevP.relativeOffset.x, 2) +
+				Math.pow($currentP.relativeOffset.y - $prevP.relativeOffset.y, 2)
 		);
 	}
 
 	private _angleBetween($prevP: Point, $currentP: Point): number {
 		return Math.atan2(
-			$currentP.offset.newOffsetX - $prevP.offset.newOffsetX,
-			$currentP.offset.newOffsetY - $prevP.offset.newOffsetY
+			$currentP.relativeOffset.x - $prevP.relativeOffset.x,
+			$currentP.relativeOffset.y - $prevP.relativeOffset.y
 		);
 	}
 
@@ -74,11 +73,9 @@ export class PenService {
 			id: $trail.points.length,
 			color: this.memory.brush.color,
 			visibility: true,
-			offset: {
-				prevOffsetX: this.memory.pointerOffset.current.x,
-				prevOffsetY: this.memory.pointerOffset.current.y,
-				newOffsetX: this.memory.pointerOffset.current.x,
-				newOffsetY: this.memory.pointerOffset.current.y
+			relativeOffset: {
+				x: (this.memory.pointerOffset.current.x - $trail.origin.newOffsetX) / this.memory.canvasOffset.zoomRatio,
+				y: (this.memory.pointerOffset.current.y - $trail.origin.newOffsetY) / this.memory.canvasOffset.zoomRatio
 			},
 			pressure: 1,
 			lineWidth: this.memory.brush.lineWidth.draw

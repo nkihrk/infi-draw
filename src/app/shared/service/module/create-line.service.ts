@@ -55,7 +55,11 @@ export class CreateLineService {
 				const point: Point = this._creatPoint($trail, fixedI, this._getYfromX($newOffsetX, $newOffsetY, fixedI));
 
 				// Add bounding
-				this._validateMinMax($trail, point.offset.newOffsetX, point.offset.newOffsetY);
+				this._validateMinMax(
+					$trail,
+					point.relativeOffset.x * this.memory.canvasOffset.zoomRatio + $trail.origin.newOffsetX,
+					point.relativeOffset.y * this.memory.canvasOffset.zoomRatio + $trail.origin.newOffsetY
+				);
 
 				$trail.points.push(point);
 			}
@@ -65,7 +69,11 @@ export class CreateLineService {
 				const point: Point = this._creatPoint($trail, -fixedI, this._getYfromX($newOffsetX, $newOffsetY, -fixedI));
 
 				// Add bounding
-				this._validateMinMax($trail, point.offset.newOffsetX, point.offset.newOffsetY);
+				this._validateMinMax(
+					$trail,
+					point.relativeOffset.x * this.memory.canvasOffset.zoomRatio + $trail.origin.newOffsetX,
+					point.relativeOffset.y * this.memory.canvasOffset.zoomRatio + $trail.origin.newOffsetY
+				);
 
 				$trail.points.push(point);
 			}
@@ -76,7 +84,11 @@ export class CreateLineService {
 					const point: Point = this._creatPoint($trail, 0, fixedI);
 
 					// Add bounding
-					this._validateMinMax($trail, point.offset.newOffsetX, point.offset.newOffsetY);
+					this._validateMinMax(
+						$trail,
+						point.relativeOffset.x * this.memory.canvasOffset.zoomRatio + $trail.origin.newOffsetX,
+						point.relativeOffset.y * this.memory.canvasOffset.zoomRatio + $trail.origin.newOffsetY
+					);
 
 					$trail.points.push(point);
 				}
@@ -86,7 +98,11 @@ export class CreateLineService {
 					const point: Point = this._creatPoint($trail, 0, -fixedI);
 
 					// Add bounding
-					this._validateMinMax($trail, point.offset.newOffsetX, point.offset.newOffsetY);
+					this._validateMinMax(
+						$trail,
+						point.relativeOffset.x * this.memory.canvasOffset.zoomRatio + $trail.origin.newOffsetX,
+						point.relativeOffset.y * this.memory.canvasOffset.zoomRatio + $trail.origin.newOffsetY
+					);
 
 					$trail.points.push(point);
 				}
@@ -99,11 +115,9 @@ export class CreateLineService {
 			id: $trail.points.length,
 			color: this.memory.brush.color,
 			visibility: true,
-			offset: {
-				prevOffsetX: this.memory.pointerOffset.prev.x + $x,
-				prevOffsetY: this.memory.pointerOffset.prev.y + $y,
-				newOffsetX: this.memory.pointerOffset.prev.x + $x,
-				newOffsetY: this.memory.pointerOffset.prev.y + $y
+			relativeOffset: {
+				x: $x / this.memory.canvasOffset.zoomRatio,
+				y: $y / this.memory.canvasOffset.zoomRatio
 			},
 			pressure: 1,
 			lineWidth: this.memory.brush.lineWidth.draw

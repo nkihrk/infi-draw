@@ -177,12 +177,24 @@ export class SelectService {
 			const ctx: CanvasRenderingContext2D = $ctx;
 			ctx.lineWidth = currentP.lineWidth * currentP.pressure * this.memory.canvasOffset.zoomRatio;
 			ctx.strokeStyle = '#' + $trail.colorId;
-			ctx.moveTo(currentP.offset.newOffsetX, currentP.offset.newOffsetY);
+			const currentPoffsetX: number =
+				currentP.relativeOffset.x * this.memory.canvasOffset.zoomRatio + $trail.origin.newOffsetX;
+			const currentPoffsetY: number =
+				currentP.relativeOffset.y * this.memory.canvasOffset.zoomRatio + $trail.origin.newOffsetY;
+			ctx.moveTo(currentPoffsetX, currentPoffsetY);
 
 			if (nextP && nextP.visibility) {
-				ctx.lineTo(nextP.offset.newOffsetX, nextP.offset.newOffsetY);
+				const nextPoffsetX: number =
+					nextP.relativeOffset.x * this.memory.canvasOffset.zoomRatio + $trail.origin.newOffsetX;
+				const nextPoffsetY: number =
+					nextP.relativeOffset.y * this.memory.canvasOffset.zoomRatio + $trail.origin.newOffsetY;
+				ctx.lineTo(nextPoffsetX, nextPoffsetY);
 			} else if (prevP && prevP.visibility) {
-				ctx.lineTo(prevP.offset.newOffsetX, prevP.offset.newOffsetY);
+				const prevPoffsetX: number =
+					prevP.relativeOffset.x * this.memory.canvasOffset.zoomRatio + $trail.origin.newOffsetX;
+				const prevPoffsetY: number =
+					prevP.relativeOffset.y * this.memory.canvasOffset.zoomRatio + $trail.origin.newOffsetY;
+				ctx.lineTo(prevPoffsetX, prevPoffsetY);
 			}
 		}
 	}

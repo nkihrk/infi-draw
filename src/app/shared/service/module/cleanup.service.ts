@@ -22,6 +22,8 @@ export class CleanupService {
 		};
 		this.memory.pileNewHistory();
 
+		this.memory.selectedList = [];
+
 		// Set visibility of all points to false
 		this._setVisibilities();
 
@@ -34,7 +36,6 @@ export class CleanupService {
 
 		for (let i = 0; i < trailLists.length; i++) {
 			const trail: Trail = trailLists[i];
-
 			const points: Point[] = trailLists[i].points;
 
 			for (let j = 0; j < points.length; j++) {

@@ -4,7 +4,10 @@ export interface Point {
 	id: number;
 	color: string;
 	visibility: boolean;
-	offset: Offset;
+	relativeOffset: {
+		x: number;
+		y: number;
+	};
 	pressure: number;
 	lineWidth: number;
 }
