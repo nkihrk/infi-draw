@@ -199,7 +199,7 @@ export class MemoryService {
 			this.drawId = dId;
 		} else if (drawOrErase === 0 && this.eraseId > -1) {
 			// erase
-			this._updateErase(this.eraseId, 'undo');
+			this._updateErase(this.eraseId);
 
 			let eId: number = this.eraseId;
 			eId -= eId > -1 ? 1 : 0;
@@ -231,7 +231,7 @@ export class MemoryService {
 			let eId: number = this.eraseId;
 			eId += eId < this.eraseList.length - 1 ? 1 : 0;
 
-			this._updateErase(eId, 'redo');
+			this._updateErase(eId);
 			this.eraseId = eId;
 		}
 
@@ -241,11 +241,9 @@ export class MemoryService {
 	private _updateDraw($dId: number, $flg: boolean): void {
 		const trail: Trail = this.trailList[$dId];
 		trail.visibility = $flg;
-
-		this._removeSelectedFromList($dId);
 	}
 
-	private _updateErase($eId: number, $eventName: string): void {
+	private _updateErase($eId: number): void {
 		const erase: Erase = this.eraseList[$eId];
 		const trailList: Erase['trailList'] = erase.trailList;
 
@@ -256,67 +254,13 @@ export class MemoryService {
 			const trail: Trail = this.trailList[tId];
 			const pointList: number[] = trailList[i].pointIdList;
 
-			if ($eventName === 'undo') {
-				this._updateEraseUndo(tId, trail, pointList);
-			} else {
-				this._updateEraseRedo(tId, trail, pointList);
-			}
-		}
-	}
+			for (let j = 0; j < pointList.length; j++) {
+				const pId: number = pointList[j];
+				const point: Point = trail.points[pId];
 
-	private _updateEraseUndo($tId: number, $trail: Trail, $pointList: number[]): void {
-		this._removeSelectedFromList($tId);
+				if (!trail || !point) continue;
 
-		for (let j = 0; j < $pointList.length; j++) {
-			const pId: number = $pointList[j];
-			const point: Point = $trail.points[pId];
-
-			if (!$trail || !point) continue;
-
-			point.visibility = !point.visibility;
-		}
-	}
-
-	private _updateEraseRedo($tId: number, $trail: Trail, $pointList: number[]): void {
-		for (let j = 0; j < $pointList.length; j++) {
-			const pId: number = $pointList[j];
-			const point: Point = $trail.points[pId];
-
-			if (!$trail || !point) continue;
-
-			point.visibility = !point.visibility;
-		}
-
-		this._removeSelectedFromList($tId);
-	}
-
-	private _removeSelectedFromList($targetId: number): void {
-		const selectedListId: number = _.findIndex(this.selectedList, ($id: number) => {
-			return $id === $targetId;
-		});
-
-		if (selectedListId !== -1) {
-			if (selectedListId === 0) {
-				this.selectedList.shift();
-			} else {
-				let count = 0;
-
-				for (let i = 0; i < this.trailList.length; i++) {
-					if (!this.trailList[i].visibility) continue;
-
-					const trail: Trail = this.trailList[i];
-
-					for (let j = 0; j < trail.points.length; j++) {
-						if (trail.points[j].visibility) continue;
-
-						count++;
-						break;
-					}
-				}
-
-				if (count > 0) return;
-
-				this.selectedList.splice(selectedListId, selectedListId);
+				point.visibility = !point.visibility;
 			}
 		}
 	}
