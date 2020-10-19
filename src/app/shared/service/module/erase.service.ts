@@ -53,18 +53,29 @@ export class EraseService {
 
 		const trailList: Trail[] = this.memory.trailList;
 		for (let i = 0; i < trailList.length; i++) {
-			const min: Offset = trailList[i].min;
-			const max: Offset = trailList[i].max;
+			const min: { x: number; y: number } = trailList[i].min;
+			const max: { x: number; y: number } = trailList[i].max;
 			const pointerOffset: PointerOffset = this.memory.pointerOffset;
-			const x: number = min.newOffsetX;
-			const y: number = min.newOffsetY;
+
+			const x0: number =
+				(min.x + trailList[i].origin.newOffsetX) * this.memory.canvasOffset.zoomRatio +
+				this.memory.canvasOffset.newOffsetX;
+			const y0: number =
+				(min.y + trailList[i].origin.newOffsetY) * this.memory.canvasOffset.zoomRatio +
+				this.memory.canvasOffset.newOffsetY;
+			const x1: number =
+				(max.x + trailList[i].origin.newOffsetX) * this.memory.canvasOffset.zoomRatio +
+				this.memory.canvasOffset.newOffsetX;
+			const y1: number =
+				(max.y + trailList[i].origin.newOffsetY) * this.memory.canvasOffset.zoomRatio +
+				this.memory.canvasOffset.newOffsetY;
 			const r: number = this.memory.brush.lineWidth.erase / 2;
 
 			// diff
-			const diffX0: number = x - pointerOffset.current.x;
-			const diffY0: number = y - pointerOffset.current.y;
-			const diffX1: number = max.newOffsetX - pointerOffset.current.x;
-			const diffY1: number = max.newOffsetY - pointerOffset.current.y;
+			const diffX0: number = x0 - pointerOffset.current.x;
+			const diffY0: number = y0 - pointerOffset.current.y;
+			const diffX1: number = x1 - pointerOffset.current.x;
+			const diffY1: number = y1 - pointerOffset.current.y;
 
 			// Corner
 			const corner0: boolean = diffX0 < r && diffY0 < r;
@@ -74,10 +85,8 @@ export class EraseService {
 			const corner: boolean = corner0 || corner1 || corner2 || corner3;
 
 			// Middle
-			const middle0: boolean =
-				min.newOffsetY < pointerOffset.current.y - r && pointerOffset.current.y + r < max.newOffsetY;
-			const middle1: boolean =
-				min.newOffsetX < pointerOffset.current.x - r && pointerOffset.current.x + r < max.newOffsetX;
+			const middle0: boolean = y0 < pointerOffset.current.y - r && pointerOffset.current.y + r < y1;
+			const middle1: boolean = x0 < pointerOffset.current.x - r && pointerOffset.current.x + r < x1;
 			const middle: boolean = middle0 && middle1;
 
 			if (corner || middle) validList.push(i);
@@ -91,10 +100,15 @@ export class EraseService {
 
 		const trail: Trail = this.memory.trailList[$trailId];
 		const points: Point[] = trail.points;
+
 		for (let i = 0; i < points.length; i++) {
 			const p: Point = points[i];
-			const pointX: number = p.relativeOffset.x * this.memory.canvasOffset.zoomRatio + trail.origin.newOffsetX;
-			const pointY: number = p.relativeOffset.y * this.memory.canvasOffset.zoomRatio + trail.origin.newOffsetY;
+			const pointX: number =
+				(p.relativeOffset.x + trail.origin.newOffsetX) * this.memory.canvasOffset.zoomRatio +
+				this.memory.canvasOffset.newOffsetX;
+			const pointY: number =
+				(p.relativeOffset.y + trail.origin.newOffsetY) * this.memory.canvasOffset.zoomRatio +
+				this.memory.canvasOffset.newOffsetY;
 			const pointerOffset: PointerOffset = this.memory.pointerOffset;
 			const r: number = this.memory.brush.lineWidth.erase / 2;
 
