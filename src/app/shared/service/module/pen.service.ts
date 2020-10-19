@@ -74,8 +74,14 @@ export class PenService {
 			color: this.memory.brush.color,
 			visibility: true,
 			relativeOffset: {
-				x: (this.memory.pointerOffset.current.x - $trail.origin.newOffsetX) / this.memory.canvasOffset.zoomRatio,
-				y: (this.memory.pointerOffset.current.y - $trail.origin.newOffsetY) / this.memory.canvasOffset.zoomRatio
+				x:
+					(this.memory.pointerOffset.current.x -
+						(this.memory.canvasOffset.newOffsetX + $trail.origin.newOffsetX * this.memory.canvasOffset.zoomRatio)) /
+					this.memory.canvasOffset.zoomRatio,
+				y:
+					(this.memory.pointerOffset.current.y -
+						(this.memory.canvasOffset.newOffsetY + $trail.origin.newOffsetY * this.memory.canvasOffset.zoomRatio)) /
+					this.memory.canvasOffset.zoomRatio
 			},
 			pressure: 1,
 			lineWidth: this.memory.brush.lineWidth.draw
