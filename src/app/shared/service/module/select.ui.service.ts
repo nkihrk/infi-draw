@@ -15,17 +15,13 @@ export class SelectUiService {
 	constructor(private memory: MemoryService) {}
 
 	render($ctx: CanvasRenderingContext2D): void {
-		let min: Offset = {
-			prevOffsetX: Infinity,
-			prevOffsetY: Infinity,
-			newOffsetX: Infinity,
-			newOffsetY: Infinity
+		let min = {
+			x: Infinity,
+			y: Infinity
 		};
-		let max: Offset = {
-			prevOffsetX: -Infinity,
-			prevOffsetY: -Infinity,
-			newOffsetX: -Infinity,
-			newOffsetY: -Infinity
+		let max = {
+			x: -Infinity,
+			y: -Infinity
 		};
 		let lineWidth = -Infinity;
 
@@ -46,13 +42,26 @@ export class SelectUiService {
 
 			if (count === trail.points.length) continue;
 
-			const tmp: { min: Offset; max: Offset; lineWidth: number } = this._getNewMinMax(min, max, lineWidth, trail);
+			const fixedMin = {
+				x: trail.min.x + trail.origin.newOffsetX,
+				y: trail.min.y + trail.origin.newOffsetY
+			};
+			const fixedMax = {
+				x: trail.max.x + trail.origin.newOffsetX,
+				y: trail.max.y + trail.origin.newOffsetY
+			};
+
+			// Create only frame
+			this.createSelectFrame(fixedMin, fixedMax, trail.points[0].lineWidth, $ctx);
+
+			const tmp: {
+				min: { x: number; y: number };
+				max: { x: number; y: number };
+				lineWidth: number;
+			} = this._getNewMinMax(min, max, lineWidth, trail);
 			min = tmp.min;
 			max = tmp.max;
 			lineWidth = tmp.lineWidth;
-
-			// Create only frame
-			this.createSelectFrame(trail.min, trail.max, trail.points[0].lineWidth, $ctx);
 		}
 
 		// Create select box
@@ -60,27 +69,40 @@ export class SelectUiService {
 	}
 
 	private _getNewMinMax(
-		$min: Offset,
-		$max: Offset,
+		$min: { x: number; y: number },
+		$max: { x: number; y: number },
 		$lineWidth: number,
 		$trail: Trail
-	): { min: Offset; max: Offset; lineWidth: number } {
-		$min.newOffsetX = Math.min($min.newOffsetX, $trail.min.newOffsetX);
-		$min.newOffsetY = Math.min($min.newOffsetY, $trail.min.newOffsetY);
+	): { min: { x: number; y: number }; max: { x: number; y: number }; lineWidth: number } {
+		$min.x = Math.min($min.x, $trail.min.x + $trail.origin.newOffsetX);
+		$min.y = Math.min($min.y, $trail.min.y + $trail.origin.newOffsetY);
 
-		$max.newOffsetX = Math.max($max.newOffsetX, $trail.max.newOffsetX);
-		$max.newOffsetY = Math.max($max.newOffsetY, $trail.max.newOffsetY);
+		$max.x = Math.max($max.x, $trail.max.x + $trail.origin.newOffsetX);
+		$max.y = Math.max($max.y, $trail.max.y + $trail.origin.newOffsetY);
 
 		$lineWidth = Math.max($lineWidth, $trail.points[0].lineWidth);
 
 		return { min: $min, max: $max, lineWidth: $lineWidth };
 	}
 
-	private createSelectBox($min: Offset, $max: Offset, $lineWidth: number, $ctx: CanvasRenderingContext2D): void {
-		const x: number = $min.newOffsetX - $lineWidth * this.memory.canvasOffset.zoomRatio;
-		const y: number = $min.newOffsetY - $lineWidth * this.memory.canvasOffset.zoomRatio;
-		const w: number = $max.newOffsetX - $min.newOffsetX + $lineWidth * this.memory.canvasOffset.zoomRatio * 2;
-		const h: number = $max.newOffsetY - $min.newOffsetY + $lineWidth * this.memory.canvasOffset.zoomRatio * 2;
+	private createSelectBox(
+		$min: { x: number; y: number },
+		$max: { x: number; y: number },
+		$lineWidth: number,
+		$ctx: CanvasRenderingContext2D
+	): void {
+		const x: number =
+			$min.x * this.memory.canvasOffset.zoomRatio +
+			this.memory.canvasOffset.newOffsetX -
+			$lineWidth * this.memory.canvasOffset.zoomRatio;
+		const y: number =
+			$min.y * this.memory.canvasOffset.zoomRatio +
+			this.memory.canvasOffset.newOffsetY -
+			$lineWidth * this.memory.canvasOffset.zoomRatio;
+		const w: number =
+			($max.x - $min.x) * this.memory.canvasOffset.zoomRatio + $lineWidth * this.memory.canvasOffset.zoomRatio * 2;
+		const h: number =
+			($max.y - $min.y) * this.memory.canvasOffset.zoomRatio + $lineWidth * this.memory.canvasOffset.zoomRatio * 2;
 
 		// Frame
 		this.createSelectFrame($min, $max, $lineWidth, $ctx);
@@ -137,11 +159,24 @@ export class SelectUiService {
 		$ctx.stroke();
 	}
 
-	private createSelectFrame($min: Offset, $max: Offset, $lineWidth: number, $ctx: CanvasRenderingContext2D): void {
-		const x: number = $min.newOffsetX - $lineWidth * this.memory.canvasOffset.zoomRatio;
-		const y: number = $min.newOffsetY - $lineWidth * this.memory.canvasOffset.zoomRatio;
-		const w: number = $max.newOffsetX - $min.newOffsetX + $lineWidth * this.memory.canvasOffset.zoomRatio * 2;
-		const h: number = $max.newOffsetY - $min.newOffsetY + $lineWidth * this.memory.canvasOffset.zoomRatio * 2;
+	private createSelectFrame(
+		$min: { x: number; y: number },
+		$max: { x: number; y: number },
+		$lineWidth: number,
+		$ctx: CanvasRenderingContext2D
+	): void {
+		const x: number =
+			$min.x * this.memory.canvasOffset.zoomRatio +
+			this.memory.canvasOffset.newOffsetX -
+			$lineWidth * this.memory.canvasOffset.zoomRatio;
+		const y: number =
+			$min.y * this.memory.canvasOffset.zoomRatio +
+			this.memory.canvasOffset.newOffsetY -
+			$lineWidth * this.memory.canvasOffset.zoomRatio;
+		const w: number =
+			($max.x - $min.x) * this.memory.canvasOffset.zoomRatio + $lineWidth * this.memory.canvasOffset.zoomRatio * 2;
+		const h: number =
+			($max.y - $min.y) * this.memory.canvasOffset.zoomRatio + $lineWidth * this.memory.canvasOffset.zoomRatio * 2;
 
 		// Frame
 		$ctx.beginPath();

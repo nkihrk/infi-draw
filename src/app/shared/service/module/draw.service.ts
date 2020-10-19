@@ -41,11 +41,6 @@ export class DrawService {
 
 		for (let i = 0; i < trailList.length; i++) {
 			const t: Trail = trailList[i];
-			t.min.prevOffsetX = t.min.newOffsetX;
-			t.min.prevOffsetY = t.min.newOffsetY;
-			t.max.prevOffsetX = t.max.newOffsetX;
-			t.max.prevOffsetY = t.max.newOffsetY;
-
 			t.origin.prevOffsetX = t.origin.newOffsetX;
 			t.origin.prevOffsetY = t.origin.newOffsetY;
 		}
@@ -68,9 +63,6 @@ export class DrawService {
 	}
 
 	updateTargetTrailOffsets($trail: Trail, $newOffsetX: number, $newOffsetY: number, $event: Pointer): void {
-		$trail.min = this.coord.updateOffset($newOffsetX, $newOffsetY, $trail.min, $event);
-		$trail.max = this.coord.updateOffset($newOffsetX, $newOffsetY, $trail.max, $event);
-
 		$trail.origin = this.coord.updateOffset(
 			$newOffsetX / this.memory.canvasOffset.zoomRatio,
 			$newOffsetY / this.memory.canvasOffset.zoomRatio,
@@ -119,54 +111,36 @@ export class DrawService {
 			const ctx: CanvasRenderingContext2D = $ctxOekakiBuffer;
 			ctx.lineWidth = currentP.lineWidth * currentP.pressure * this.memory.canvasOffset.zoomRatio;
 			ctx.strokeStyle = currentP.color;
+
 			const currentPoffsetX: number =
-				currentP.relativeOffset.x * this.memory.canvasOffset.zoomRatio +
-				$trail.origin.newOffsetX * this.memory.canvasOffset.zoomRatio +
+				(currentP.relativeOffset.x + $trail.origin.newOffsetX) * this.memory.canvasOffset.zoomRatio +
 				this.memory.canvasOffset.newOffsetX;
 			const currentPoffsetY: number =
-				currentP.relativeOffset.y * this.memory.canvasOffset.zoomRatio +
-				$trail.origin.newOffsetY * this.memory.canvasOffset.zoomRatio +
+				(currentP.relativeOffset.y + $trail.origin.newOffsetY) * this.memory.canvasOffset.zoomRatio +
 				this.memory.canvasOffset.newOffsetY;
+
 			ctx.moveTo(currentPoffsetX, currentPoffsetY);
 
 			if (nextP && nextP.visibility) {
 				const nextPoffsetX: number =
-					nextP.relativeOffset.x * this.memory.canvasOffset.zoomRatio +
-					$trail.origin.newOffsetX * this.memory.canvasOffset.zoomRatio +
+					(nextP.relativeOffset.x + $trail.origin.newOffsetX) * this.memory.canvasOffset.zoomRatio +
 					this.memory.canvasOffset.newOffsetX;
 				const nextPoffsetY: number =
-					nextP.relativeOffset.y * this.memory.canvasOffset.zoomRatio +
-					$trail.origin.newOffsetY * this.memory.canvasOffset.zoomRatio +
+					(nextP.relativeOffset.y + $trail.origin.newOffsetY) * this.memory.canvasOffset.zoomRatio +
 					this.memory.canvasOffset.newOffsetY;
+
 				ctx.lineTo(nextPoffsetX, nextPoffsetY);
-				//this._createBezierCurve(ctx, currentP, nextP);
 			} else if (prevP && prevP.visibility) {
 				const prevPoffsetX: number =
-					prevP.relativeOffset.x * this.memory.canvasOffset.zoomRatio +
-					$trail.origin.newOffsetX * this.memory.canvasOffset.zoomRatio +
+					(prevP.relativeOffset.x + $trail.origin.newOffsetX) * this.memory.canvasOffset.zoomRatio +
 					this.memory.canvasOffset.newOffsetX;
 				const prevPoffsetY: number =
-					prevP.relativeOffset.y * this.memory.canvasOffset.zoomRatio +
-					$trail.origin.newOffsetY * this.memory.canvasOffset.zoomRatio +
+					(prevP.relativeOffset.y + $trail.origin.newOffsetY) * this.memory.canvasOffset.zoomRatio +
 					this.memory.canvasOffset.newOffsetY;
+
 				ctx.lineTo(prevPoffsetX, prevPoffsetY);
-				//this._createBezierCurve(ctx, currentP, prevP);
 			}
 		}
-	}
-
-	private _createBezierCurve($ctxOekakiBuffer: CanvasRenderingContext2D, $currentP, $newP): void {
-		const currentP = {
-			x: $currentP.offset.newOffsetX,
-			y: $currentP.offset.newOffsetY
-		};
-		const newP = {
-			x: $newP.offset.newOffsetX,
-			y: $newP.offset.newOffsetY
-		};
-		const midPoint = this._midPointBetween(currentP, newP);
-
-		$ctxOekakiBuffer.quadraticCurveTo($currentP.offset.newOffsetX, $currentP.offset.newOffsetY, midPoint.x, midPoint.y);
 	}
 
 	private _midPointBetween(p1: { x: number; y: number }, p2: { x: number; y: number }): { x: number; y: number } {

@@ -6,8 +6,8 @@ export interface Trail {
 	colorId: string;
 	name: string;
 	visibility: boolean;
-	min: Offset;
-	max: Offset;
+	min: { x: number; y: number };
+	max: { x: number; y: number };
 	origin: Offset;
 	points: Point[];
 }
