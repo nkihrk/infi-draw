@@ -25,16 +25,12 @@ export class CreateSquareService {
 
 		// Initialize points until mouseup event occured
 		trail.min = {
-			prevOffsetX: Infinity,
-			prevOffsetY: Infinity,
-			newOffsetX: Infinity,
-			newOffsetY: Infinity
+			x: Infinity,
+			y: Infinity
 		};
 		trail.max = {
-			prevOffsetX: -Infinity,
-			prevOffsetY: -Infinity,
-			newOffsetX: -Infinity,
-			newOffsetY: -Infinity
+			x: -Infinity,
+			y: -Infinity
 		};
 		trail.points = [];
 
@@ -55,11 +51,7 @@ export class CreateSquareService {
 				const point: Point = this._creatPoint($trail, fixedI, 0);
 
 				// Add bounding
-				this._validateMinMax(
-					$trail,
-					point.relativeOffset.x * this.memory.canvasOffset.zoomRatio + $trail.origin.newOffsetX,
-					point.relativeOffset.y * this.memory.canvasOffset.zoomRatio + $trail.origin.newOffsetY
-				);
+				this._validateMinMax($trail, point.relativeOffset.x, point.relativeOffset.y);
 
 				$trail.points.push(point);
 			}
@@ -69,11 +61,7 @@ export class CreateSquareService {
 				const point: Point = this._creatPoint($trail, -fixedI, 0);
 
 				// Add bounding
-				this._validateMinMax(
-					$trail,
-					point.relativeOffset.x * this.memory.canvasOffset.zoomRatio + $trail.origin.newOffsetX,
-					point.relativeOffset.y * this.memory.canvasOffset.zoomRatio + $trail.origin.newOffsetY
-				);
+				this._validateMinMax($trail, point.relativeOffset.x, point.relativeOffset.y);
 
 				$trail.points.push(point);
 			}
@@ -86,11 +74,7 @@ export class CreateSquareService {
 				const point: Point = this._creatPoint($trail, $newOffsetX, fixedI);
 
 				// Add bounding
-				this._validateMinMax(
-					$trail,
-					point.relativeOffset.x * this.memory.canvasOffset.zoomRatio + $trail.origin.newOffsetX,
-					point.relativeOffset.y * this.memory.canvasOffset.zoomRatio + $trail.origin.newOffsetY
-				);
+				this._validateMinMax($trail, point.relativeOffset.x, point.relativeOffset.y);
 
 				$trail.points.push(point);
 			}
@@ -100,11 +84,7 @@ export class CreateSquareService {
 				const point: Point = this._creatPoint($trail, $newOffsetX, -fixedI);
 
 				// Add bounding
-				this._validateMinMax(
-					$trail,
-					point.relativeOffset.x * this.memory.canvasOffset.zoomRatio + $trail.origin.newOffsetX,
-					point.relativeOffset.y * this.memory.canvasOffset.zoomRatio + $trail.origin.newOffsetY
-				);
+				this._validateMinMax($trail, point.relativeOffset.x, point.relativeOffset.y);
 
 				$trail.points.push(point);
 			}
@@ -117,11 +97,7 @@ export class CreateSquareService {
 				const point: Point = this._creatPoint($trail, fixedI, $newOffsetY);
 
 				// Add bounding
-				this._validateMinMax(
-					$trail,
-					point.relativeOffset.x * this.memory.canvasOffset.zoomRatio + $trail.origin.newOffsetX,
-					point.relativeOffset.y * this.memory.canvasOffset.zoomRatio + $trail.origin.newOffsetY
-				);
+				this._validateMinMax($trail, point.relativeOffset.x, point.relativeOffset.y);
 
 				$trail.points.push(point);
 			}
@@ -131,11 +107,7 @@ export class CreateSquareService {
 				const point: Point = this._creatPoint($trail, -fixedI, $newOffsetY);
 
 				// Add bounding
-				this._validateMinMax(
-					$trail,
-					point.relativeOffset.x * this.memory.canvasOffset.zoomRatio + $trail.origin.newOffsetX,
-					point.relativeOffset.y * this.memory.canvasOffset.zoomRatio + $trail.origin.newOffsetY
-				);
+				this._validateMinMax($trail, point.relativeOffset.x, point.relativeOffset.y);
 
 				$trail.points.push(point);
 			}
@@ -148,11 +120,7 @@ export class CreateSquareService {
 				const point: Point = this._creatPoint($trail, 0, fixedI);
 
 				// Add bounding
-				this._validateMinMax(
-					$trail,
-					point.relativeOffset.x * this.memory.canvasOffset.zoomRatio + $trail.origin.newOffsetX,
-					point.relativeOffset.y * this.memory.canvasOffset.zoomRatio + $trail.origin.newOffsetY
-				);
+				this._validateMinMax($trail, point.relativeOffset.x, point.relativeOffset.y);
 
 				$trail.points.push(point);
 			}
@@ -162,11 +130,7 @@ export class CreateSquareService {
 				const point: Point = this._creatPoint($trail, 0, -fixedI);
 
 				// Add bounding
-				this._validateMinMax(
-					$trail,
-					point.relativeOffset.x * this.memory.canvasOffset.zoomRatio + $trail.origin.newOffsetX,
-					point.relativeOffset.y * this.memory.canvasOffset.zoomRatio + $trail.origin.newOffsetY
-				);
+				this._validateMinMax($trail, point.relativeOffset.x, point.relativeOffset.y);
 
 				$trail.points.push(point);
 			}
@@ -190,10 +154,10 @@ export class CreateSquareService {
 	}
 
 	private _validateMinMax($trail: Trail, $x: number, $y: number): void {
-		$trail.min.newOffsetX = Math.min($trail.min.newOffsetX, $x);
-		$trail.min.newOffsetY = Math.min($trail.min.newOffsetY, $y);
+		$trail.min.x = Math.min($trail.min.x, $x);
+		$trail.min.y = Math.min($trail.min.y, $y);
 
-		$trail.max.newOffsetX = Math.max($trail.max.newOffsetX, $x);
-		$trail.max.newOffsetY = Math.max($trail.max.newOffsetY, $y);
+		$trail.max.x = Math.max($trail.max.x, $x);
+		$trail.max.y = Math.max($trail.max.y, $y);
 	}
 }
