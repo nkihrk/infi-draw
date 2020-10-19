@@ -25,11 +25,7 @@ export class PenService {
 		const point: Point = this._creatPoint(trail);
 
 		// Update bounding
-		this.validateMinMax(
-			trail,
-			point.relativeOffset.x * this.memory.canvasOffset.zoomRatio + trail.origin.newOffsetX,
-			point.relativeOffset.y * this.memory.canvasOffset.zoomRatio + trail.origin.newOffsetY
-		);
+		this._validateMinMax(trail, point.relativeOffset.x, point.relativeOffset.y);
 
 		// Add a new point
 		if (trail.points.length > 0) {
@@ -90,11 +86,11 @@ export class PenService {
 		return point;
 	}
 
-	private validateMinMax($trail: Trail, $x: number, $y: number): void {
-		$trail.min.newOffsetX = Math.min($trail.min.newOffsetX, $x);
-		$trail.min.newOffsetY = Math.min($trail.min.newOffsetY, $y);
+	private _validateMinMax($trail: Trail, $x: number, $y: number): void {
+		$trail.min.x = Math.min($trail.min.x, $x);
+		$trail.min.y = Math.min($trail.min.y, $y);
 
-		$trail.max.newOffsetX = Math.max($trail.max.newOffsetX, $x);
-		$trail.max.newOffsetY = Math.max($trail.max.newOffsetY, $y);
+		$trail.max.x = Math.max($trail.max.x, $x);
+		$trail.max.y = Math.max($trail.max.y, $y);
 	}
 }

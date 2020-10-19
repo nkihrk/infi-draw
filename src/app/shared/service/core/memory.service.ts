@@ -288,16 +288,12 @@ export class MemoryService {
 			name: this.reservedByFunc.current.name,
 			visibility: true,
 			min: {
-				prevOffsetX: Infinity,
-				prevOffsetY: Infinity,
-				newOffsetX: Infinity,
-				newOffsetY: Infinity
+				x: Infinity,
+				y: Infinity
 			},
 			max: {
-				prevOffsetX: -Infinity,
-				prevOffsetY: -Infinity,
-				newOffsetX: -Infinity,
-				newOffsetY: -Infinity
+				x: -Infinity,
+				y: -Infinity
 			},
 			origin: {
 				prevOffsetX: (this.pointerOffset.prev.x - this.canvasOffset.prevOffsetX) / this.canvasOffset.zoomRatio,
@@ -308,8 +304,6 @@ export class MemoryService {
 			points: [] as Point[]
 		};
 		this.trailList.push(trail);
-
-		console.log(trail.origin);
 
 		// Push new colorId
 		this.colorIdList.push({ id: trail.id, colorId: trail.colorId });
