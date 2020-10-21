@@ -26,6 +26,5 @@ export class GpuService {
 		d.width = this.memory.renderer.canvasWrapper.clientWidth;
 		d.height = this.memory.renderer.canvasWrapper.clientHeight;
 		ctxUi.drawImage(this.memory.renderer.uiBuffer, 0, 0);
-		ctxUi.drawImage(this.memory.renderer.debugger, 0, 0);
 	}
 }

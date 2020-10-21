@@ -8,6 +8,8 @@ import { CanvasOffset } from '../../model/canvas-offset.model';
 import { Trail } from '../../model/trail.model';
 import { Erase } from '../../model/erase.model';
 import { Point } from '../../model/point.model';
+import { Store, select } from '@ngrx/store';
+import { selectFlgsState } from '../../../selectors/flgs.selectors';
 
 @Injectable({
 	providedIn: 'root'
@@ -48,24 +50,7 @@ export class MemoryService {
 		}
 	};
 
-	flgs: Flgs = {
-		dblClickFlg: false,
-		downFlg: false,
-		// - Similarly to mousedown events
-		leftDownFlg: false,
-		middleDownFlg: false,
-		rightDownFlg: false,
-		// - Similarly to mouseup events
-		leftUpFlg: false,
-		middleUpFlg: false,
-		rightUpFlg: false,
-		// - Similarly to mousedown + mousemove events
-		leftDownMoveFlg: false,
-		middleDownMoveFlg: false,
-		rightDownMoveFlg: false,
-		// - Similarly to wheel event
-		wheelFlg: false
-	};
+	flgs: Flgs;
 
 	states = {
 		isPreventSelect: false,
@@ -121,10 +106,14 @@ export class MemoryService {
 		MAX_BRUSH_SIZE: 200
 	};
 
-	brushSizeSlider: BrushSizeSlider = {} as BrushSizeSlider;
-	renderer: Renderer = { ctx: {} as Ctx } as Renderer;
+	readonly brushSizeSlider: BrushSizeSlider = {} as BrushSizeSlider;
+	readonly renderer: Renderer = { ctx: {} as Ctx } as Renderer;
 
-	constructor(private lib: LibService) {}
+	constructor(private lib: LibService, private store: Store) {
+		store.pipe(select(selectFlgsState)).subscribe(($e) => {
+			this.flgs = $e;
+		});
+	}
 
 	initBrushSizeSlider(
 		$brushSizeWrapper: ElementRef<HTMLDivElement>,

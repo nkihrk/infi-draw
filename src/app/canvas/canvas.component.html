@@ -1,18 +1,19 @@
 <div
-  class="app-wrapper" style="z-index: 0;"
-  #appWrapper
-  appEvent
-  (dataSet)="onPointerEvents($event)"
-  (key)="onKeyEvents($event)"
-  (isUnload)="onUnload($event)"
+	class="app-wrapper"
+	style="z-index: 0;"
+	#appWrapper
+	appEvent
+	(dataSet)="onPointerEvents($event)"
+	(key)="onKeyEvents($event)"
+	(isUnload)="onUnload($event)"
 >
-  <div #canvasWrapper class="canvas-wrapper" style="z-index: 0;">
-    <canvas #canvasMain class="canvas-render" style="z-index: 0;"></canvas>
-    <canvas #canvasUI class="canvas-render" style="z-index: 1;"></canvas>
-  </div>
+	<div #canvasWrapper class="canvas-wrapper" style="z-index: 0;">
+		<canvas #canvasMain class="canvas-render" style="z-index: 0;"></canvas>
+		<canvas #canvasUI class="canvas-render" style="z-index: 1;"></canvas>
+	</div>
 
-  <div #rulerWrapper class="ruler-wrapper" style="z-index: 1;">
-    <canvas #canvasLine class="ruler-line"></canvas>
-    <canvas #canvasColumn class="ruler-column"></canvas>
-  </div>
+	<div #rulerWrapper class="ruler-wrapper" style="z-index: 1;">
+		<canvas #canvasLine class="ruler-line"></canvas>
+		<canvas #canvasColumn class="ruler-column"></canvas>
+	</div>
 </div>
