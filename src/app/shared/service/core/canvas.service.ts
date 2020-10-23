@@ -4,15 +4,25 @@ import { CoordService } from '../util/coord.service';
 import { MemoryService } from '../../service/core/memory.service';
 import { Offset } from '../../model/offset.model';
 
+import { Store } from '@ngrx/store';
+// NgRx - actions
+import {
+	updateCanvasOffset,
+	updateCanvasOffsetNewOffset,
+	updateCanvasOffsetNewOffsetNoRestrict,
+	updateCanvasOffsetPrevOffset,
+	updateCanvasOffsetZoomRatioByWheel,
+	updateCanvasOffsetZoomRatioByPointer
+} from '../../../actions/canvas-offset.actions';
+
 @Injectable({
 	providedIn: 'root'
 })
 export class CanvasService {
-	constructor(private memory: MemoryService, private coord: CoordService) {}
+	constructor(private memory: MemoryService, private coord: CoordService, private store: Store) {}
 
 	registerOnMouseDown(): void {
-		this.memory.canvasOffset.prevOffsetX = this.memory.canvasOffset.newOffsetX;
-		this.memory.canvasOffset.prevOffsetY = this.memory.canvasOffset.newOffsetY;
+		this.store.dispatch(updateCanvasOffsetPrevOffset());
 	}
 
 	registerOnNoMouseDown(): void {
@@ -28,23 +38,41 @@ export class CanvasService {
 	}
 
 	private _updateOffset($newOffsetX: number, $newOffsetY: number, $event: Pointer): void {
-		const offset: Offset = this.coord.updateOffset($newOffsetX, $newOffsetY, this.memory.canvasOffset, $event);
-		let zoomRatio: number = this.memory.canvasOffset.zoomRatio;
-
 		if (this.memory.flgs.wheelFlg) {
-			zoomRatio = this.coord.updateZoomRatioByWheel(this.memory.canvasOffset.zoomRatio, $event);
+			this.store.dispatch(
+				updateCanvasOffsetZoomRatioByWheel({
+					deltaFlg: $event.delta > 0,
+					zoomSpeed: this.memory.constant.WHEEL_ZOOM_SPEED
+				})
+			);
 		}
 
-		this.memory.canvasOffset = { ...offset, zoomRatio };
+		const data = {
+			newOffsetX: $newOffsetX,
+			newOffsetY: $newOffsetY,
+			event: $event,
+			pointerOffset: this.memory.pointerOffset,
+			states: this.memory.states,
+			wheelFlg: this.memory.flgs.wheelFlg,
+			zoomSpeed: this.memory.constant.WHEEL_ZOOM_SPEED
+		};
+		this.store.dispatch(updateCanvasOffsetNewOffset(data));
 	}
 
 	updateOffsetByZoom($x: number, $y: number, $deltaFlg: boolean): void {
 		// Update prevOffsets
 		this.registerOnNoMouseDown();
 
-		const offset: Offset = this.coord.updateOffsetWithGivenPoint($x, $y, this.memory.canvasOffset, $deltaFlg);
-		const zoomRatio: number = this.coord.updateZoomRatioByPointer(this.memory.canvasOffset.zoomRatio, $deltaFlg);
-
-		this.memory.canvasOffset = { ...offset, zoomRatio };
+		this.store.dispatch(
+			updateCanvasOffsetNewOffsetNoRestrict({
+				x: $x,
+				y: $y,
+				deltaFlg: $deltaFlg,
+				zoomSpeed: this.memory.constant.WHEEL_ZOOM_SPEED
+			})
+		);
+		this.store.dispatch(
+			updateCanvasOffsetZoomRatioByPointer({ deltaFlg: $deltaFlg, zoomSpeed: this.memory.constant.WHEEL_ZOOM_SPEED })
+		);
 	}
 }

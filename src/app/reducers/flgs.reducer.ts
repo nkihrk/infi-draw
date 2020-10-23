@@ -25,11 +25,9 @@ export const initialState: State = {
 	wheelFlg: false
 };
 
-const reducer = createReducer(initialState);
-
 const _flgsReducer = createReducer(
 	initialState,
-	on(action.updateFlgs, (state, flgs) => ({ ...flgs }))
+	on(action.updateFlgs, (state, flgs) => flgs)
 );
 
 export function flgsReducer(state: Flgs | undefined, action: Action) {

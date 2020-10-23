@@ -9,7 +9,7 @@ import { Offset } from '../../model/offset.model';
 export class CoordService {
 	constructor(private memory: MemoryService) {}
 
-	updateOffset($newOffsetX: number, $newOffsetY: number, $offset: Offset, $event: Pointer): Offset {
+	updateOffset($newOffsetX: number, $newOffsetY: number, $offset: Offset, $event: Pointer): NewOffset {
 		let offsetX: number = $offset.prevOffsetX;
 		let offsetY: number = $offset.prevOffsetY;
 
@@ -36,13 +36,10 @@ export class CoordService {
 			}
 		}
 
-		$offset.newOffsetX = offsetX;
-		$offset.newOffsetY = offsetY;
-
-		return $offset;
+		return { x: offsetX, y: offsetY };
 	}
 
-	updateOffsetWithGivenPoint($x: number, $y: number, $offset: Offset, $deltaFlg: boolean): Offset {
+	updateOffsetWithGivenPoint($x: number, $y: number, $offset: Offset, $deltaFlg: boolean): NewOffset {
 		let offsetX: number = $offset.prevOffsetX;
 		let offsetY: number = $offset.prevOffsetY;
 
@@ -59,10 +56,7 @@ export class CoordService {
 			offsetY = offsetY * ratio + $y;
 		}
 
-		$offset.newOffsetX = offsetX;
-		$offset.newOffsetY = offsetY;
-
-		return $offset;
+		return { x: offsetX, y: offsetY };
 	}
 
 	updateZoomRatioByWheel($zoomRatio: number, $event: Pointer): number {
@@ -98,4 +92,9 @@ export class CoordService {
 
 		return zoomRatio;
 	}
+}
+
+interface NewOffset {
+	x: number;
+	y: number;
 }

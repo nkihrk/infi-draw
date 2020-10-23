@@ -63,12 +63,12 @@ export class DrawService {
 	}
 
 	updateTargetTrailOffsets($trail: Trail, $newOffsetX: number, $newOffsetY: number, $event: Pointer): void {
-		$trail.origin = this.coord.updateOffset(
-			$newOffsetX / this.memory.canvasOffset.zoomRatio,
-			$newOffsetY / this.memory.canvasOffset.zoomRatio,
-			$trail.origin,
-			$event
-		);
+		//		$trail.origin = this.coord.updateOffset(
+		//			$newOffsetX / this.memory.canvasOffset.zoomRatio,
+		//			$newOffsetY / this.memory.canvasOffset.zoomRatio,
+		//			$trail.origin,
+		//			$event
+		//		);
 	}
 
 	updateOffsetsByZoom($x: number, $y: number, $deltaFlg: boolean): void {

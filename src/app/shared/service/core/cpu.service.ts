@@ -26,7 +26,7 @@ export class CpuService {
 	////////////////////////////////////////////////////////////////////////////////////////////
 
 	update($event: Pointer): void {
-		// Update ouseOffset
+		// Update pointerOffset
 		this.memory.pointerOffset.current.x = $event.x - this.memory.renderer.canvasWrapper.getBoundingClientRect().left;
 		this.memory.pointerOffset.current.y = $event.y - this.memory.renderer.canvasWrapper.getBoundingClientRect().top;
 		this.memory.pointerOffset.raw.x = $event.x;

@@ -9,12 +9,37 @@ import { Trail } from '../../model/trail.model';
 import { Erase } from '../../model/erase.model';
 import { Point } from '../../model/point.model';
 import { Store, select } from '@ngrx/store';
+
+// NgRx - selectors
 import { selectFlgsState } from '../../../selectors/flgs.selectors';
+import { selectCanvasOffsetState } from '../../../selectors/canvas-offset.selectors';
 
 @Injectable({
 	providedIn: 'root'
 })
 export class MemoryService {
+	///////////////////////////////////////////////////////////////
+	//
+	//	Redux pattern
+	//
+	///////////////////////////////////////////////////////////////
+
+	private _flgs: Flgs;
+
+	get flgs(): Flgs {
+		return this._flgs;
+	}
+
+	private _canvasOffset: CanvasOffset;
+
+	get canvasOffset(): CanvasOffset {
+		return this._canvasOffset;
+	}
+	///////////////////////////////////////////////////////////////
+	//
+	//	not implemented yet
+	//
+	///////////////////////////////////////////////////////////////
 	// brush order
 	private orderId = -1;
 	// draw
@@ -30,14 +55,6 @@ export class MemoryService {
 
 	keyMap: any = {};
 
-	canvasOffset: CanvasOffset = {
-		zoomRatio: 1,
-		prevOffsetX: 0,
-		prevOffsetY: 0,
-		newOffsetX: 0,
-		newOffsetY: 0
-	};
-
 	brush = {
 		color: 'rgba(233, 30, 99, 0.95)',
 		lineWidth: {
@@ -49,8 +66,6 @@ export class MemoryService {
 			erase: 1 // %
 		}
 	};
-
-	flgs: Flgs;
 
 	states = {
 		isPreventSelect: false,
@@ -110,8 +125,14 @@ export class MemoryService {
 	readonly renderer: Renderer = { ctx: {} as Ctx } as Renderer;
 
 	constructor(private lib: LibService, private store: Store) {
-		store.pipe(select(selectFlgsState)).subscribe(($e) => {
-			this.flgs = $e;
+		// Flgs
+		store.pipe(select(selectFlgsState)).subscribe(($e: Flgs) => {
+			this._flgs = $e;
+		});
+
+		// CanvasOffset
+		store.pipe(select(selectCanvasOffsetState)).subscribe(($e: CanvasOffset) => {
+			this._canvasOffset = $e;
 		});
 	}
 

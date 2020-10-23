@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Flgs } from '../../model/flgs.model';
+
 import { Store } from '@ngrx/store';
+// NgRx - actions
 import { updateFlgs } from '../../../actions/flgs.actions';
 
 @Injectable({

@@ -12,10 +12,13 @@ import { MenuComponent } from './menu/menu.component';
 import { ToolMenuComponent } from './tool-menu/tool-menu.component';
 import { ActiveMenuDirective } from './shared/directive/active-menu.directive';
 import { SlideBrushSizeDirective } from './shared/directive/slide-brush-size.directive';
+
 import { StoreModule } from '@ngrx/store';
-import { flgsReducer, flgsFeatureKey } from './reducers/flgs.reducer';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+// NgRx - reducers
+import { flgsReducer, flgsFeatureKey } from './reducers/flgs.reducer';
+import { canvasOffsetReducer, canvasOffsetFeatureKey } from './reducers/canvas-offset.reducer';
 
 @NgModule({
 	declarations: [
@@ -33,7 +36,7 @@ import { environment } from '../environments/environment';
 		BrowserModule,
 		AppRoutingModule,
 		FontAwesomeModule,
-		StoreModule.forRoot({ [flgsFeatureKey]: flgsReducer }),
+		StoreModule.forRoot({ [flgsFeatureKey]: flgsReducer, [canvasOffsetFeatureKey]: canvasOffsetReducer }),
 		!environment.production ? StoreDevtoolsModule.instrument() : []
 	],
 	providers: [],
